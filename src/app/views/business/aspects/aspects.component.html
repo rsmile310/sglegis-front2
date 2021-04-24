@@ -1,0 +1,11 @@
+<app-grade 
+  [Colunas]= "columns"
+  [Linhas] = "rows" 
+  [BtnEditar]="true" 
+  [BtnDeletar]="false"
+  [CamposBusca]="configSearch"
+  (IncluirRegistro)="openForm('', true)"
+  (EditarRegistro)="openForm($event.registro, false)"
+  (PesquisarRegistro)="getAspects($event.parametro)"  
+  [MostrarBarraBusca]="true">  
+</app-grade>

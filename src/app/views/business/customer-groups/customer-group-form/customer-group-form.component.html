@@ -1,0 +1,29 @@
+<h3 matDialogTitle>
+  {{data.title}}</h3>
+
+
+<form [formGroup]="customerGroup" autocomplete="off">
+  <mat-dialog-content>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+      <div fxFlex="70" class="pr-1">
+        <mat-form-field class="full-width">
+          <input matInput name="customer_group_name" [formControl]="customerGroup.controls['customer_group_name']"
+            placeholder="Grupos de Clientes * " maxlength="50" upperCase>
+        </mat-form-field>
+      </div>
+    </div>
+
+  </mat-dialog-content>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
+    <div fxFlex="100" class="mt-1">
+      <span fxFlex *ngIf="!this.data.new"></span>
+      <button mat-raised-button color="accent" type="button" (click)="deleteCustomerGroup()" *ngIf="!this.data.new">Excluir</button>      
+      <span fxFlex></span>
+      <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
+      <span fxFlex></span>
+      <button mat-raised-button class="mat-primary" type="button" (click)="saveCustomerGroup()"
+        [disabled]="customerGroup.invalid">Gravar</button>
+      <span fxFlex></span>
+    </div>
+  </div>
+</form>

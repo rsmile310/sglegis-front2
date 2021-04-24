@@ -1,0 +1,14 @@
+<h3 matDialogTitle color="primary">{{data.title}}</h3>
+<mat-dialog-content>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+    <img src="{{data.payload}}" (load)="imgCarregada()"  alt="" style="height: 100%; width: 100%;border:dotted; border-width: 1px; border-color: lightgray;">    
+  </div>
+</mat-dialog-content>
+
+<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+  <div fxFlex="100" class="mt-1">
+    <span fxFlex></span>
+    <button mat-raised-button color="warn" type="button" (click)="dialogRef.close()">Fechar</button>
+  </div>
+</div>
+

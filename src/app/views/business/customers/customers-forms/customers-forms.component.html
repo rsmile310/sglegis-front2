@@ -1,0 +1,57 @@
+<h3 matDialogTitle>
+  {{data.title}}</h3>
+
+<form [formGroup]="customerForm" autocomplete="off">
+  <mat-dialog-content>   
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+
+      <div fxFlex="50" class="pr-1">
+        <mat-form-field class="full-width">
+          <mat-select [formControl]="customerForm.controls['customer_group_id']" placeholder="Grupo *">            
+            <mat-option *ngFor="let customer_group of customers_groups" [value]="customer_group.customer_group_id">{{customer_group.customer_group_name}} </mat-option>
+          </mat-select>          
+        </mat-form-field>        
+      </div>      
+
+      <div fxFlex="10" class="pr-1">
+        <button mat-mini-fab color="primary" (click)="newGroupForm()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      
+      <div fxFlex="40" class="pr-1">
+        <mat-form-field class="full-width">
+          <input matInput name="customer_cnpj" [formControl]="customerForm.controls['customer_cnpj']"
+            placeholder="CNPJ *" maxlength="50" upperCase mask="00.000.000/0000-00" >
+        </mat-form-field>
+      </div>           
+
+      <div fxFlex="50" class="pr-1">
+        <mat-form-field class="full-width">
+          <input matInput name="customer_business_name" [formControl]="customerForm.controls['customer_business_name']"
+            placeholder="Razão Social *" maxlength="50" upperCase>
+        </mat-form-field>
+      </div>     
+     
+      <div fxFlex="50" class="pr-1">
+        <mat-form-field class="full-width">
+          <input matInput name="customer_trade_name" [formControl]="customerForm.controls['customer_trade_name']"
+            placeholder="Nome Fantasia * " maxlength="50" upperCase>
+        </mat-form-field>
+      </div>      
+    </div>
+
+  </mat-dialog-content>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
+    <div fxFlex="100" class="mt-1">
+      <span fxFlex *ngIf="!this.data.new"></span>
+      <button mat-raised-button color="accent" type="button" (click)="deleteCustomer()" *ngIf="!this.data.new">Excluir</button>      
+      <span fxFlex></span>
+      <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
+      <span fxFlex></span>
+      <button mat-raised-button class="mat-primary" type="button" (click)="saveCustomer()"
+        [disabled]="customerForm.invalid">Gravar</button>
+      <span fxFlex></span>
+    </div>
+  </div>
+</form>

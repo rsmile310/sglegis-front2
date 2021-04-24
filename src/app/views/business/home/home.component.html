@@ -1,0 +1,44 @@
+<!-- Dashboard card row -->
+<div fxLayout="row" fxLayoutWrap="wrap">
+  <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50" *ngFor="let loja of lojas">
+    <mat-card>
+      <mat-card-title fxLayoutAlign="start center">
+        <small class="text-muted"><b>numero </b></small>
+        <span fxFlex></span>
+        <mat-chip
+          class="icon-chip" 
+          color="primary" 
+          selected="true"><mat-icon>trending_up</mat-icon></mat-chip>
+      </mat-card-title>
+      <mat-card-content>
+        <h3 class="m-0 font-normal">outro numero</h3>
+        <small class="text-muted">Mês atual</small>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+
+<div fxLayout="row" fxLayoutWrap="wrap">
+  <div fxFlex="100">
+    <mat-card class="default">
+      <mat-card-title class="">
+        
+        
+      </mat-card-title>
+      <!-- <mat-card-subtitle>Previsto vs Realizado</mat-card-subtitle> -->
+      <mat-card-content class="p-0" [style.height]="'90%'">
+        <p style="font-size: 36px; margin: 20px;text-align: center">Bem vindo a Unity</p>
+        <br/>
+        <br/>
+        <div fxLayout="row" fxLayoutWrap="wrap" style="justify-content: center;height: 100%;">
+          <img src="assets/images/logo_unity.png" alt="" class="app-logo" [routerLink]="['/home']"/>
+        </div>
+        <br/>
+        <br/>
+        
+        
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- Fullwidth chart -->

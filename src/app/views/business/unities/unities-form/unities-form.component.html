@@ -1,0 +1,168 @@
+<h3 matDialogTitle>
+  {{data.title}}</h3>
+
+<form [formGroup]="unityForm" autocomplete="off">
+  <mat-dialog-content>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+      <div fxFlex="40" class="pr-1">
+        <mat-form-field class="full-width">
+          <mat-select [formControl]="unityForm.controls['customer_group_id']" placeholder="Grupo *">
+            <mat-option *ngFor="let customer_group of customers_groups" [value]="customer_group.customer_group_id">
+              {{customer_group.customer_group_name}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="10" class="pr-1">
+        <mat-chip-list aria-label="Fish selection">          
+          <mat-chip color="primary" selected (click)="newGroupForm()">Novo</mat-chip>          
+        </mat-chip-list>
+
+
+      </div>
+
+      <div fxFlex="40" class="pr-1">
+        <mat-form-field class="full-width">
+          <mat-select [formControl]="unityForm.controls['customer_unity_x']" placeholder="Cliente *">
+            <mat-option *ngFor="let customer of customers" [value]="customer.customer_id">
+              {{customer.customer_trade_name}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="10" class="pr-1">
+        <mat-chip-list aria-label="Fish selection">          
+          <mat-chip color="primary" selected (click)="newCustomerForm()">Novo</mat-chip>          
+        </mat-chip-list>
+      </div>
+    </div>
+
+    <mat-card class="mat-card-background">
+      <mat-card-header class="mat-card-titulo2" >
+        <span class="mat-card-titulo">Dados da Unidade</span><span class="mat-card-titulo" fxFlex></span>
+      </mat-card-header>
+      
+        <mat-card-content class="mat-card-body" >
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+
+            <div fxFlex="60" class="pr-1">
+              <mat-form-field class="full-width">
+                <input matInput name="customer_unity_name" [formControl]="unityForm.controls['customer_unity_name']"
+                  placeholder="Unidade *" maxlength="50" upperCase>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="40" class="pr-1">
+              <mat-form-field class="full-width">
+                <input matInput name="customer_cnpj" [formControl]="unityForm.controls['customer_unity_cnpj']"
+                  placeholder="CNPJ *" maxlength="20" upperCase mask="00.000.000/0000-00">
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="20" class="pr-1">
+              <mat-form-field class="full-width">
+                <input matInput name="customer_unity_cep" [formControl]="unityForm.controls['customer_unity_cep']"
+                  placeholder="CEP *" maxlength="9" upperCase mask="00000-000" (change)="getCep()">
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="20" class="pr-1">
+              <mat-form-field class="full-width">
+                <input matInput name="customer_unity_uf_id" [formControl]="unityForm.controls['customer_unity_uf_id']"
+                  placeholder="UF *" maxlength="50" upperCase>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="60" class="pr-1">
+              <mat-form-field class="full-width">
+                <input matInput name="customer_unity_city_id" [formControl]="unityForm.controls['customer_unity_city_id']"
+                  placeholder="Cidade *" maxlength="50" upperCase>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="100" class="pr-1">
+              <mat-form-field class="full-width">
+                <textarea matInput upperCase placeholder="Endereço *" name="customer_unity_address" [formControl]="unityForm.controls['customer_unity_address']"></textarea>
+              </mat-form-field>
+            </div>
+
+
+          </div>
+        </mat-card-content>
+      
+    </mat-card>
+
+    <mat-card class="mat-card-background">
+      <mat-card-header class="mat-card-titulo2">
+        <span class="mat-card-titulo">Áreas associadas</span><span class="mat-card-titulo" fxFlex></span>
+      </mat-card-header>
+      
+        <mat-card-content class="mat-card-body">
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+            <mat-selection-list style="display: flex; flex-wrap: wrap;">
+              <mat-list-option checkboxPosition="before">INMETRO</mat-list-option>
+              <mat-list-option checkboxPosition="before">Meio Ambiente</mat-list-option>
+              <mat-list-option checkboxPosition="before">Ministério da Agricultura</mat-list-option>
+              <mat-list-option checkboxPosition="before">Qualidade</mat-list-option>
+              <mat-list-option checkboxPosition="before">Segurança Saúde Ocupacional</mat-list-option>
+            </mat-selection-list>
+          </div>
+        </mat-card-content>
+      
+    </mat-card>
+
+    <mat-card class="mat-card-background">
+      <mat-card-header class="mat-card-titulo2">
+        <span class="mat-card-titulo">Contato do Responsável</span><span class="mat-card-titulo" fxFlex></span>
+      </mat-card-header>
+      
+        <mat-card-content class="mat-card-body">
+
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+
+            <div fxFlex="50" class="pr-1">
+              <mat-form-field class="full-width">
+                <input matInput name="responsavel" [formControl]="unityForm.controls['responsavel']"
+                  placeholder="Responsável *" maxlength="50" upperCase>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="50" class="pr-1">
+              <mat-form-field class="full-width">
+                <input matInput name="email" [formControl]="unityForm.controls['email']"
+                  placeholder="Email *" maxlength="50" upperCase>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="100" class="pr-1">
+              <mat-form-field class="full-width">
+                <input matInput name="telefones" [formControl]="unityForm.controls['telefones']"
+                  placeholder="Telefones *" maxlength="100" upperCase>
+              </mat-form-field>
+            </div>          
+
+            <div fxFlex="100" class="pr-1">
+              <mat-form-field class="full-width">
+                <textarea matInput upperCase placeholder="Observações" maxlength="500"  [formControl]="unityForm.controls['obs']"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card-content>
+      
+    </mat-card>    
+  </mat-dialog-content>
+
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
+    <div fxFlex="100" class="mt-1">
+      <span fxFlex *ngIf="!this.data.new"></span>
+      <button mat-raised-button color="accent" type="button" (click)="deleteUnity()"
+        *ngIf="!this.data.new">Excluir</button>
+      <span fxFlex></span>
+      <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
+      <span fxFlex></span>
+      <button mat-raised-button class="mat-primary" type="button" (click)="saveUnity()"
+        [disabled]="!unityForm.invalid">Gravar</button>
+      <span fxFlex></span>
+    </div>
+  </div>
+</form>

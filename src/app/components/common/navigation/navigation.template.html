@@ -1,0 +1,52 @@
+<mat-nav-list class="" role="list">
+  <div *ngFor="let item of menuItems">
+    <mat-list-item sideNavAccordion class="sidebar-list-item" role="listitem" *ngIf="!item.Disabled && item.Type !== 'separator' && item.Type !== 'icon'"
+      [ngClass]="{'has-submenu': item.Type === 'dropDown'}" routerLinkActive="open">
+      <a routerLink="/{{item.State}}" *ngIf="item.Type === 'link'">
+        <span class="menu-item-tooltip" [matTooltip]="item.Tooltip" matTooltipPosition="right"></span>
+        <mat-icon>{{item.Icon}}</mat-icon>
+        <span>{{item.Name }}</span>
+      </a>
+      <a *ngIf="item.Type === 'dropDown'">
+        <span class="menu-item-tooltip" [matTooltip]="item.Tooltip" matTooltipPosition="above"></span>
+        <mat-icon>{{item.Icon}}</mat-icon>
+        <span>{{item.Name }}</span>
+        <span fxFlex></span>
+        <mat-icon class="menu-caret">arrow_drop_down</mat-icon>
+      </a>
+      <a [href]="item.State" *ngIf="item.Type === 'extLink'" target="_blank">
+        <span class="menu-item-tooltip" [matTooltip]="item.Tooltip" matTooltipPosition="right"></span>
+        <mat-icon>{{item.Icon}}</mat-icon>
+        <span>{{item.Name }}</span>
+      </a>
+      <mat-nav-list class="sub-menu" role="list" *ngIf="item.Type === 'dropDown'">
+        <mat-list-item routerLinkActive="selected" *ngFor="let subItem of item.Sub">
+          <a routerLink="/{{subItem.State}}">
+
+            <span>{{subItem.Name }}</span>
+          </a>
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-list-item>
+
+    <!-- If item type is separator -->
+    <div class="mt-1 mb-1" *ngIf="!item.Disabled && item.Type === 'separator'">
+      <mat-divider></mat-divider>
+      <span class="nav-section-title text-muted" *ngIf="!!item.Name">{{item.Name }}</span>
+    </div>
+
+    
+  </div>
+  <div>
+    <mat-list-item sideNavAccordion 
+    class="sidebar-list-item" 
+    role="listitem" 
+    routerLinkActive="open">
+      <a routerLink="/sessao/entrar">
+        <span class="menu-item-tooltip" [matTooltip]="'Sair do sistema'" matTooltipPosition="right"></span>
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Sair</span>
+      </a>
+    </mat-list-item>
+  </div>  
+</mat-nav-list>

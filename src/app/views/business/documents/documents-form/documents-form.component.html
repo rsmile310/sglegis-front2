@@ -1,0 +1,164 @@
+<h3 matDialogTitle>
+  {{data.title}}</h3>
+
+<form [formGroup]="documentForm" autocomplete="off">
+  <mat-dialog-content>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+
+      <div fxFlex="60" class="pr-1">
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Âmbito *">
+            <mat-option value="1">Federal</mat-option>
+            <mat-option value="2">Estadual</mat-option>
+            <mat-option value="3">Municipal</mat-option>
+            <mat-option value="4">Norma</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxFlex="10"></div>
+      <div fxFlex="30" class="pr-1">
+        <mat-checkbox>Tornar documento privado </mat-checkbox>
+      </div>
+
+      <div fxFlex="40" class="pr-1">
+        <mat-form-field class="full-width">
+          <input matInput name="area_name" placeholder="Documento *" maxlength="100" upperCase />
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="20" class="pr-1">
+        <mat-form-field class="full-width">
+          <input matInput name="area_name" placeholder="Número *" maxlength="10" upperCase />
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="20" class="pr-1">
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Status *">
+            <mat-option value="1">Em vigor</mat-option>
+            <mat-option value="2">Revogada</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="20" class="pr-1">
+        <mat-form-field class="full-width">
+          <input matInput name="area_name" type="date" placeholder="Data *" maxlength="100" upperCase>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="100" class="pr-1">
+        <mat-form-field class="full-width">
+          <textarea matInput upperCase placeholder="Ementa *" name="customer_unity_address" maxlength="500"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-card class="mat-card-background">
+      <mat-card-header class="mat-card-titulo2">
+        <span class="mat-card-titulo">Documentos associados</span><span class="mat-card-titulo" fxFlex></span>
+      </mat-card-header>
+
+      <mat-card-content class="mat-card-body">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+
+          <div fxFlex="100" class="mt-1">
+            <button mat-raised-button color="primary" type="button">Importar novo documento.</button>
+            <span fxFlex></span>
+          </div>
+        </div>
+        <br />
+
+        <!-- <ngx-datatable class="material" [rows]="rows2" [columns]="columns2" [headerHeight]="50" [footerHeight]="50"
+          rowHeight="auto">
+        </ngx-datatable> -->
+
+        <ngx-datatable class="material" [rows]="rows2" [columnMode]="'standard'" [headerHeight]="35" [footerHeight]="0"
+          [rowHeight]="'35'" [scrollbarH]="true" [messages]="{emptyMessage: ''}">
+          <ngx-datatable-column name="Excluir" [flexGrow]="0" [width]="80">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <button mat-icon-button mat-sm-button color="warn" (click)="removeAddress(row)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Nome do documento" [width]="300">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row["name"]}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Data de upload" [width]="150">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row["dt"]}}
+            </ng-template>
+          </ngx-datatable-column>
+
+        </ngx-datatable>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="mat-card-background">
+      <mat-card-header class="mat-card-titulo2">
+        <span class="mat-card-titulo">Items</span><span class="mat-card-titulo" fxFlex></span>
+      </mat-card-header>
+
+      <mat-card-content class="mat-card-body">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+
+          <div fxFlex="100" class="mt-1">
+            <button mat-raised-button color="primary" type="button">Incluir novo item.</button>
+            <span fxFlex></span>
+          </div>
+        </div>
+        <br />
+
+        <!-- <ngx-datatable class="material" [rows]="rows1" [columns]="columns1" [headerHeight]="50" [footerHeight]="50"
+          rowHeight="auto" width="100%">
+        </ngx-datatable> -->
+
+        <ngx-datatable class="material" [rows]="rows1" [columnMode]="'standard'" [headerHeight]="35" [footerHeight]="0"
+          [rowHeight]="'35'" [scrollbarH]="true" [messages]="{emptyMessage: ''}">
+          <ngx-datatable-column name="Excluir" [flexGrow]="0" [width]="80">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <button mat-icon-button mat-sm-button color="warn" >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Item" [width]="200">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row["item"]}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Assunto" [width]="200">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row["assunto"]}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Descrição" [width]="300">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row["descricao"]}}
+            </ng-template>
+          </ngx-datatable-column>
+
+        </ngx-datatable> 
+
+      </mat-card-content>
+    </mat-card>
+
+  </mat-dialog-content>
+
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
+    <div fxFlex="100" class="mt-1">
+      <span fxFlex *ngIf="!this.data.new"></span>
+      <button mat-raised-button color="accent" type="button" (click)="deleteArea()"
+        *ngIf="!this.data.new">Excluir</button>
+      <span fxFlex></span>
+      <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
+      <span fxFlex></span>
+      <button mat-raised-button class="mat-primary" type="button" (click)="saveArea()"
+        [disabled]="documentForm.invalid">Gravar</button>
+      <span fxFlex></span>
+    </div>
+  </div>
+</form>

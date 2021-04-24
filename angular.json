@@ -1,0 +1,165 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",  
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "agenda": { 
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "./dist",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "polyfills": "src/polyfills.ts",
+            "assets": [
+              "src/assets",
+              "src/favicon.ico"
+            ],
+            "styles": [
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "node_modules/dragula/dist/dragula.css",
+              "node_modules/angular-calendar/dist/css/angular-calendar.css",
+              "node_modules/hopscotch/dist/css/hopscotch.min.css",
+              "node_modules/perfect-scrollbar/dist/css/perfect-scrollbar.css",
+              "src/vendor/pace/pace-theme-min.css",
+              "src/assets/styles/themes/egret-dark-purple.scss",
+              "src/assets/styles/themes/egret-indigo.scss",
+              "src/assets/styles/themes/egret-blue.scss",
+              "src/assets/styles/themes/egret-dark-pink.scss",
+              "src/assets/styles/styles.css"
+            ],
+            "scripts": [
+              "src/vendor/pace/pace.min.js",
+              "node_modules/perfect-scrollbar/dist/js/perfect-scrollbar.js",
+              "node_modules/hopscotch/dist/js/hopscotch.min.js",
+              "node_modules/hammerjs/hammer.js",
+              "src/vendor/Chart.min.js",
+              "node_modules/quill/dist/quill.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "agenda:build",
+            "port": 3001
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "agenda:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "agenda:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "scripts": [
+              "src/vendor/pace/pace.min.js",
+              "node_modules/perfect-scrollbar/dist/js/perfect-scrollbar.js",
+              "node_modules/hopscotch/dist/js/hopscotch.min.js",
+              "node_modules/hammerjs/hammer.js",
+              "src/vendor/Chart.min.js",
+              "node_modules/quill/dist/quill.min.js"
+            ],
+            "styles": [
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "node_modules/dragula/dist/dragula.css",
+              "node_modules/angular-calendar/dist/css/angular-calendar.css",
+              "node_modules/hopscotch/dist/css/hopscotch.min.css",
+              "node_modules/perfect-scrollbar/dist/css/perfect-scrollbar.css",
+              "src/vendor/pace/pace-theme-min.css",
+              "src/assets/styles/themes/egret-dark-purple.scss",
+              "src/assets/styles/themes/egret-indigo.scss",
+              "src/assets/styles/themes/egret-blue.scss",
+              "src/assets/styles/themes/egret-dark-pink.scss",
+              "src/assets/styles/styles.css"
+            ],
+            "assets": [
+              "src/assets",
+              "src/favicon.ico"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": []
+          }
+        }
+      }
+    },
+    "agenda-e2e": {
+      "root": "",
+      "sourceRoot": "",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "agenda:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": []
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "agenda",
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "app",
+      "styleext": "css"
+    },
+    "@schematics/angular:directive": {
+      "prefix": "app"
+    }
+  }
+}

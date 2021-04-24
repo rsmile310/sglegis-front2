@@ -1,0 +1,29 @@
+<h3 matDialogTitle>
+  {{data.title}}</h3>
+
+<form [formGroup]="areaForm" autocomplete="off">
+  <mat-dialog-content>   
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">    
+      <div fxFlex="100" class="pr-1">
+        <mat-form-field class="full-width">
+          <input matInput name="area_name" [formControl]="areaForm.controls['area_name']"
+            placeholder="Nome da área *" maxlength="100" upperCase>
+        </mat-form-field>
+      </div>          
+           
+    </div>
+
+  </mat-dialog-content>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
+    <div fxFlex="100" class="mt-1">
+      <span fxFlex *ngIf="!this.data.new"></span>
+      <button mat-raised-button color="accent" type="button" (click)="deleteArea()" *ngIf="!this.data.new">Excluir</button>      
+      <span fxFlex></span>
+      <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
+      <span fxFlex></span>
+      <button mat-raised-button class="mat-primary" type="button" (click)="saveArea()"
+        [disabled]="areaForm.invalid">Gravar</button>
+      <span fxFlex></span>
+    </div>
+  </div>
+</form>

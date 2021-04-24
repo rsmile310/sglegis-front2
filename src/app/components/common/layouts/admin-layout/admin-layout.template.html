@@ -1,0 +1,45 @@
+<mat-sidenav-container class="app-side-nav-container mat-drawer-transition">
+  <!-- Main side navigation -->
+  <mat-sidenav #sidenav [opened]="!isNavOver()" [mode]="isNavOver() ? 'over' : 'side'" class="sidebar-panel">
+    <div id="scroll-area" class="navigation-hold" fxLayout="column">
+      <!-- App Logo -->
+      <div class="branding default-bg">
+        <img src="assets/images/logo_unity.png" alt="" class="app-logo" [routerLink]="['/home']"/>
+      </div>
+
+      <!-- Sidebar user -->
+      <div class="app-user">
+        <span class="app-user-name mb-05">
+          <mat-icon class="icon-xs text-muted">lock</mat-icon> 
+          nome do usuario        
+        </span>                
+      </div>
+      <!-- Navigation -->
+      <navigation></navigation>
+    </div>
+  </mat-sidenav> 
+
+  <topbar 
+  [sidenav]="sidenav" 
+  [notificPanel]="notificationPanel"
+  (onLangChange)="translate.use($event)"
+  [usuario]="usuario"></topbar> 
+  <app-breadcrumb #breadcrumb></app-breadcrumb>
+
+  <!-- App content -->
+  <div class="rightside-content-hold">
+    <div class="view-loader" *ngIf="isModuleLoading">
+      <div class="spinner">
+        <div class="double-bounce1 mat-bg-accent"></div>
+        <div class="double-bounce2 mat-bg-primary"></div>
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+  <!-- Notificaation bar -->
+  <mat-sidenav #notificationPanel mode="over" class="" align="end">
+    <div class="navigation-hold" fxLayout="column">
+      <app-notifications [notificPanel]="notificationPanel"></app-notifications>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>
