@@ -25,7 +25,7 @@ export class GradeVisualizarComponent implements OnInit {
   AuxColunas = [];
   buscarForm: FormGroup;
 
-  constructor(private dialog: MatDialog,
+  constructor(public dialog: MatDialog,
     private mensagem: AppInformationService) 
     {   }
 

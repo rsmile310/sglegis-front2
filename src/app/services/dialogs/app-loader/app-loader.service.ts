@@ -6,7 +6,7 @@ import { AppLoaderComponent } from './app-loader.component';
 @Injectable()
 export class AppLoaderService {
   dialogRef: MatDialogRef<AppLoaderComponent>;
-  constructor(private dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) { }
 
   public open(title: string = 'Aguarde'): Observable<boolean> {
     this.dialogRef = this.dialog.open(AppLoaderComponent, {disableClose: true});

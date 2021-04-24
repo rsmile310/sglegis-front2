@@ -60,7 +60,7 @@ export class DocumentsComponent implements OnInit {
 
   constructor(
     private crud: CRUDService,
-    private dialog: MatDialog,
+    public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private loader: AppLoaderService,    
   ) { }

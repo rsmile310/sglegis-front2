@@ -17,12 +17,12 @@ export class CustomersFormsComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<CustomersFormsComponent>,
+    public dialogRef: MatDialogRef<CustomersFormsComponent>,
     private loader: AppLoaderService,
     private crudService: CRUDService,
     private snackBar: MatSnackBar,
     private confirm: AppConfirmService,
-    private dialog: MatDialog,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit() {

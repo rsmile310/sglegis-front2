@@ -32,7 +32,7 @@ export class GradeComponent implements OnInit {
   @ViewChild('txtFinder') public txtFinder: ElementRef;
 
 
-  constructor(private dialog: MatDialog,
+  constructor(public dialog: MatDialog,
     private mensagem: AppInformationService,
     private eRef: ElementRef) { }
 
