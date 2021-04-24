@@ -83,7 +83,7 @@ export class UnitiesComponent implements OnInit {
 
   openForm(info: any = {}, newRercord: Boolean) {
     let text;     
-    text = (newRercord) ? "Novo Cliente" : "Editar Cliente: " + info.customer_id;    
+    text = (newRercord) ? "Nova Unidade" : "Editar Unidade: " + info.customer_id;    
     
     let dialogRef: MatDialogRef<any> = this.dialog.open(UnitiesFormComponent, {
       width: '720px',
