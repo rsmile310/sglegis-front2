@@ -49,6 +49,7 @@ import { AspectsComponent } from './aspects/aspects.component';
 import { AspectsFormComponent } from './aspects/aspects-form/aspects-form.component';
 import { DocumentsComponent } from './documents/documents.component';
 import { DocumentsFormComponent } from './documents/documents-form/documents-form.component';
+import { HomeComponent } from './home/home.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: "right",
@@ -97,7 +98,13 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   ],
   declarations: [
     GradeComponent,
-    CustomerGroupsComponent, CustomerGroupFormComponent, CustomersComponent, CustomersFormsComponent, UnitiesComponent, UnitiesFormComponent, AreasComponent, AreasFormComponent, AspectsComponent, AspectsFormComponent, DocumentsComponent, DocumentsFormComponent
+    CustomerGroupsComponent, CustomerGroupFormComponent,
+    CustomersComponent, CustomersFormsComponent,
+    UnitiesComponent,
+    UnitiesFormComponent,
+    AreasComponent,
+    AreasFormComponent, AspectsComponent, AspectsFormComponent, DocumentsComponent, DocumentsFormComponent,
+    HomeComponent
   ],
   exports: [MatAutocompleteModule],
   entryComponents: [CustomerGroupFormComponent,

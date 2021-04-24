@@ -7,9 +7,23 @@ import { CustomerGroupsComponent } from './customer-groups/customer-groups.compo
 import { CustomersFormsComponent } from './customers/customers-forms/customers-forms.component';
 import { CustomersComponent } from './customers/customers.component';
 import { DocumentsComponent } from './documents/documents.component';
+import { HomeComponent } from './home/home.component';
 import { UnitiesComponent } from './unities/unities.component';
 
 const routes: Routes = [  
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
+    children: [{
+      path: 'home',
+      component: HomeComponent,
+      data: { title: 'Bem vindo', breadcrumb: 'Bem vindo' }
+    }]
+  },
   {
     path: '',
     children: [{

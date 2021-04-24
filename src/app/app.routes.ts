@@ -6,7 +6,7 @@ import { AuthGuard } from './services/auth/auth.guard';
 export const rootRouterConfig: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'cadastros',
     pathMatch: 'full'
   },
   {
@@ -24,17 +24,7 @@ export const rootRouterConfig: Routes = [
     path: '',
     component: AdminLayoutComponent,
     canActivate: [AuthGuard],
-    children: [
-      {
-        path: '',
-        redirectTo: 'home',
-        pathMatch: 'full'
-      },      
-      {
-        path: 'home',
-        loadChildren: './views/business/home/home.module#HomeModule',
-        data: { title: 'home', breadcrumb: '' }
-      },
+    children: [      
       {
         path: 'cadastros',
         loadChildren: './views/business/business.module#BusinessModule',
@@ -42,9 +32,10 @@ export const rootRouterConfig: Routes = [
       }
     ]
   },
+  
   {
     path: '**',
-    redirectTo: 'home'
+    redirectTo: 'sessao/404'
   }
 ];
 
