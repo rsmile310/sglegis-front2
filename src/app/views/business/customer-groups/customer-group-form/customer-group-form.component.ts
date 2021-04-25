@@ -15,7 +15,7 @@ export class CustomerGroupFormComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<CustomerGroupFormComponent>,
+    public dialogRef: MatDialogRef<CustomerGroupFormComponent>,
     private loader: AppLoaderService,
     private crudService: CRUDService,
     private snackBar: MatSnackBar,

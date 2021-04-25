@@ -6,7 +6,7 @@ import { AppComfirmComponent } from './app-confirm.component';
 @Injectable()
 export class AppConfirmService {
 
-  constructor(private dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) { }
 
   public confirm(title: string, message: string): Observable<boolean> {
     let dialogRef: MatDialogRef<AppComfirmComponent>;

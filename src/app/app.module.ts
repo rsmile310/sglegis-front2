@@ -25,7 +25,7 @@ import { registerLocaleData } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material';
 
 import ptBr from '@angular/common/locales/pt';
-import { HomeModule } from './views/business/home/home.module';
+
 
 registerLocaleData(ptBr)
 
@@ -65,8 +65,7 @@ export function createTranslateLoader(http: Http) {
     AppLoaderModule,
     AppCommonModule,
     NgxCurrencyModule,
-    NgxUpperCaseDirectiveModule,
-    HomeModule
+    NgxUpperCaseDirectiveModule
     
   ],
   declarations: [AppComponent],

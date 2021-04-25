@@ -7,7 +7,7 @@ import { AppInformationComponent } from './app-information.component';
 @Injectable()
 export class AppInformationService {
 
-  constructor(private dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) { }
 
   public information(title: string, message: string): Observable<boolean> {
     let dialogRef: MatDialogRef<AppInformationComponent>;

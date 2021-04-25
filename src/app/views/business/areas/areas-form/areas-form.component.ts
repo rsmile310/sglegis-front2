@@ -18,12 +18,12 @@ export class AreasFormComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<AreasFormComponent>,
+    public dialogRef: MatDialogRef<AreasFormComponent>,
     private loader: AppLoaderService,
     private crudService: CRUDService,
     private snackBar: MatSnackBar,
     private confirm: AppConfirmService,
-    private dialog: MatDialog,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit() {
