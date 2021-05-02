@@ -22,23 +22,17 @@
       <div fxFlex="40" class="pr-1">
         <mat-form-field class="full-width">
           <input matInput name="customer_cnpj" [formControl]="customerForm.controls['customer_cnpj']"
-            placeholder="CNPJ *" maxlength="50" upperCase mask="00.000.000/0000-00" >
+            placeholder="CNPJ Matriz *" maxlength="50" upperCase mask="00.000.000/0000-00" >
         </mat-form-field>
       </div>           
 
-      <div fxFlex="50" class="pr-1">
+      <div fxFlex="100" class="pr-1">
         <mat-form-field class="full-width">
           <input matInput name="customer_business_name" [formControl]="customerForm.controls['customer_business_name']"
-            placeholder="Razão Social *" maxlength="50" upperCase>
+            placeholder="Razão Social Matriz *" maxlength="50" upperCase>
         </mat-form-field>
       </div>     
-     
-      <div fxFlex="50" class="pr-1">
-        <mat-form-field class="full-width">
-          <input matInput name="customer_trade_name" [formControl]="customerForm.controls['customer_trade_name']"
-            placeholder="Nome Fantasia * " maxlength="50" upperCase>
-        </mat-form-field>
-      </div>      
+  
     </div>
 
   </mat-dialog-content>
