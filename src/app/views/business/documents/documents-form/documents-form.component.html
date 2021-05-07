@@ -7,11 +7,9 @@
 
       <div fxFlex="60" class="pr-1">
         <mat-form-field class="full-width">
-          <mat-select placeholder="Âmbito *">
-            <mat-option value="1">Federal</mat-option>
-            <mat-option value="2">Estadual</mat-option>
-            <mat-option value="3">Municipal</mat-option>
-            <mat-option value="4">Norma</mat-option>
+          <mat-select placeholder="Âmbito *" [formControl]="documentForm.controls['document_scope_id']" >
+            <mat-option *ngFor="let document_scope of documentScopes" [value]="document_scope.document_scope_id">
+              {{document_scope.document_scope_description}} </mat-option>            
           </mat-select>
         </mat-form-field>
       </div>
@@ -22,34 +20,39 @@
 
       <div fxFlex="40" class="pr-1">
         <mat-form-field class="full-width">
-          <input matInput name="area_name" placeholder="Documento *" maxlength="100" upperCase />
+          <input matInput name="tipo_documento" placeholder="Tipo de Documento *" maxlength="100" upperCase 
+          [formControl]="documentForm.controls['document_type']"/>
         </mat-form-field>
       </div>
 
       <div fxFlex="20" class="pr-1">
         <mat-form-field class="full-width">
-          <input matInput name="area_name" placeholder="Número *" maxlength="10" upperCase />
+          <input matInput name="area_name" placeholder="Número *" maxlength="10" upperCase 
+          [formControl]="documentForm.controls['document_number']"/>
         </mat-form-field>
       </div>
 
       <div fxFlex="20" class="pr-1">
         <mat-form-field class="full-width">
-          <mat-select placeholder="Status *">
-            <mat-option value="1">Em vigor</mat-option>
-            <mat-option value="2">Revogada</mat-option>
+          <mat-select placeholder="Status *" [formControl]="documentForm.controls['document_status_id']">
+            <mat-option *ngFor="let status of documentsStatus" [value]="status.status_id">
+              {{status.status_description}} </mat-option>             
           </mat-select>
         </mat-form-field>
       </div>
 
       <div fxFlex="20" class="pr-1">
         <mat-form-field class="full-width">
-          <input matInput name="area_name" type="date" placeholder="Data *" maxlength="100" upperCase>
+          <input matInput name="area_name"  placeholder="Data *" maxlength="100" upperCase
+          value="{{documentData |date:'dd/MM/yyyy'}}" 
+          [formControl]="documentForm.controls['document_date']">
         </mat-form-field>
       </div>
 
       <div fxFlex="100" class="pr-1">
         <mat-form-field class="full-width">
-          <textarea matInput upperCase placeholder="Ementa *" name="customer_unity_address" maxlength="500"></textarea>
+          <textarea matInput upperCase placeholder="Ementa *" name="customer_unity_address" maxlength="2000" 
+          [formControl]="documentForm.controls['document_summary']"></textarea>
         </mat-form-field>
       </div>
     </div>
@@ -82,7 +85,7 @@
               </button>
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Nome do documento" [width]="300">
+          <ngx-datatable-column name="Descrição" [width]="300">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row["name"]}}
             </ng-template>
@@ -106,40 +109,38 @@
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
 
           <div fxFlex="100" class="mt-1">
-            <button mat-raised-button color="primary" type="button">Incluir novo item.</button>
+            <button mat-raised-button color="primary" type="button" (click)="newItem()">Incluir novo item.</button>
             <span fxFlex></span>
           </div>
         </div>
         <br />
 
-        <!-- <ngx-datatable class="material" [rows]="rows1" [columns]="columns1" [headerHeight]="50" [footerHeight]="50"
-          rowHeight="auto" width="100%">
-        </ngx-datatable> -->
-
-        <ngx-datatable class="material" [rows]="rows1" [columnMode]="'standard'" [headerHeight]="35" [footerHeight]="0"
+        <ngx-datatable class="material" [rows]="documentsItem" [columnMode]="'standard'" [headerHeight]="35" [footerHeight]="0"
           [rowHeight]="'35'" [scrollbarH]="true" [messages]="{emptyMessage: ''}">
-          <ngx-datatable-column name="Excluir" [flexGrow]="0" [width]="80">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <button mat-icon-button mat-sm-button color="warn" >
-                <mat-icon>delete</mat-icon>
-              </button>
-            </ng-template>
-          </ngx-datatable-column>
+          
           <ngx-datatable-column name="Item" [width]="200">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row["item"]}}
+              {{row["document_item_number"]}}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="Assunto" [width]="200">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row["assunto"]}}
+              {{row["document_item_subject"]}}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="Descrição" [width]="300">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row["descricao"]}}
+              {{row["document_item_description"]}}
             </ng-template>
           </ngx-datatable-column>
+
+          <ngx-datatable-column name="Editar" [flexGrow]="0" [width]="80">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <button mat-icon-button mat-sm-button color="warn" >
+                <mat-icon>edit</mat-icon>
+              </button>
+            </ng-template>
+          </ngx-datatable-column>          
 
         </ngx-datatable> 
 
@@ -157,7 +158,7 @@
       <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
       <span fxFlex></span>
       <button mat-raised-button class="mat-primary" type="button" 
-        [disabled]="documentForm.invalid">Gravar</button>
+        [disabled]="documentForm.invalid" (click)="saveDocument()">Gravar</button>
       <span fxFlex></span>
     </div>
   </div>

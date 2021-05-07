@@ -19,7 +19,7 @@ export class UnitiesComponent implements OnInit {
       Propriedade: 'customer_unity_id',
       Titulo: 'Id da Unidade',
       Visivel: false,
-      Largura: 50
+      Largura: 30
     },
     {
       Propriedade: 'customer_unity_cnpj',
@@ -28,37 +28,37 @@ export class UnitiesComponent implements OnInit {
       Largura:50
     },
     {
-      Propriedade: 'xxx',
+      Propriedade: 'customer_group_name',
       Titulo: 'Grupo',
       Visivel: true,
       Largura:70
     },    
     {
-      Propriedade: 'customer_cnpj',
-      Titulo: 'Cliente',
+      Propriedade: 'customer_unity_name',
+      Titulo: 'Unidade',
       Visivel: true,
       Largura:100
     },
     {
-      Propriedade: 'customer_trade_name',
+      Propriedade: 'customer_unity_address',
       Titulo: 'Endereço',
       Visivel: true,
       Largura:70
     },        
     {
-      Propriedade: 'customer_business_name',
+      Propriedade: 'unity_contact_name',
       Titulo: 'Nome do Contato',
       Visivel: true,
       Largura:70
     },
     {
-      Propriedade: 'customer_business_name',
+      Propriedade: 'unity_contact_email',
       Titulo: 'Email',
       Visivel: true,
       Largura:100
     },
     {
-      Propriedade: 'customer_business_name',
+      Propriedade: 'unity_contact_phone',
       Titulo: 'Telefone',
       Visivel: true,
       Largura:50
@@ -86,7 +86,7 @@ export class UnitiesComponent implements OnInit {
     text = (newRercord) ? "Nova Unidade" : "Editar Unidade: " + info.customer_id;    
     
     let dialogRef: MatDialogRef<any> = this.dialog.open(UnitiesFormComponent, {
-      width: '720px',
+      width: '900px',
       disableClose: true,
       data: { title: text, payload: info, new: newRercord }
     });

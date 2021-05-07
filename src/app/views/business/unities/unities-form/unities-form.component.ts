@@ -16,6 +16,11 @@ export class UnitiesFormComponent implements OnInit {
   public unityForm: FormGroup;
   customers_groups = [];
   customers = [];
+  states = [];
+  cities = [];
+  areas = [];
+  aspects = [];
+  areasWithAspects = [];  
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -27,31 +32,76 @@ export class UnitiesFormComponent implements OnInit {
     public dialog: MatDialog,
   ) { }
 
-  prepareScreen(record) {  
+  prepareScreen(record) {
     this.unityForm = new FormGroup({
       customer_unity_id: new FormControl(record.customer_unity_id),
       customer_unity_x: new FormControl(record.customer_unity_id),
-      customer_unity_cnpj: new FormControl(record.customer_unity_cnpj, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]) ,
+      customer_unity_cnpj: new FormControl(record.customer_unity_cnpj, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]),
       customer_unity_name: new FormControl(record.customer_unity_name, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]),
       customer_unity_address: new FormControl(record.customer_unity_address, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]),
       customer_unity_city_id: new FormControl(record.customer_unity_city_id, [Validators.required]),
-      customer_unity_uf_id : new FormControl(record.customer_unity_uf_id, [Validators.required]),
-      customer_unity_cep: new FormControl(record.customer_unity_cep, [Validators.required, Validators.minLength(9)]),
+      customer_unity_uf_id: new FormControl(record.customer_unity_uf_id, [Validators.required]),
+      customer_unity_cep: new FormControl(record.customer_unity_cep, [Validators.required, Validators.minLength(8)]),
       customer_group_id: new FormControl(record.customer_group_id, [Validators.required]),
-      responsavel: new FormControl("", [Validators.required]),
-      email: new FormControl("", [Validators.required, Validators.email]),
-      telefones: new FormControl("", [Validators.required]),
-      obs : new FormControl()
+      customer_id : new FormControl(record.customer_id, [Validators.required]),
+      unity_contact_name: new FormControl(record.unity_contact_name, [Validators.required]),
+      unity_contact_email: new FormControl(record.unity_contact_email, [Validators.required, Validators.email]),
+      unity_contact_phone: new FormControl(record.unity_contact_phone, [Validators.required]),
+      unity_contact_observation: new FormControl()
     });
     this.getGroups();
-    
 
     this.unityForm.controls.customer_group_id.valueChanges.subscribe(res => {
-      this.getCustomers();
+      this.getCustomers(res);
+    });
 
-    })
+    if (!this.data.new) {
+      this.getCustomers(this.unityForm.controls.customer_group_id.value);
+      this.getCep();
+    }
+
+    this.getAreasAspects();
   }
 
+  getAreasAspects() {
+    this.crudService.GetParams(undefined, "/area").subscribe(res => {
+      if (res.status == 200) {
+        this.areas = [];
+        this.areas = res.body;
+
+        this.crudService.GetParams(undefined, "/areaaspect").subscribe(asps => {
+          if (asps.status == 200) {
+            this.aspects = [];
+            this.aspects = asps.body;
+            this.mountAreasAspects();
+          }
+        });
+      }
+    });
+  }
+
+  mountAreasAspects() {
+    this.areasWithAspects = [];    
+    for (let i = 0; i < this.areas.length; i++) {
+      let auxAspects = []
+      for (let j = 0; j < this.aspects.length; j++) {
+        auxAspects.push({ "area_aspect_id": this.aspects[j].area_aspect_id, "area_aspect_name": this.aspects[j].area_aspect_name, "status": "N" });
+      }
+      this.areasWithAspects.push({ "area_id": this.areas[i].area_id, "area_name": this.areas[i].area_name, "aspects": auxAspects });
+    }
+  }
+
+  toggleAll(arearWithAspect, evento) {
+    if (evento.checked) {
+      for (let i = 0; i < arearWithAspect.aspects.length; i++) {
+        arearWithAspect.aspects[i].status = 'S';
+      }
+    } else {
+      for (let i = 0; i < arearWithAspect.aspects.length; i++) {
+        arearWithAspect.aspects[i].status = 'N';
+      }      
+    }
+  }
 
   newGroupForm() {
     let dialogRef: MatDialogRef<any> = this.dialog.open(CustomerGroupFormComponent, {
@@ -61,44 +111,80 @@ export class UnitiesFormComponent implements OnInit {
     });
 
     dialogRef.afterClosed()
-    .subscribe(res => {      
-      if (res == "OK") {
-        this.getGroups();        
-      }
-      return;
-    });
+      .subscribe(res => {
+        if (res == "OK") {
+          this.getGroups();
+        }
+        return;
+      });
   }
 
   newCustomerForm() {
     let dialogRef: MatDialogRef<any> = this.dialog.open(CustomersFormsComponent, {
       width: '720px',
       disableClose: true,
-      data: { title: "Novo Cliente", payload: "", new: true }
+      data: { title: "Nova Matriz", payload: "", new: true }
     });
 
     dialogRef.afterClosed()
-    .subscribe(res => {      
-      if (res == "OK") {
-        this.getCustomers();    
-      }
-      return;
-    });
+      .subscribe(res => {
+        if (res == "OK") {
+          this.getCustomers(0);
+        }
+        return;
+      });
   }
   deleteUnity() {
-    
+
   }
 
-  saveUnity() { }
+  saveUnity() {
+    let form = this.unityForm.value;
+    this.loader.open();
+    this.crudService.Save(form, this.data.new, "/customerunity", form.customer_unity_id).subscribe(res => {
+      if (res.status == 200) {
+        this.loader.close();
+        this.snackBar.open("Registro gravado com sucesso", "", { duration: 3000 });
+        this.dialogRef.close('OK');
+      } else {
+        this.loader.close();
+        this.snackBar.open("Erro ao gravar registro:" + res.Message, "", { duration: 5000 });
+        this.dialogRef.close('NOK');
+      }
+    });
+
+
+  }
 
   getCep() {
     let cep = this.unityForm.controls.customer_unity_cep.value;
     this.loader.open();
-    this.crudService.GetParams(undefined, "/cep/"+cep).subscribe(res => {
+    this.crudService.GetParams(undefined, "/cep/" + cep).subscribe(res => {
       this.loader.close();
-      this.unityForm.controls.customer_unity_address.setValue(res.body.logradouro);
-      this.unityForm.controls.customer_unity_city_id.setValue(res.body.localidade);
-      this.unityForm.controls.customer_unity_uf_id.setValue(res.body.uf)
 
+      if (res.status == 200 && res.body.length > 0) {
+        //[{"cep_id":533858,"city_id":9640,"state_id":26,"type":"Rua","street_name":"Rua Bahia (Vl S Pedro)","district_name":"Montanh├úo","cep":9784200,"createdAt":"2021-05-04T01:20:21.000Z","updatedAt":"2021-05-04T01:20:21.000Z"}]
+        this.unityForm.controls.customer_unity_address.setValue(res.body[0].street_name);      
+        this.crudService.GetParams(undefined, "/state").subscribe(s => {
+          if (s.status == 200) {
+            this.states = [];
+            this.states = s.body;
+            this.unityForm.controls.customer_unity_uf_id.setValue(res.body[0].state_id);
+            let p: any = new Object();
+            p.state_id = res.body[0].state_id;
+            p.orderby = "city_name";
+            p.direction = "asc";
+            this.crudService.GetParams(p, "/city").subscribe(c => {
+              if (c.status == 200) {
+                this.cities = [];
+                this.cities = c.body;
+                this.unityForm.controls.customer_unity_city_id.setValue(res.body[0].city_id);
+              }              
+            });
+          }
+
+        });
+      }   
     });
   }
 
@@ -111,16 +197,30 @@ export class UnitiesFormComponent implements OnInit {
       this.customers_groups = res.body;
     });
   }
-  
-  getCustomers() {
-    let p: any = new Object();
-    p.orderby = "customer_name";
-    p.direction = "asc";
-    this.crudService.GetParams(p, "/customer").subscribe(res => {
-      this.customers = [];
-      this.customers = res.body;
-    });
-    
+
+  getCustomers(group_id) {
+    if (group_id != 0) {
+      let p: any = new Object();
+      p.orderby = "customer_business_name";
+      p.direction = "asc";
+      p.fields = "customer_group_id";
+      p.ops = "eq";
+      p.values = group_id;      
+      this.crudService.GetParams(p, "/customer/query").subscribe(res => {
+        this.customers = [];
+        this.customers = res.body;
+      });
+    } else {
+      let p: any = new Object();
+      p.orderby = "customer_business_name";
+      p.direction = "asc";
+      p.field = "customer_group_id"
+      this.crudService.GetParams(p, "/customer").subscribe(res => {
+        this.customers = [];
+        this.customers = res.body;
+      });
+    }
+
   }
 
   ngOnInit() {
