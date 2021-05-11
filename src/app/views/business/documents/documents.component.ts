@@ -17,41 +17,37 @@ export class DocumentsComponent implements OnInit {
   
   columns = [
     {
-      Propriedade: 'area_id',
-      Titulo: 'Documento',
+      Propriedade: 'document_id',
+      Titulo: 'Id. Documento',
       Visivel: false,
-      Largura: 50
+      Largura: 20
     },
     {
-      Propriedade: 'area_name',
+      Propriedade: 'document_number',
       Titulo: 'Número',
       Visivel: true,
       Largura:50
     },
     {
-      Propriedade: 'area_name',
+      Propriedade: 'document_date',
       Titulo: 'Data',
       Visivel: true,
-      Largura:80
+      Largura: 80,
+      Tipo: "DATA"
     },
     {
-      Propriedade: 'area_name',
+      Propriedade: 'document_summary',
       Titulo: 'Ementa',
       Visivel: true,
-      Largura:80
+      Largura:200
     },
     {
-      Propriedade: 'area_name',
+      Propriedade: 'document_status_id',
       Titulo: 'Status',
       Visivel: true,
-      Largura:80
+      Largura:10
     },
-    {
-      Propriedade: 'area_name',
-      Titulo: 'Arquivos',
-      Visivel: true,
-      Largura:120
-    }
+   
   ]
 
   configSearch = [
@@ -66,13 +62,12 @@ export class DocumentsComponent implements OnInit {
   ) { }
 
   prepareScreen() {
-    this.getDocuments(undefined);
-    
+    this.getDocuments(undefined);    
   }
 
   openForm(info: any = {}, newRercord: Boolean) {
     let text;     
-    text = (newRercord) ? "Novo Documento" : "Editar Documento: " + info.area_id;    
+    text = (newRercord) ? "Novo Documento" : "Editar Documento: " + info.document_id;    
     
     let dialogRef: MatDialogRef<any> = this.dialog.open(DocumentsFormComponent, {
       width: '900px',
@@ -87,12 +82,8 @@ export class DocumentsComponent implements OnInit {
     });
   }
   
-  getDocuments(parameter: any) {    
-    let p: any = new Object();
-    p.orderby = "area_name";
-    p.direction = "asc";
-    this.lastSearch = p;
-    this.crud.GetParams(this.lastSearch, "/document").subscribe(res => {
+  getDocuments(parameter: any) {        
+    this.crud.GetParams(undefined, "/document").subscribe(res => {
       this.rows = [];
       this.rows = res.body;
     })
@@ -100,7 +91,6 @@ export class DocumentsComponent implements OnInit {
 
   ngOnInit() {
     this.prepareScreen();
-  }
-  
+  } 
 
 }

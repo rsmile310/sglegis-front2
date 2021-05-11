@@ -23,9 +23,9 @@
 
       <div fxFlex="40" class="pr-1">
         <mat-form-field class="full-width">
-          <mat-select [formControl]="unityForm.controls['customer_unity_x']" placeholder="Cliente *">
+          <mat-select [formControl]="unityForm.controls['customer_id']" placeholder="Matriz *">
             <mat-option *ngFor="let customer of customers" [value]="customer.customer_id">
-              {{customer.customer_trade_name}} </mat-option>
+              {{customer.customer_business_name}} </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -67,32 +67,33 @@
             </div>
 
             <div fxFlex="20" class="pr-1">
-              <mat-form-field class="full-width">
-                <input matInput name="customer_unity_uf_id" [formControl]="unityForm.controls['customer_unity_uf_id']"
-                  placeholder="UF *" maxlength="50" upperCase>
+              <mat-form-field class="full-width" style="pointer-events: none;">
+                <mat-select [formControl]="unityForm.controls['customer_unity_uf_id']" placeholder="UF *">
+                  <mat-option *ngFor="let state of states" [value]="state.state_id">
+                    {{state.state_name}} </mat-option>
+                </mat-select>
               </mat-form-field>
-            </div>
+            </div>            
+
 
             <div fxFlex="60" class="pr-1">
-              <mat-form-field class="full-width">
-                <input matInput name="customer_unity_city_id" [formControl]="unityForm.controls['customer_unity_city_id']"
-                  placeholder="Cidade *" maxlength="50" upperCase>
+              <mat-form-field class="full-width" style="pointer-events: none;">
+                <mat-select [formControl]="unityForm.controls['customer_unity_city_id']" placeholder="Cidade *" >
+                  <mat-option *ngFor="let city of cities" [value]="city.city_id">
+                    {{city.city_name}} </mat-option>
+                </mat-select>
               </mat-form-field>
-            </div>
+            </div>          
 
             <div fxFlex="100" class="pr-1">
               <mat-form-field class="full-width">
                 <textarea matInput upperCase placeholder="Endereço *" name="customer_unity_address" [formControl]="unityForm.controls['customer_unity_address']"></textarea>
               </mat-form-field>
             </div>
-
-
           </div>
         </mat-card-content>
       
-    </mat-card>
-
-    
+    </mat-card>    
 
     <mat-card class="mat-card-background">
       <mat-card-header class="mat-card-titulo2">
@@ -105,33 +106,72 @@
 
             <div fxFlex="50" class="pr-1">
               <mat-form-field class="full-width">
-                <input matInput name="responsavel" [formControl]="unityForm.controls['responsavel']"
+                <input matInput name="responsavel" [formControl]="unityForm.controls['unity_contact_name']"
                   placeholder="Responsável *" maxlength="50" upperCase>
               </mat-form-field>
             </div>
 
             <div fxFlex="50" class="pr-1">
               <mat-form-field class="full-width">
-                <input matInput name="email" [formControl]="unityForm.controls['email']"
-                  placeholder="Email *" maxlength="50" upperCase>
+                <input matInput name="email" [formControl]="unityForm.controls['unity_contact_email']"
+                  placeholder="Email *" maxlength="100" upperCase>
               </mat-form-field>
             </div>
 
             <div fxFlex="100" class="pr-1">
               <mat-form-field class="full-width">
-                <input matInput name="telefones" [formControl]="unityForm.controls['telefones']"
-                  placeholder="Telefones *" maxlength="100" upperCase>
+                <input matInput name="telefones" [formControl]="unityForm.controls['unity_contact_phone']"
+                  placeholder="Telefones *" maxlength="25" upperCase>
               </mat-form-field>
             </div>          
 
             <div fxFlex="100" class="pr-1">
               <mat-form-field class="full-width">
-                <textarea matInput upperCase placeholder="Observações" maxlength="500"  [formControl]="unityForm.controls['obs']"></textarea>
+                <textarea matInput upperCase placeholder="Observações" maxlength="200"  [formControl]="unityForm.controls['unity_contact_observation']"></textarea>
               </mat-form-field>
             </div>
           </div>
         </mat-card-content>
       
+    </mat-card> 
+    
+    <mat-card class="mat-card-background">
+      <mat-card-header class="mat-card-titulo2">
+        <span class="mat-card-titulo">Sistemas de gestão associados</span><span class="mat-card-titulo" fxFlex></span>
+      </mat-card-header>
+
+      <mat-card-content class="mat-card-body">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+          <div fxFlex="100" class="mt-1">
+            <mat-accordion class="example-headers-align" multi>
+              <mat-expansion-panel *ngFor="let areaWithAspect of areasWithAspects">
+                <mat-expansion-panel-header>
+
+                  <mat-panel-description>
+                    <mat-icon>check_circle_outline</mat-icon>
+                    {{areaWithAspect.area_name}}
+                  </mat-panel-description>
+
+                </mat-expansion-panel-header>
+                <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+                  <div fxFlex="25" class="pr-1">
+                    <mat-checkbox color="primary" (change)="toggleAll(areaWithAspect, $event)">
+                      Todos
+                    </mat-checkbox>
+                  </div>
+
+                  <div fxFlex="25" class="pr-1" *ngFor="let aspect of areaWithAspect.aspects">
+                    <mat-checkbox color="primary" [checked]="aspect.status=='S'">
+                      {{aspect.area_aspect_name}}
+                    </mat-checkbox>
+                  </div>
+                </div>
+
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </div>
+      </mat-card-content>
     </mat-card>    
   </mat-dialog-content>
 
@@ -144,7 +184,8 @@
       <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
       <span fxFlex></span>
       <button mat-raised-button class="mat-primary" type="button" (click)="saveUnity()"
-        [disabled]="!unityForm.invalid">Gravar</button>
+      [disabled]="unityForm.invalid"
+        >Gravar</button>
       <span fxFlex></span>
     </div>
   </div>

@@ -25,11 +25,11 @@ export class NavigationComponent {
         let i: any = new Object();
         i.Sub = [];
         i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Grupos", "Ordem": 1, "State": "cadastros/grupos", "Type": "link" })
-        i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Clientes", "Ordem": 1, "State": "cadastros/clientes", "Type": "link" });        
-        i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Áreas", "Ordem": 1, "State": "cadastros/areas", "Type": "link" });
-        i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Aspectos", "Ordem": 1, "State": "cadastros/aspectos", "Type": "link" });
+        i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Matrizes", "Ordem": 1, "State": "cadastros/clientes", "Type": "link" });
         i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Unidades", "Ordem": 1, "State": "cadastros/unidades", "Type": "link" });
-        //i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Leis e documentos", "Ordem": 1, "State": "cadastros/leis", "Type": "link" });        
+        i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Sistemas de Gestão", "Ordem": 1, "State": "cadastros/areas", "Type": "link" });
+        i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Aspectos", "Ordem": 1, "State": "cadastros/aspectos", "Type": "link" });        
+        i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Leis e documentos", "Ordem": 1, "State": "cadastros/leis", "Type": "link" });        
         i.Ativo = "S";
         i.Disable = 0;
         i.Icon = "supervisor_account";

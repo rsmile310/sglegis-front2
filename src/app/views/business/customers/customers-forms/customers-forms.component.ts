@@ -32,8 +32,7 @@ export class CustomersFormsComponent implements OnInit {
   prepareScreen(record) {  
     this.customerForm = new FormGroup({
       customer_id: new FormControl(record.customer_id),
-      customer_business_name: new FormControl(record.customer_business_name, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]) ,
-      customer_trade_name: new FormControl(record.customer_trade_name, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]),
+      customer_business_name: new FormControl(record.customer_business_name, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]) ,      
       customer_group_id: new FormControl(record.customer_group_id, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]),
       customer_cnpj: new FormControl(record.customer_cnpj, [Validators.required, Validators.minLength(14)]),
     });

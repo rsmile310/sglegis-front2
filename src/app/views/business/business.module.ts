@@ -22,7 +22,8 @@ import {
   MAT_DATE_LOCALE,
   MatAutocompleteModule,
   MatRadioModule,
-  MatTabsModule
+  MatTabsModule,
+  MatExpansionModule
 
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -50,6 +51,7 @@ import { AspectsFormComponent } from './aspects/aspects-form/aspects-form.compon
 import { DocumentsComponent } from './documents/documents.component';
 import { DocumentsFormComponent } from './documents/documents-form/documents-form.component';
 import { HomeComponent } from './home/home.component';
+import { DocumentItemComponent } from './documents/document-item/document-item.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: "right",
@@ -90,6 +92,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     NgxCurrencyModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatExpansionModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     MatAutocompleteModule,
@@ -104,11 +107,13 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     UnitiesFormComponent,
     AreasComponent,
     AreasFormComponent, AspectsComponent, AspectsFormComponent, DocumentsComponent, DocumentsFormComponent,
-    HomeComponent
+    HomeComponent,
+    DocumentItemComponent
   ],
   exports: [MatAutocompleteModule],
   entryComponents: [CustomerGroupFormComponent,
-    CustomersFormsComponent, UnitiesFormComponent, AreasFormComponent, AspectsFormComponent, DocumentsFormComponent
+    CustomersFormsComponent, UnitiesFormComponent, AreasFormComponent, AspectsFormComponent, DocumentsFormComponent,
+    DocumentItemComponent
 
   ],
   providers: [

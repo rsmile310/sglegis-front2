@@ -1,0 +1,130 @@
+<h3 matDialogTitle>
+  {{data.title}}</h3>
+
+<form [formGroup]="documentItemForm" autocomplete="off">
+  <mat-dialog-content>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+
+      <div fxFlex="20" class="pr-1">
+        <mat-form-field class="full-width">
+          <input matInput name="item" placeholder="Item*" maxlength="10" upperCase
+            [formControl]="documentItemForm.controls['document_item_number']" />
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="80" class="pr-1">
+        <mat-form-field class="full-width">
+          <input matInput name="assunto" placeholder="Assunto do item*" maxlength="100" upperCase
+            [formControl]="documentItemForm.controls['document_item_subject']" />
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="30" class="pr-1">
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Status *" [formControl]="documentItemForm.controls['document_item_status_id']">
+            <mat-option *ngFor="let status of documentsStatus" [value]="status.status_id">
+              {{status.status_description}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="20" class="pr-1">
+        <mat-form-field class="full-width">
+          <input matInput name="ordem" placeholder="Ordem*" type="number"
+            [formControl]="documentItemForm.controls['document_item_order']" />
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="100" class="pr-1">
+        <mat-form-field class="full-width">
+          <textarea matInput upperCase placeholder="Descrição *" name="description" maxlength="2000"
+            [formControl]="documentItemForm.controls['document_item_description']"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="100" class="pr-1">
+        <mat-form-field class="full-width">
+          <textarea matInput upperCase placeholder="Observação *" name="observation" maxlength="2000"
+            [formControl]="documentItemForm.controls['document_item_observation']"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-card class="mat-card-background">
+      <mat-card-header class="mat-card-titulo2">
+        <span class="mat-card-titulo">Sistemas de gestão associados</span><span class="mat-card-titulo" fxFlex></span>
+      </mat-card-header>
+
+      <mat-card-content class="mat-card-body">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+          <div fxFlex="100" class="mt-1">
+            <mat-accordion class="example-headers-align" multi>
+              <mat-expansion-panel *ngFor="let areaWithAspect of areasWithAspects">
+                <mat-expansion-panel-header>
+
+                  <mat-panel-description>
+                    <mat-icon>check_circle_outline</mat-icon>
+                    {{areaWithAspect.area_name}}
+                  </mat-panel-description>
+
+                </mat-expansion-panel-header>
+                <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+                  <div fxFlex="20" class="pr-1">
+                    <mat-checkbox color="primary" (change)="toggleAll(areaWithAspect, $event)">
+                      Todos
+                    </mat-checkbox>
+                  </div>
+
+                  <div fxFlex="20" class="pr-1" *ngFor="let aspect of areaWithAspect.aspects">
+                    <mat-checkbox color="primary" [checked]="aspect.status=='S'">
+                      {{aspect.area_aspect_name}}
+                    </mat-checkbox>
+                  </div>
+                </div>
+
+              </mat-expansion-panel>
+            </mat-accordion>
+
+            <!-- <mat-accordion>
+              <mat-expansion-panel >
+                <mat-expansion-panel-header #panelH (click)="panelH._toggle()">
+                  <mat-panel-title>
+                   <i class="material-icons app-toolbar-menu" (click)="panelH._toggle()">swap_vertical_circle
+             </i>
+                  </mat-panel-title>
+                  <mat-panel-description>
+                   
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+            
+                <mat-form-field>
+                  <input matInput placeholder="First name">
+                </mat-form-field>
+            
+                <mat-form-field>
+                  <input matInput placeholder="Age">
+                </mat-form-field>
+              </mat-expansion-panel>
+              
+            </mat-accordion> -->
+
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </mat-dialog-content>
+
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
+    <div fxFlex="100" class="mt-1">
+      <span fxFlex *ngIf="!this.data.new"></span>
+      <button mat-raised-button color="accent" type="button" (click)="deleteItem()"
+        *ngIf="!this.data.new">Excluir</button>
+      <span fxFlex></span>
+      <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
+      <span fxFlex></span>
+      <button mat-raised-button class="mat-primary" type="button" [disabled]="documentItemForm.invalid"
+        (click)="saveDocumentItem()">Gravar</button>
+      <span fxFlex></span>
+    </div>
+  </div>
+</form>

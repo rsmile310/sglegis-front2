@@ -53,7 +53,7 @@ const routes: Routes = [
     children: [{
       path: 'areas',
       component: AreasComponent,
-      data: { title: 'Áreas', breadcrumb: 'Áreas' }
+      data: { title: 'Sistemas de Gestão', breadcrumb: 'Sistemas de Gestão' }
     }]
   },
   {

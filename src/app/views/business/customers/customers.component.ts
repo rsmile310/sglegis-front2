@@ -17,7 +17,7 @@ export class CustomersComponent implements OnInit {
   columns = [
     {
       Propriedade: 'customer_id',
-      Titulo: 'Id do Cliente',
+      Titulo: 'Id da Matriz',
       Visivel: false,
       Largura: 50
     },
@@ -34,18 +34,11 @@ export class CustomersComponent implements OnInit {
       Largura:100
     },
     {
-      Propriedade: 'customer_trade_name',
-      Titulo: 'Nome Fantasia',
-      Visivel: true,
-      Largura:200
-    },        
-    {
       Propriedade: 'customer_business_name',
       Titulo: 'Razão Social',
       Visivel: true,
       Largura:200
-    }
-    
+    }    
   ]
 
   configSearch = [
@@ -66,7 +59,7 @@ export class CustomersComponent implements OnInit {
 
   openForm(info: any = {}, newRercord: Boolean) {
     let text;     
-    text = (newRercord) ? "Novo Cliente" : "Editar Cliente: " + info.customer_id;    
+    text = (newRercord) ? "Nova Matriz" : "Editar Matriz: " + info.customer_id;    
     
     let dialogRef: MatDialogRef<any> = this.dialog.open(CustomersFormsComponent, {
       width: '720px',
