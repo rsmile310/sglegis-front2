@@ -27,6 +27,12 @@ export class AspectsComponent implements OnInit {
       Titulo: 'Nome do Aspecto',
       Visivel: true,
       Largura:150
+    },
+    {
+      Propriedade: 'area_name',
+      Titulo: 'Sistema de Gestão',
+      Visivel: true,
+      Largura:150
     }
   ]
 

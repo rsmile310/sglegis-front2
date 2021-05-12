@@ -61,6 +61,7 @@ export class UnitiesFormComponent implements OnInit {
     }
 
     this.getAreasAspects();
+    this.getAreasWithAspects(record.customer_unity_id);
   }
 
   getAreasAspects() {
@@ -78,6 +79,17 @@ export class UnitiesFormComponent implements OnInit {
         });
       }
     });
+  }
+
+  getAreasWithAspects(unity_id) {
+    this.crudService.GetParams(undefined, `/customerunity/${unity_id}/aspects`).subscribe(asps => {
+      if (asps.status == 200) {
+        this.aspects = [];
+        console.log(asps);
+        
+      }
+    });
+    
   }
 
   mountAreasAspects() {

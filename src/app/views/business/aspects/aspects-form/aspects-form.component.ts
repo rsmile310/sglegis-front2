@@ -13,6 +13,7 @@ import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
 export class AspectsFormComponent implements OnInit {
   public aspectForm: FormGroup;
   customers_groups = [];
+  areas = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -31,8 +32,11 @@ export class AspectsFormComponent implements OnInit {
   prepareScreen(record) {  
     this.aspectForm = new FormGroup({
       area_aspect_id: new FormControl(record.area_aspect_id),
-      area_aspect_name: new FormControl(record.area_aspect_name, [Validators.required, Validators.maxLength(100), Validators.minLength(3)]) 
+      area_aspect_name: new FormControl(record.area_aspect_name, [Validators.required, Validators.maxLength(100), Validators.minLength(3)]),
+      area_id: new FormControl(record.area_id, [Validators.required])
     });
+
+    this.getAreas();
   }
 
   saveAspect() {
@@ -49,6 +53,15 @@ export class AspectsFormComponent implements OnInit {
         this.dialogRef.close('');
       }
     });  
+  }
+
+  getAreas() {
+    this.crudService.GetParams(undefined, "/area").subscribe(res => {
+      if (res.status == 200) {
+        this.areas = [];
+        this.areas = res.body;
+      }
+    });
   }
 
   deleteAspect(){    
