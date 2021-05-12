@@ -29,7 +29,7 @@ export class NavigationComponent {
         i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Unidades", "Ordem": 1, "State": "cadastros/unidades", "Type": "link" });
         i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Sistemas de Gestão", "Ordem": 1, "State": "cadastros/areas", "Type": "link" });
         i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Aspectos", "Ordem": 1, "State": "cadastros/aspectos", "Type": "link" });        
-        i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Leis e documentos", "Ordem": 1, "State": "cadastros/leis", "Type": "link" });        
+        i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Leis e documentos", "Ordem": 1, "State": "cadastros/leis", "Type": "link" });
         i.Ativo = "S";
         i.Disable = 0;
         i.Icon = "supervisor_account";
@@ -42,17 +42,17 @@ export class NavigationComponent {
 
         let l: any = new Object();
         l.Sub = [];
-        l.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Associar Unidade e Aspectos", "Ordem": 1, "State": "cadastros/pedidos", "Type": "link" })
+        l.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Requisitos", "Ordem": 1, "State": "cadastros/audit", "Type": "link" })
     
         
         l.Ativo = "S";
         l.Disable = 0;
         l.Icon = "settings";
-        l.Name = "Configurações";
+        l.Name = "Auditoria";
         l.Ordem = 1;
         l.State = "";
         l.Type = "dropDown";
-        l.Tooltip = "Configurações";
+        l.Tooltip = "Auditoria";
         x.push(l);        
         
 
