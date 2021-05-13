@@ -13,17 +13,19 @@ import { CustomersFormsComponent } from '../../customers/customers-forms/custome
 export class RequirementsFormComponent implements OnInit {
 
 
-  public pratics = [
-    { "id": 1, "desc": "A VERIFICAR" },
-    { "id": 2, "desc": "SIM" },
-    { "id": 3, "desc": "NÃO" }
-  ]
-
   public conforms = [
     { "id": 1, "desc": "A VERIFICAR" },
     { "id": 2, "desc": "SIM" },
     { "id": 3, "desc": "NÃO" },
-    { "id": 4, "desc": "PARCIAL" }
+    { "id": 3, "desc": "FUTURO" },
+    { "id": 3, "desc": "PARCIAL" },
+    { "id": 3, "desc": "A VERIFICAR" }
+  ]
+
+  public pratics = [
+    { "id": 1, "desc": "A VERIFICAR" },
+    { "id": 2, "desc": "SIM" },
+    { "id": 3, "desc": "NÃO" },
   ]
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,

@@ -68,10 +68,8 @@
       <ngx-datatable-column [name]="coluna.Titulo" [prop]="coluna.Propriedade" [width]="coluna.Largura">
         <ng-template let-row="row" ngx-datatable-cell-template
           *ngIf="(coluna.Imagem == null || coluna.Imagem == false)">
-          <span matTooltip="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna. Nunc viverra imperdiet enim. Fusce est.
-          Vivamus a tellus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci. Aenean nec lorem.
-          In porttitor." matTooltipPosition="above" matTooltipHideDelay="100">
-            {{ coluna.Tipo =="DATA" ? (row[coluna.Propriedade]|date:"dd/MM/yyyy"):(row[coluna.Propriedade]) }}
+          <span matTooltipClass="my-custom-tooltip" matTooltip="CERTIFICADO DE DISPENSA DE LICENÇA Nº 36002619 DE 06/11/2013\nATIVIDADE: DEPÓSITO DE MERCADORIAS E CENTRO DE DISTRIBUIÇÃO / COMÉRCIO ATACADISTA DE COSMÉTICOS E PRODUTOS DE PERFUMARIA\nÁREA CONSTRUÍDA: 97.899,14 M2\nBACIA DO RIO JUNDIAÍ – PCJ\nEXIGÊNCIA TÉCNICA:\nNÃO É PERMITIDO O EXERCÍCIO DE QUALQUER ATIVIDADE INDUSTRIAL NO LOCAL\nNÃO PODERÁ SER DESENVOLVIDA NO LOCAL ATIVIDADE DE DEPÓSITO E COMÉRCIO DE PRODUTOS QUÍMICOS E/OU INFLAMÁVEIS\nEVIDÊNCIA: EVIDENCIADO QUE NO LOCAL NÃO HÁ QUALQUER TIPO DE ATIVIDADE INDUSTRIAL, BEM COMO, NÃO É DESENVOLVIDA ATIVIDADE DE DEPÓSITO E COMÉRCIO ATACADISTA DE PRODUTOS QUÍMICOS E/OU INFLAMÁVEIS, CONFORME DETERMINADO NO REFERIDO CERTIFICADO DE DISPENSA DE LICENÇA.\nCERTIFICADO DE DISPENSA DE LICENÇA Nº 36000761 DE 03/12/2015 (TENDA)\nATIVIDADE: COMÉRCIO ATACADISTA DE COSMÉTICOS E PRODUTOS DE PERFUMARIA\nSEM EXIGÊNCIA TÉCNICA\nCERTIFICADO DE DISPENSA DE LICENÇA Nº 36002633 DE 25/10/2018\nATIVIDADE: DEPÓSITO DE MERCADORIAS PARA TERCEIROS (DISTRIBUIÇÃO DE TABACO)\nSEM EXIGÊNCIA TÉCNICA" matTooltipPosition="above" matTooltipHideDelay="100">
+            {{ coluna.Tipo =="DATA" ? (row[coluna.Propriedade]|date:"dd/MM/yyyy"): ( coluna.Propriedade=="DESCRICAO" ? (row[coluna.Propriedade]) : (row[coluna.Propriedade]) ) }}
           </span>
         </ng-template>
 
