@@ -1720,3 +1720,13 @@ div.hopscotch-bubble .hopscotch-nav-button.prev:hover {
     margin-top: 10px;
     padding: 10px;
 }
+
+.my-custom-tooltip {
+    max-width: unset !important;
+    padding: 15px;
+    font-size: 12px;
+    color:rgba(0, 0, 0, .96) !important;
+    width: 500px;
+    background-color: white !important;
+    border: solid thin rgb(11, 85, 85) !important;
+  }

@@ -20,6 +20,7 @@ export class GradeComponent implements OnInit {
   @Input() CamposBusca: Array<CampoBusca>;
   @Input() BtnIncluir: Boolean;
   @Input() viewOnly: Boolean = false;
+  @Input() check: Boolean = false;
   @Input() MostrarBarraBusca: boolean = true;
   @Output() PesquisarRegistro: EventEmitter<any> = new EventEmitter();
   @Output() IncluirRegistro: EventEmitter<any> = new EventEmitter();
