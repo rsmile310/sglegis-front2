@@ -42,17 +42,17 @@ export class NavigationComponent {
 
         let l: any = new Object();
         l.Sub = [];
-        l.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Associar Unidade e Aspectos", "Ordem": 1, "State": "cadastros/pedidos", "Type": "link" })
+        l.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Requisitos", "Ordem": 1, "State": "cadastros/audit", "Type": "link" })
     
         
         l.Ativo = "S";
         l.Disable = 0;
         l.Icon = "settings";
-        l.Name = "Configurações";
+        l.Name = "Auditoria";
         l.Ordem = 1;
         l.State = "";
         l.Type = "dropDown";
-        l.Tooltip = "Configurações";
+        l.Tooltip = "Auditoria";
         x.push(l);        
         
 

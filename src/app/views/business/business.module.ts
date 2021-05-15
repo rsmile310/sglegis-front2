@@ -52,6 +52,8 @@ import { DocumentsComponent } from './documents/documents.component';
 import { DocumentsFormComponent } from './documents/documents-form/documents-form.component';
 import { HomeComponent } from './home/home.component';
 import { DocumentItemComponent } from './documents/document-item/document-item.component';
+import { RequirementsComponent } from './requirements/requirements.component';
+import { RequirementsFormComponent } from './requirements/requirements-form/requirements-form.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: "right",
@@ -108,12 +110,14 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     AreasComponent,
     AreasFormComponent, AspectsComponent, AspectsFormComponent, DocumentsComponent, DocumentsFormComponent,
     HomeComponent,
-    DocumentItemComponent
+    DocumentItemComponent,
+    RequirementsComponent,
+    RequirementsFormComponent
   ],
   exports: [MatAutocompleteModule],
   entryComponents: [CustomerGroupFormComponent,
     CustomersFormsComponent, UnitiesFormComponent, AreasFormComponent, AspectsFormComponent, DocumentsFormComponent,
-    DocumentItemComponent
+    DocumentItemComponent, RequirementsFormComponent
 
   ],
   providers: [

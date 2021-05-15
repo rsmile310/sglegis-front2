@@ -20,6 +20,7 @@ export class GradeComponent implements OnInit {
   @Input() CamposBusca: Array<CampoBusca>;
   @Input() BtnIncluir: Boolean;
   @Input() viewOnly: Boolean = false;
+  @Input() check: Boolean = false;
   @Input() MostrarBarraBusca: boolean = true;
   @Input() Expansible: boolean = false;
   @Input() PropertyToExpanse: String;
