@@ -18,6 +18,24 @@
         <mat-checkbox>Tornar documento privado </mat-checkbox>
       </div>
 
+      <div fxFlex="50" class="pr-1" *ngIf="showState" >
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Estado *" [formControl]="documentForm.controls['document_state_id']" >
+            <mat-option *ngFor="let state of states" [value]="state.state_id">
+              {{state.state_name}} </mat-option>            
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="50" class="pr-1" *ngIf="showCity">
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Município *" [formControl]="documentForm.controls['document_city_id']" >
+            <mat-option *ngFor="let city of cities" [value]="city.city_id">
+              {{city.city_name}} </mat-option>            
+          </mat-select>
+        </mat-form-field>
+      </div>
+
       <div fxFlex="40" class="pr-1">
         <mat-form-field class="full-width">
           <input matInput name="tipo_documento" placeholder="Tipo de Documento *" maxlength="100" upperCase 
@@ -43,8 +61,8 @@
 
       <div fxFlex="20" class="pr-1">
         <mat-form-field class="full-width">
-          <input matInput name="area_name"  placeholder="Data *" maxlength="100" upperCase
-          value="{{documentData |date:'dd/MM/yyyy'}}" 
+          <input matInput name="area_name"  placeholder="Data *" maxlength="10" upperCase
+           mask="00/00/0000"
           [formControl]="documentForm.controls['document_date']">
         </mat-form-field>
       </div>
@@ -71,10 +89,6 @@
           </div>
         </div>
         <br />
-
-        <!-- <ngx-datatable class="material" [rows]="rows2" [columns]="columns2" [headerHeight]="50" [footerHeight]="50"
-          rowHeight="auto">
-        </ngx-datatable> -->
 
         <ngx-datatable class="material" [rows]="rows2" [columnMode]="'standard'" [headerHeight]="35" [footerHeight]="0"
           [rowHeight]="'35'" [scrollbarH]="true" [messages]="{emptyMessage: ''}">
@@ -137,7 +151,7 @@
           <ngx-datatable-column name="Editar" [flexGrow]="0" [width]="80">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <button mat-icon-button mat-sm-button color="warn" >
-                <mat-icon>edit</mat-icon>
+                <mat-icon (click)="editItem(row)">edit</mat-icon>
               </button>
             </ng-template>
           </ngx-datatable-column>          

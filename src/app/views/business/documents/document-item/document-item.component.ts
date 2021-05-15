@@ -40,47 +40,26 @@ export class DocumentItemComponent implements OnInit {
     });
 
     this.getDocumentStatus();
-    this.getAreasAspects();
+    this.getAreasWithAspects(record.document_item_id);
   }
 
-  getAreasAspects() {
-    this.crudService.GetParams(undefined, "/area").subscribe(res => {
-      if (res.status == 200) {
-        this.areas = [];
-        this.areas = res.body;
-
-        this.crudService.GetParams(undefined, "/areaaspect").subscribe(asps => {
-          if (asps.status == 200) {
-            this.aspects = [];
-            this.aspects = asps.body;
-            this.mountAreasAspects();
-          }
-        });
+  getAreasWithAspects(document_item_id) {
+    this.crudService.GetParams(undefined, `/documentitem/${document_item_id||"0"}/aspects`).subscribe(asps => {
+      if (asps.status == 200) {
+        this.areasWithAspects = [];
+        this.areasWithAspects = asps.body;
       }
     });
   }
 
-  mountAreasAspects() {
-    this.areasWithAspects = [];    
-    for (let i = 0; i < this.areas.length; i++) {
-      let auxAspects = []
-      for (let j = 0; j < this.aspects.length; j++) {
-        auxAspects.push({ "area_aspect_id": this.aspects[j].area_aspect_id, "area_aspect_name": this.aspects[j].area_aspect_name, "status": "N" });
-      }
-      this.areasWithAspects.push({ "area_id": this.areas[i].area_id, "area_name": this.areas[i].area_name, "aspects": auxAspects });
+  toggleAll(arearWithAspect, evento) {
+    for (let i = 0; i < arearWithAspect.aspects.length; i++) {
+      arearWithAspect.aspects[i].checked = (evento.checked) ? "S" : "N";
     }
   }
 
-  toggleAll(arearWithAspect, evento) {
-    if (evento.checked) {
-      for (let i = 0; i < arearWithAspect.aspects.length; i++) {
-        arearWithAspect.aspects[i].status = 'S';
-      }
-    } else {
-      for (let i = 0; i < arearWithAspect.aspects.length; i++) {
-        arearWithAspect.aspects[i].status = 'N';
-      }      
-    }
+  toggle(aspect, evento) {
+    aspect.checked = (evento.checked) ? "S" : "N";
   }
 
   getDocumentStatus() {
@@ -98,33 +77,37 @@ export class DocumentItemComponent implements OnInit {
     this.crudService.Save(form, this.data.new, "/documentitem", form.document_id).subscribe(res => {
       if (res.status == 200) {
         this.loader.close();
-        this.snackBar.open("Registro gravado com sucesso", "", { duration: 3000 });
-        this.dialogRef.close('OK');
+        this.saveAreasAspects(res.body.document_item_id || form.document_item_id).then(r => {
+          this.snackBar.open("Registro gravado com sucesso", "", { duration: 3000 });
+          this.dialogRef.close('OK');
+        })
       } else {
         this.loader.close();
         this.snackBar.open("Erro ao gravar registro:" + res.Message, "", { duration: 5000 });
         this.dialogRef.close('NOK');
       }
     });
-
   }
 
-  getAreas() {
-    this.crudService.GetParams(undefined, "/area").subscribe(res => {
-      if (res.status == 200) {
-        this.areas = [];
-        this.areas = res.body;
+  async saveAreasAspects(document_item_id) {
+    for (let i = 0; i < this.areasWithAspects.length; i++) {
+      for (let j = 0; j < this.areasWithAspects[i].aspects.length; j++) {
+        if (this.areasWithAspects[i].aspects[j].checked != this.areasWithAspects[i].aspects[j].previous) {
+          if (this.areasWithAspects[i].aspects[j].checked == "S") {
+            let o: any = new Object();
+            o.area_id = this.areasWithAspects[i].area_id;
+            o.area_aspect_id = this.areasWithAspects[i].aspects[j].area_aspect_id;
+            o.document_item_id = document_item_id;
+            let resp = await this.crudService.Save(o, true, `/documentitem/${document_item_id}/aspects`, "0").toPromise();
+            console.log("res ins:" + resp);
+          } else {
+            let resp = await this.crudService.DeleteParams(this.areasWithAspects[i].aspects[j].item_area_aspect_id, `/documentitem/${document_item_id}/aspects`).toPromise();
+            console.log("res del:"+ resp);
+          }
+        }
       }
-    });
-  }
+    }
 
-  getAspects() {
-    this.crudService.GetParams(undefined, "/areaaspect").subscribe(res => {
-      if (res.satus == 200) {
-        this.aspects = [];
-        this.aspects = res.body;
-      }
-    });
   }
 
   ngOnInit() {

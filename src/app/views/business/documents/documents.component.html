@@ -4,6 +4,8 @@
   [BtnEditar]="true" 
   [BtnDeletar]="false"
   [CamposBusca]="configSearch"
+  [Expansible]="true"
+  PropertyToExpanse="document_summary"
   (IncluirRegistro)="openForm('', true)"
   (EditarRegistro)="openForm($event.registro, false)"
   (PesquisarRegistro)="getDocuments($event.parametro)"  

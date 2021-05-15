@@ -61,16 +61,35 @@
 
   <ngx-datatable class="material striped" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
     [rowHeight]="'auto'" [limit]="10" [rows]="Linhas" [messages]="{emptyMessage: 'Nenhuma informação encontrada'}"
-    [scrollbarH]="true">
-    <!-- [prop]="coluna.Propriedade" -->
+    [scrollbarH]="true" #myTable>
 
-    <div *ngFor="let coluna of Colunas">
-      <ngx-datatable-column [name]="coluna.Titulo" [prop]="coluna.Propriedade" [width]="coluna.Largura">
+    <!-- Row Detail Template -->
+    <ngx-datatable-row-detail [rowHeight]="'auto'" #myDetailRow >
+      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+        <div style="padding-left:35px;" style="background-color: yellow;">
+          <div><strong>Descrição</strong></div>
+          <div >{{ (row[PropertyToExpanse]) }}</div>
+        </div>
+      </ng-template>
+    </ngx-datatable-row-detail>
+
+    <!-- Column Templates -->
+    <ngx-datatable-column [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false"
+      [canAutoResize]="false" *ngIf="(Expansible)">
+      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+        <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded"
+          title="Expand/Collapse Row" (click)="toggleExpandRow(row)">
+        </a>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <!-- [prop]="coluna.Propriedade" -->
+    <!-- <div > -->
+      <ngx-datatable-column [name]="coluna.Titulo" [prop]="coluna.Propriedade" [width]="coluna.Largura" *ngFor="let coluna of Colunas">
         <ng-template let-row="row" ngx-datatable-cell-template
           *ngIf="(coluna.Imagem == null || coluna.Imagem == false)">
-          <span matTooltipClass="my-custom-tooltip" matTooltip="CERTIFICADO DE DISPENSA DE LICENÇA Nº 36002619 DE 06/11/2013\nATIVIDADE: DEPÓSITO DE MERCADORIAS E CENTRO DE DISTRIBUIÇÃO / COMÉRCIO ATACADISTA DE COSMÉTICOS E PRODUTOS DE PERFUMARIA\nÁREA CONSTRUÍDA: 97.899,14 M2\nBACIA DO RIO JUNDIAÍ – PCJ\nEXIGÊNCIA TÉCNICA:\nNÃO É PERMITIDO O EXERCÍCIO DE QUALQUER ATIVIDADE INDUSTRIAL NO LOCAL\nNÃO PODERÁ SER DESENVOLVIDA NO LOCAL ATIVIDADE DE DEPÓSITO E COMÉRCIO DE PRODUTOS QUÍMICOS E/OU INFLAMÁVEIS\nEVIDÊNCIA: EVIDENCIADO QUE NO LOCAL NÃO HÁ QUALQUER TIPO DE ATIVIDADE INDUSTRIAL, BEM COMO, NÃO É DESENVOLVIDA ATIVIDADE DE DEPÓSITO E COMÉRCIO ATACADISTA DE PRODUTOS QUÍMICOS E/OU INFLAMÁVEIS, CONFORME DETERMINADO NO REFERIDO CERTIFICADO DE DISPENSA DE LICENÇA.\nCERTIFICADO DE DISPENSA DE LICENÇA Nº 36000761 DE 03/12/2015 (TENDA)\nATIVIDADE: COMÉRCIO ATACADISTA DE COSMÉTICOS E PRODUTOS DE PERFUMARIA\nSEM EXIGÊNCIA TÉCNICA\nCERTIFICADO DE DISPENSA DE LICENÇA Nº 36002633 DE 25/10/2018\nATIVIDADE: DEPÓSITO DE MERCADORIAS PARA TERCEIROS (DISTRIBUIÇÃO DE TABACO)\nSEM EXIGÊNCIA TÉCNICA" matTooltipPosition="above" matTooltipHideDelay="100">
-            {{ coluna.Tipo =="DATA" ? (row[coluna.Propriedade]|date:"dd/MM/yyyy"): ( coluna.Propriedade=="DESCRICAO" ? (row[coluna.Propriedade]) : (row[coluna.Propriedade]) ) }}
-          </span>
+          {{ coluna.Tipo =="DATA" ? (row[coluna.Propriedade]|date:"dd/MM/yyyy"):(row[coluna.Propriedade].toString().substring(0,50)) }}
+
         </ng-template>
 
         <ng-template let-row="row" ngx-datatable-cell-template *ngIf="coluna.Imagem==true">
@@ -79,10 +98,10 @@
           </div>
         </ng-template>
       </ngx-datatable-column>
-    </div>
+    <!-- </div> -->
 
-    <div *ngIf="(BtnEditar===true && !viewOnly)">
-      <ngx-datatable-column name="Editar" [flexGrow]="0" [width]="50">
+    <!-- <div > -->
+      <ngx-datatable-column name="Editar" [flexGrow]="0" [width]="50" *ngIf="(BtnEditar===true && !viewOnly)">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <button *ngIf="(BtnEditar ===true)" mat-icon-button mat-sm-button color="primary" class="mr-1"
             (click)="Editar(row)">
@@ -90,10 +109,10 @@
           </button>
         </ng-template>
       </ngx-datatable-column>
-    </div>
+    <!-- </div> -->
 
-    <div *ngIf="(BtnEditar===true && viewOnly)">
-      <ngx-datatable-column name="Visualizar" [flexGrow]="0" [width]="50">
+    <!-- <div > -->
+      <ngx-datatable-column name="Visualizar" [flexGrow]="0" [width]="50" *ngIf="(BtnEditar===true && viewOnly)">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <button *ngIf="(BtnEditar ===true)" mat-icon-button mat-sm-button color="primary" class="mr-1"
             (click)="Editar(row)">
@@ -101,26 +120,17 @@
           </button>
         </ng-template>
       </ngx-datatable-column>
-    </div>
+    <!-- </div> -->
 
-    <div *ngIf="(BtnDeletar===true)">
-      <ngx-datatable-column name="Excluir" [flexGrow]="0" [width]="50">
+    <!-- <div > -->
+      <ngx-datatable-column name="Excluir" [flexGrow]="0" [width]="50" *ngIf="(BtnDeletar===true)">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <button *ngIf="(BtnDeletar ===true)" mat-icon-button mat-sm-button color="warn" (click)="Excluir(row)">
             <mat-icon>delete</mat-icon>
           </button>
         </ng-template>
       </ngx-datatable-column>
-    </div>
-
-    <div *ngIf="(check===true)">
-      <ngx-datatable-column name="Selecionar" [flexGrow]="0" [width]="50">
-        <ng-template let-row="row" ngx-datatable-cell-template>
-          <mat-checkbox *ngIf="(check ===true)" ></mat-checkbox>
-        </ng-template>
-      </ngx-datatable-column>
-    </div>
-
+    <!-- </div> -->
   </ngx-datatable>
 </div>
 <!-- <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
