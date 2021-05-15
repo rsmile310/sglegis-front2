@@ -71,12 +71,12 @@
                 <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
                   <div fxFlex="20" class="pr-1">
                     <mat-checkbox color="primary" (change)="toggleAll(areaWithAspect, $event)">
-                      Todos
+                      TODOS
                     </mat-checkbox>
                   </div>
 
                   <div fxFlex="20" class="pr-1" *ngFor="let aspect of areaWithAspect.aspects">
-                    <mat-checkbox color="primary" [checked]="aspect.status=='S'">
+                    <mat-checkbox color="primary" [checked]="aspect.checked=='S'" (change)="toggle(aspect, $event)">
                       {{aspect.area_aspect_name}}
                     </mat-checkbox>
                   </div>
@@ -85,29 +85,7 @@
               </mat-expansion-panel>
             </mat-accordion>
 
-            <!-- <mat-accordion>
-              <mat-expansion-panel >
-                <mat-expansion-panel-header #panelH (click)="panelH._toggle()">
-                  <mat-panel-title>
-                   <i class="material-icons app-toolbar-menu" (click)="panelH._toggle()">swap_vertical_circle
-             </i>
-                  </mat-panel-title>
-                  <mat-panel-description>
-                   
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
-            
-                <mat-form-field>
-                  <input matInput placeholder="First name">
-                </mat-form-field>
-            
-                <mat-form-field>
-                  <input matInput placeholder="Age">
-                </mat-form-field>
-              </mat-expansion-panel>
-              
-            </mat-accordion> -->
-
+           
           </div>
         </div>
       </mat-card-content>

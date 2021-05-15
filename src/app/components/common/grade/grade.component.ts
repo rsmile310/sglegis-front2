@@ -21,6 +21,8 @@ export class GradeComponent implements OnInit {
   @Input() BtnIncluir: Boolean;
   @Input() viewOnly: Boolean = false;
   @Input() MostrarBarraBusca: boolean = true;
+  @Input() Expansible: boolean = false;
+  @Input() PropertyToExpanse: String;
   @Output() PesquisarRegistro: EventEmitter<any> = new EventEmitter();
   @Output() IncluirRegistro: EventEmitter<any> = new EventEmitter();
   @Output() EditarRegistro: EventEmitter<any> = new EventEmitter();
@@ -30,6 +32,7 @@ export class GradeComponent implements OnInit {
   public finderPanel: boolean = false;
   @ViewChild('buscadorForm') public buscadorForm: ElementRef;
   @ViewChild('txtFinder') public txtFinder: ElementRef;
+  @ViewChild('myTable') table: any;
 
 
   constructor(public dialog: MatDialog,
@@ -83,6 +86,12 @@ export class GradeComponent implements OnInit {
       return c.Visivel === true;
     });
   }
+
+  toggleExpandRow(row) {
+    console.log('Toggled Expand Row!', row);
+    this.table.rowDetail.toggleExpandRow(row);
+  }
+
 
   Exportar() {
     let heads = [];
