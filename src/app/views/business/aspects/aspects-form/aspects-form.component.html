@@ -4,16 +4,25 @@
 <form [formGroup]="aspectForm" autocomplete="off">
   <mat-dialog-content>   
     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">    
-      <div fxFlex="100" class="pr-1">
+
+      <div fxFlex="50" class="pr-1">
+        <mat-form-field class="full-width">
+          <mat-select [formControl]="aspectForm.controls['area_id']" placeholder="Sistema de Gestão *">
+            <mat-option *ngFor="let area of areas" [value]="area.area_id">
+              {{area.area_name}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="50" class="pr-1">
         <mat-form-field class="full-width">
           <input matInput name="aspect_name" [formControl]="aspectForm.controls['area_aspect_name']"
             placeholder="Nome do Aspecto *" maxlength="100" upperCase>
         </mat-form-field>
-      </div>          
-           
+      </div>           
     </div>
-
   </mat-dialog-content>
+
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
     <div fxFlex="100" class="mt-1">
       <span fxFlex *ngIf="!this.data.new"></span>
@@ -26,4 +35,5 @@
       <span fxFlex></span>
     </div>
   </div>
+
 </form>

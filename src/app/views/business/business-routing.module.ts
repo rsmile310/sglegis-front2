@@ -8,6 +8,7 @@ import { CustomersFormsComponent } from './customers/customers-forms/customers-f
 import { CustomersComponent } from './customers/customers.component';
 import { DocumentsComponent } from './documents/documents.component';
 import { HomeComponent } from './home/home.component';
+import { RequirementsComponent } from './requirements/requirements.component';
 import { UnitiesComponent } from './unities/unities.component';
 
 const routes: Routes = [  
@@ -67,9 +68,17 @@ const routes: Routes = [
   {
     path: '',
     children: [{
-      path: 'leis',
+      path: 'documentos',
       component: DocumentsComponent,
       data: { title: 'Aspectos', breadcrumb: 'Aspectos' }
+    }]
+  },
+  {
+    path: '',
+    children: [{
+      path: 'audit',
+      component: RequirementsComponent,
+      data: { title: 'Requisitos', breadcrumb: 'Requisitos' }
     }]
   },
 ];
