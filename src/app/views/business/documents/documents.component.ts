@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { MatDialog, MatSnackBar, MatDialogRef } from '@angular/material';
 import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
@@ -11,7 +11,8 @@ import { DocumentsFormComponent } from './documents-form/documents-form.componen
   templateUrl: './documents.component.html',
   styleUrls: ['./documents.component.css']
 })
-export class DocumentsComponent implements OnInit {
+export class DocumentsComponent implements OnInit  {
+
   lastSearch: any;
   rows = [];
   
@@ -51,7 +52,7 @@ export class DocumentsComponent implements OnInit {
   ]
 
   configSearch = [
-    new CampoBusca("filter", "Grupo", 50, "", "string")
+    new CampoBusca("filter", "Grupo", 50, "", "string", null, null, null)
   ];
 
   constructor(
@@ -91,6 +92,6 @@ export class DocumentsComponent implements OnInit {
 
   ngOnInit() {
     this.prepareScreen();
-  } 
-
+  }  
+  
 }
