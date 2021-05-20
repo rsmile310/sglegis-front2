@@ -4,9 +4,9 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: true,  
-  // apiURL: 'http://localhost:3000/api/v1'
-  apiURL: "https://sglegis.200.systems/api/v1"
+  production: false,  
+  apiURL: 'http://localhost:3000/api/v1'
+  
   
   
 };
