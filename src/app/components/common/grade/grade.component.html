@@ -6,36 +6,51 @@
         <input autofocus="true" placeholder="Procurar" type="text" style="height: 95%; padding: 0 0 0 10px;"
           (click)="showFinderToggle()" class="txtFinder" #txtFinder readonly>
         <mat-dialog-content class="corpo" style="all:initial">
+          <div *ngIf="(formReady)">
+            <div [ngClass]="finderPanel? 'dropdown-content show': 'dropdown-content'">
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" style="padding: 10px; font-size: 13px">
+                <div fxFlex="50" class="pr-1" *ngFor='let campo of CamposBusca'>
+                  <mat-form-field class="full-width" *ngIf="(campo.tipoCampo =='string')">
+                    <input matInput name="campo.nomeCampo" [placeholder]="campo.labelCampo"
+                      [maxLength]="campo.maxLengthCampo" [mask]="campo.maskCampo" upperCase type="text"
+                      [formControl]="buscarForm.controls[campo.nomeCampo]">
+                    <button mat-button *ngIf="buscarForm.controls[campo.nomeCampo]" matSuffix mat-icon-button
+                      aria-label="Limpar" (click)="buscarForm.controls[campo.nomeCampo].setValue('')">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
 
-          <div [ngClass]="finderPanel? 'dropdown-content show': 'dropdown-content'">
-            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" style="padding: 10px; font-size: 13px">
+                  <mat-form-field class="full-width" *ngIf="campo.tipoCampo=='DATA' ">
+                    <input matInput [name]="campo.nomeCampo" [placeholder]="campo.labelCampo"
+                      [maxLength]="campo.maxLengthCampo" [mask]="campo.maskCampo" upperCase type="date"
+                      [formControl]="buscarForm.controls[campo.nomeCampo]">
+                    <button mat-button *ngIf="buscarForm.controls[campo.nomeCampo]" matSuffix mat-icon-button
+                      aria-label="Limpar" (click)="buscarForm.controls[campo.nomeCampo].setValue('')">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
 
-              <div fxFlex="50" class="pr-1" *ngFor='let campo of CamposBusca'>
-                <mat-form-field class="full-width">
-                  <input matInput [name]="campo.nomeCampo" [placeholder]="campo.labelCampo"
-                    [maxLength]="campo.maxLengthCampo" [mask]="campo.maskCampo" upperCase type="text"
-                    [formControl]="buscarForm.controls[campo.nomeCampo]" *ngIf="campo.tipoCampo!='DATA'">
-                  <input matInput [name]="campo.nomeCampo" [placeholder]="campo.labelCampo"
-                    [maxLength]="campo.maxLengthCampo" [mask]="campo.maskCampo" upperCase type="date"
-                    [formControl]="buscarForm.controls[campo.nomeCampo]" *ngIf="campo.tipoCampo=='DATA' ">
-                  <button mat-button *ngIf="buscarForm.controls[campo.nomeCampo]" matSuffix mat-icon-button
-                    aria-label="Limpar" (click)="buscarForm.controls[campo.nomeCampo].setValue('')">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                </mat-form-field>
+                  <mat-form-field class="full-width" *ngIf="campo.tipoCampo=='LIST' ">
+                    <mat-select [formControl]="buscarForm.controls[campo.nomeCampo]" [placeholder]="campo.labelCampo">
+                      <mat-option *ngFor="let item of campo.lista" [value]="item[campo.fieldValue]">
+                        {{item[campo.fieldText]}} </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
               </div>
-            </div>
 
-            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
-              <div fxFlex="100" class="mt-1">
-                <span fxFlex></span>
-                <button mat-raised-button color="warn" type="button" (click)="finderPanel=!finderPanel">Fechar</button>
-                <span fxFlex></span>
-                <button mat-raised-button class="mat-primary" type="button" (click)="Pesquisar()">Procurar</button>
-                <span fxFlex></span>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+                <div fxFlex="100" class="mt-1">
+                  <span fxFlex></span>
+                  <button mat-raised-button color="warn" type="button"
+                    (click)="finderPanel=!finderPanel">Fechar</button>
+                  <span fxFlex></span>
+                  <button mat-raised-button class="mat-primary" type="button" (click)="Pesquisar()">Procurar</button>
+                  <span fxFlex></span>
+                </div>
               </div>
-            </div>
 
+            </div>
           </div>
         </mat-dialog-content>
       </form>
@@ -59,36 +74,57 @@
     </button>
   </mat-toolbar>
 
-  <ngx-datatable class="material striped" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
-    [rowHeight]="'auto'" [limit]="10" [rows]="Linhas" [messages]="{emptyMessage: 'Nenhuma informação encontrada'}"
-    [scrollbarH]="true" #myTable>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" style="padding-left: 20px;" *ngIf="(actionButton)">
+    <div fxFlex="20" class="pr-1" style="margin-top: 20px;">
+      <button mat-raised-button class="mat-primary" type="button"
+        (click)="actionButtonClick()">{{actionButtonCaption}}</button>
+    </div>
+  </div>
 
-    <!-- Row Detail Template -->
-    <ngx-datatable-row-detail [rowHeight]="'auto'" #myDetailRow >
-      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-        <div style="padding-left:35px;" style="background-color: yellow;">
-          <div><strong>Descrição</strong></div>
-          <div >{{ (row[PropertyToExpanse]) }}</div>
-        </div>
-      </ng-template>
-    </ngx-datatable-row-detail>
+  <div style="margin-top: 10px;">
+    <ngx-datatable class="material striped" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+      [rowHeight]="'auto'" [limit]="10" [rows]="Linhas" [messages]="{emptyMessage: 'Nenhuma informação encontrada'}"
+      [scrollbarH]="true" #myTable>
 
-    <!-- Column Templates -->
-    <ngx-datatable-column [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false"
-      [canAutoResize]="false" *ngIf="(Expansible)">
-      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-        <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded"
-          title="Expand/Collapse Row" (click)="toggleExpandRow(row)">
-        </a>
-      </ng-template>
-    </ngx-datatable-column>
+      <!-- Row Detail Template -->
+      <ngx-datatable-row-detail [rowHeight]="'auto'" #myDetailRow>
+        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+          <div style="padding-left:35px;">
+            <fieldset style="border-radius:10px;background-color: white;">
+              <legend style="padding-left:-10px; padding-right:-36px; margin-left:-8px; background-color: white;">
+                Descrição</legend>
+              <p>{{ (row[PropertyToExpanse]) }}</p>
+            </fieldset>
+            <!-- <div><strong>Descrição</strong></div>
+          <div>{{ (row[PropertyToExpanse]) }}</div> -->
+          </div>
+        </ng-template>
+      </ngx-datatable-row-detail>
 
-    <!-- [prop]="coluna.Propriedade" -->
-    <!-- <div > -->
-      <ngx-datatable-column [name]="coluna.Titulo" [prop]="coluna.Propriedade" [width]="coluna.Largura" *ngFor="let coluna of Colunas">
+      <!-- Column Templates -->
+      <ngx-datatable-column [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false"
+        [canAutoResize]="false" *ngIf="(Expansible)">
+        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+          <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded"
+            title="Expand/Collapse Row" (click)="toggleExpandRow(row)">
+          </a>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [width]="10" *ngIf="(check)">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <mat-checkbox></mat-checkbox>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <!-- [prop]="coluna.Propriedade" -->
+      <!-- <div > -->
+      <ngx-datatable-column [name]="coluna.Titulo" [prop]="coluna.Propriedade" [width]="coluna.Largura"
+        *ngFor="let coluna of Colunas">
         <ng-template let-row="row" ngx-datatable-cell-template
           *ngIf="(coluna.Imagem == null || coluna.Imagem == false)">
-          {{ coluna.Tipo =="DATA" ? (row[coluna.Propriedade]|date:"dd/MM/yyyy"):(row[coluna.Propriedade].toString().substring(0,50)) }}
+          {{ coluna.Tipo =="DATA" ?
+          (row[coluna.Propriedade]|date:"dd/MM/yyyy"):(row[coluna.Propriedade].toString().substring(0,50)) }}
 
         </ng-template>
 
@@ -98,9 +134,9 @@
           </div>
         </ng-template>
       </ngx-datatable-column>
-    <!-- </div> -->
+      <!-- </div> -->
 
-    <!-- <div > -->
+      <!-- <div > -->
       <ngx-datatable-column name="Editar" [flexGrow]="0" [width]="50" *ngIf="(BtnEditar===true && !viewOnly)">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <button *ngIf="(BtnEditar ===true)" mat-icon-button mat-sm-button color="primary" class="mr-1"
@@ -109,9 +145,9 @@
           </button>
         </ng-template>
       </ngx-datatable-column>
-    <!-- </div> -->
+      <!-- </div> -->
 
-    <!-- <div > -->
+      <!-- <div > -->
       <ngx-datatable-column name="Visualizar" [flexGrow]="0" [width]="50" *ngIf="(BtnEditar===true && viewOnly)">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <button *ngIf="(BtnEditar ===true)" mat-icon-button mat-sm-button color="primary" class="mr-1"
@@ -120,9 +156,9 @@
           </button>
         </ng-template>
       </ngx-datatable-column>
-    <!-- </div> -->
+      <!-- </div> -->
 
-    <!-- <div > -->
+      <!-- <div > -->
       <ngx-datatable-column name="Excluir" [flexGrow]="0" [width]="50" *ngIf="(BtnDeletar===true)">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <button *ngIf="(BtnDeletar ===true)" mat-icon-button mat-sm-button color="warn" (click)="Excluir(row)">
@@ -130,8 +166,10 @@
           </button>
         </ng-template>
       </ngx-datatable-column>
-    <!-- </div> -->
-  </ngx-datatable>
+      <!-- </div> -->
+    </ngx-datatable>
+
+  </div>
 </div>
 <!-- <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
   <div fxFlex="100" class="mt-1" style="padding-left: 10px;">

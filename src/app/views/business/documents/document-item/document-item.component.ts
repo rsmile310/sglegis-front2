@@ -36,7 +36,7 @@ export class DocumentItemComponent implements OnInit {
       document_item_status_id: new FormControl(record.document_item_status_id, [Validators.required]),
       document_item_description: new FormControl(record.document_item_description, [Validators.required]),
       document_item_observation: new FormControl(record.document_item_observation, [Validators.required]),
-      document_id: new FormControl(this.data.payload, [Validators.required])
+      document_id: new FormControl(record.document_id, [Validators.required])
     });
 
     this.getDocumentStatus();
@@ -74,7 +74,7 @@ export class DocumentItemComponent implements OnInit {
   saveDocumentItem() {
     let form = this.documentItemForm.value;
     this.loader.open();
-    this.crudService.Save(form, this.data.new, "/documentitem", form.document_id).subscribe(res => {
+    this.crudService.Save(form, this.data.new, "/documentitem", form.document_item_id).subscribe(res => {
       if (res.status == 200) {
         this.loader.close();
         this.saveAreasAspects(res.body.document_item_id || form.document_item_id).then(r => {

@@ -32,7 +32,7 @@ export class CustomerGroupsComponent implements OnInit {
   ]
 
   configSearch = [
-    new CampoBusca("filter", "Grupo", 50, "", "string")
+    new CampoBusca("filter", "Grupo", 50, "", "string", null, null, null)
   ];
 
   constructor(

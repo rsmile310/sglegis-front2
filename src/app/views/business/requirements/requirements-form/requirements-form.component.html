@@ -4,21 +4,11 @@
 <form autocomplete="off">
   <mat-dialog-content>
     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
-
-      <div fxFlex="100" class="pr-1">
-        <fieldset disabled="false">
-          <legend>Íntegra do Art. XI</legend>
-              A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).
-        </fieldset>
-      </div>
-      
-      <div fxFlex="100" class="pr-1">&nbsp;</div>
-
       <div fxFlex="50" class="pr-1">
         <mat-form-field class="full-width">
           <mat-select placeholder="Ordem prática">
             <mat-option *ngFor="let pratic of pratics" [value]="pratic.id">
-              {{pratic.desc}} </mat-option>             
+              {{pratic.desc}} </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -27,21 +17,23 @@
         <mat-form-field class="full-width">
           <mat-select placeholder="Conformidade">
             <mat-option *ngFor="let conform of conforms" [value]="conform.id">
-              {{conform.desc}} </mat-option>             
+              {{conform.desc}} </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
 
       <div fxFlex="100" class="pr-1">
         <mat-form-field class="full-width">
-          <textarea matInput upperCase placeholder="Evidência de cumprimento" name="evidencia" maxlength="2000" rows="3" ></textarea>
+          <textarea matInput upperCase placeholder="Evidência de cumprimento" name="evidencia" maxlength="2000"
+            rows="3"></textarea>
         </mat-form-field>
       </div>
 
       <div fxFlex="100" class="pr-1">
         <mat-form-field class="full-width">
-          <textarea matInput upperCase placeholder="Ação de controle" name="acao-controle" maxlength="2000" rows="3"></textarea>
-      </mat-form-field>
+          <textarea matInput upperCase placeholder="Ação de controle" name="acao-controle" maxlength="2000"
+            rows="3"></textarea>
+        </mat-form-field>
       </div>
 
       <div fxFlex="100" class="pr-1">
@@ -49,6 +41,59 @@
           Enviar notificação para responsável
         </mat-checkbox>
       </div>
+
+      <div fxFlex="100" class="pr-1" style="margin-top: 10px;">
+        <fieldset disabled="false" >
+          <legend>Total de itens: XX</legend>
+          <p>A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
+          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
+          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
+          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO). </p>
+
+          <p>A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
+          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
+          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
+          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).
+        </p>
+        <p>
+          A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
+          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
+          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
+          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).          
+        </p>
+        <p>
+          A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
+          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
+          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
+          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).          
+        </p>
+        <p>
+          A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
+          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
+          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
+          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).          
+        </p>
+        <p>
+          A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
+          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
+          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
+          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).          
+        </p>
+        <p>
+          A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
+          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
+          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
+          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).          
+        </p>
+        <p>
+          A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
+          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
+          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
+          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).          
+        </p>
+        </fieldset>
+      </div>
+
     </div>
 
   </mat-dialog-content>
@@ -56,9 +101,9 @@
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
     <div fxFlex="100" class="mt-1">
       <span fxFlex></span>
-      <button mat-raised-button color="warn" type="button"  (click)="dialogRef.close('NOK')">Cancelar</button>
+      <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
       <span fxFlex></span>
-      <button mat-raised-button class="mat-primary" type="button"  (click)="dialogRef.close('NOK')">Gravar</button>
+      <button mat-raised-button class="mat-primary" type="button" (click)="dialogRef.close('NOK')">Gravar</button>
       <span fxFlex></span>
     </div>
   </div>
