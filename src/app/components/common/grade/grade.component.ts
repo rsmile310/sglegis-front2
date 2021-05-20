@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter, HostListener, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { Coluna } from '../../../models/base/Coluna';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ExportToCsv } from 'export-to-csv';
-import { MatDialogRef, MatDialog } from '@angular/material';
+import { MatDialogRef, MatDialog, MatOption } from '@angular/material';
 import { PopupImagemComponent } from '../popup-imagem/popup-imagem.component';
 import { AppInformationService } from '../../../../app/services/dialogs/app-information/app-information.service';
 import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
@@ -22,6 +22,11 @@ export class GradeComponent implements OnInit {
   @Input() viewOnly: Boolean = false;
   @Input() check: Boolean = false;
   @Input() MostrarBarraBusca: boolean = true;
+  @Input() Expansible: boolean = false;
+  @Input() PropertyToExpanse: String;
+  @Input() actionButton: boolean = false;
+  @Input() actionButtonCaption: String;
+  @Output() actionButtonEvent: EventEmitter<any> = new EventEmitter();
   @Output() PesquisarRegistro: EventEmitter<any> = new EventEmitter();
   @Output() IncluirRegistro: EventEmitter<any> = new EventEmitter();
   @Output() EditarRegistro: EventEmitter<any> = new EventEmitter();
@@ -31,6 +36,8 @@ export class GradeComponent implements OnInit {
   public finderPanel: boolean = false;
   @ViewChild('buscadorForm') public buscadorForm: ElementRef;
   @ViewChild('txtFinder') public txtFinder: ElementRef;
+  @ViewChild('myTable') table: any;
+  public formReady: boolean = false;
 
 
   constructor(public dialog: MatDialog,
@@ -38,26 +45,37 @@ export class GradeComponent implements OnInit {
     private eRef: ElementRef) { }
 
   ngOnInit() {
-    
+
     this.finderPanel = false;
     if (this.BtnIncluir == undefined) {
       this.BtnIncluir = true;
     }
-    
+
     this.buscarForm = new FormGroup({});
-    for(let i=0; i<this.CamposBusca.length; i++){
+
+    for (let i = 0; i < this.CamposBusca.length; i++) {
       this.buscarForm.addControl(this.CamposBusca[i].nomeCampo, new FormControl(""));
     }
     this.AuxColunas = Object.assign([], this.Colunas);
+    this.formReady = true;
   }
+
+  // ngAfterViewChecked() { window.dispatchEvent(new Event('resize')) }
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
     if (!this.buscadorForm.nativeElement.contains(event.target)) {
       if (!this.txtFinder.nativeElement.contains(event.target)) {
-        this.finderPanel = false;
+        if (event.target.className.toUpper() != "MAT-OPTION-TEXT") {
+
+          this.finderPanel = false;
+        }
       }
     }
+  }
+
+  actionButtonClick() {
+    this.actionButtonEvent.emit();
   }
 
   Incluir() {
@@ -73,8 +91,9 @@ export class GradeComponent implements OnInit {
   }
 
   Pesquisar() {
-    const formulario = this.buscarForm.value;    
+    const formulario = this.buscarForm.value;
     this.finderPanel = false;
+    console.log(formulario);
     this.PesquisarRegistro.emit({ parametro: formulario });
   }
 
@@ -84,6 +103,11 @@ export class GradeComponent implements OnInit {
       return c.Visivel === true;
     });
   }
+
+  toggleExpandRow(row) {
+    this.table.rowDetail.toggleExpandRow(row);
+  }
+
 
   Exportar() {
     let heads = [];
@@ -123,8 +147,8 @@ export class GradeComponent implements OnInit {
 
   showFinderToggle() {
     this.buscarForm.reset();
-    for(var name in this.buscarForm.controls) {
-      this.buscarForm.controls[name].setValue("");      
+    for (var name in this.buscarForm.controls) {
+      this.buscarForm.controls[name].setValue("");
     }
     this.finderPanel = !this.finderPanel;
   }

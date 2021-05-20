@@ -156,17 +156,16 @@
                 <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
                   <div fxFlex="25" class="pr-1">
                     <mat-checkbox color="primary" (change)="toggleAll(areaWithAspect, $event)">
-                      Todos
+                      TODOS
                     </mat-checkbox>
                   </div>
 
                   <div fxFlex="25" class="pr-1" *ngFor="let aspect of areaWithAspect.aspects">
-                    <mat-checkbox color="primary" [checked]="aspect.status=='S'">
+                    <mat-checkbox color="primary" [checked]="aspect.checked=='S'" (change)="toggle(aspect, $event)">
                       {{aspect.area_aspect_name}}
                     </mat-checkbox>
                   </div>
                 </div>
-
               </mat-expansion-panel>
             </mat-accordion>
           </div>

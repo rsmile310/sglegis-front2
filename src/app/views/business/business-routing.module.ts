@@ -68,7 +68,7 @@ const routes: Routes = [
   {
     path: '',
     children: [{
-      path: 'leis',
+      path: 'documentos',
       component: DocumentsComponent,
       data: { title: 'Aspectos', breadcrumb: 'Aspectos' }
     }]

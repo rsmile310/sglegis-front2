@@ -508,7 +508,7 @@ code {
     padding: .333333rem;
     overflow-x: hidden;
     position: relative;
-    min-height: 450px;
+    min-height: 600px;
 }
 .text-small {
     font-size: .813rem;
