@@ -52,6 +52,10 @@ export class DocumentItemComponent implements OnInit {
     });
   }
 
+  showValue() {
+    return JSON.stringify(this.documentItemForm.value)
+  }
+
   toggleAll(arearWithAspect, evento) {
     for (let i = 0; i < arearWithAspect.aspects.length; i++) {
       arearWithAspect.aspects[i].checked = (evento.checked) ? "S" : "N";

@@ -44,6 +44,9 @@
                   <span fxFlex></span>
                   <button mat-raised-button color="warn" type="button"
                     (click)="finderPanel=!finderPanel">Fechar</button>
+                    <span fxFlex></span>
+                    <button mat-raised-button color="accent" type="button"
+                      (click)="clear()">Limpar filtros</button>                    
                   <span fxFlex></span>
                   <button mat-raised-button class="mat-primary" type="button" (click)="Pesquisar()">Procurar</button>
                   <span fxFlex></span>
@@ -72,7 +75,13 @@
     <button mat-icon-button (click)="Incluir()" *ngIf="(BtnIncluir ===true)">
       <mat-icon>add</mat-icon>
     </button>
-  </mat-toolbar>
+  </mat-toolbar>  
+
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" style="padding-left: 20px;margin-top: 10px;" *ngIf="(showFilter)">
+      <mat-chip-list aria-label="Fish selection" *ngFor='let campo of CamposBusca'>
+        <mat-chip *ngIf="(buscarForm.controls[campo.nomeCampo].value)">{{campo.labelCampo}} : {{buscarForm.controls[campo.nomeCampo].value}}</mat-chip>        
+      </mat-chip-list>
+  </div>
 
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" style="padding-left: 20px;" *ngIf="(actionButton)">
     <div fxFlex="20" class="pr-1" style="margin-top: 20px;">
@@ -111,7 +120,7 @@
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column [width]="10" *ngIf="(check)">
+      <ngx-datatable-column [width]="20" *ngIf="(check)">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <mat-checkbox></mat-checkbox>
         </ng-template>

@@ -7,6 +7,7 @@ export class CampoBusca {
     public lista: any[];
     public fieldText: string;
     public fieldValue: string;
+    public value: string;
 
     constructor(
         private _nomeCampo: string,
@@ -25,6 +26,7 @@ export class CampoBusca {
         this.lista = _lista;
         this.fieldText = _fieldText;
         this.fieldValue = _fieldValue;
+        
     }
 
 }

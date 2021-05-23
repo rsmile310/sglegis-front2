@@ -49,6 +49,7 @@
         </mat-form-field>
       </div>
     </div>
+    
 
     <mat-card class="mat-card-background">
       <mat-card-header class="mat-card-titulo2">
@@ -98,7 +99,7 @@
       <button mat-raised-button color="accent" type="button" (click)="deleteItem()"
         *ngIf="!this.data.new">Excluir</button>
       <span fxFlex></span>
-      <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
+      <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Fechar</button>
       <span fxFlex></span>
       <button mat-raised-button class="mat-primary" type="button" [disabled]="documentItemForm.invalid"
         (click)="saveDocumentItem()">Gravar</button>

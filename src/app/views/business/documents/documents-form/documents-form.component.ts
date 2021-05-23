@@ -1,3 +1,4 @@
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatDialog } from '@angular/material';
@@ -47,38 +48,48 @@ export class DocumentsFormComponent implements OnInit {
       document_scope_id: new FormControl(record.document_scope_id, [Validators.required]),
       document_type: new FormControl(record.document_type, [Validators.required]),
       document_number: new FormControl(record.document_number, [Validators.required]),
-      document_date: new FormControl(new Date(record.document_date), [Validators.required]),
+      document_date: new FormControl("", [Validators.required]),
       document_status_id: new FormControl(record.document_status_id, [Validators.required]),
       document_summary: new FormControl(record.document_summary, [Validators.required]),
       document_state_id: new FormControl(record.document_state_id),
-      document_city_id: new FormControl(record.document_city_id)      
+      document_city_id: new FormControl(record.document_city_id)
     });
+    
+    this.documentForm.controls.document_date.setValue( formatDate( new Date(record.document_date), "dd/MM/yyyy", "pt_br") );
     this.documentData = new Date(record.document_date);
     this.getDocumentScopes();
     this.getDocumentStatus();
     this.getItems(record.document_id);
-    
+
+
+
     this.documentForm.controls.document_scope_id.valueChanges.subscribe(r => {
-      switch (r) {
-        case 1:
-          this.hideCity();
-          this.hideState();          
-          break;
-        case 2:
-          this.hideCity();
-          this.showStates();
-          break;
-        case 3:          
-          this.showStates();
-          this.showCities();
-          break;
-        default:
-          console.log("");
-      }
+      this.prepareStatesCities(r);
     });
+    this.prepareStatesCities(this.documentForm.controls.document_scope_id.value);
+
   }
 
-  
+  prepareStatesCities(r) {
+    switch (r) {
+      case 1:
+        this.hideCity();
+        this.hideState();
+        break;
+      case 2:
+        this.hideCity();
+        this.showStates();
+        break;
+      case 3:
+        this.showStates();
+        this.showCities();
+        break;
+      default:
+        console.log("");
+    }
+  }
+
+
 
   hideState() {
     this.showState = false;
@@ -90,7 +101,7 @@ export class DocumentsFormComponent implements OnInit {
     this.showCity = false;
     this.cities = [];
     this.documentForm.controls.document_city_id.clearValidators();
-    
+
   }
 
   showStates() {
@@ -100,13 +111,14 @@ export class DocumentsFormComponent implements OnInit {
       if (res.status == 200) {
         this.states = [];
         this.states = res.body;
-      }      
+      }
     });
   }
 
   showCities() {
     this.showCity = true;
     this.documentForm.controls.document_city_id.setValidators([Validators.required]);
+
     this.documentForm.controls.document_state_id.valueChanges.subscribe(res => {
       let p: any = new Object();
       p.orderby = "city_name";
@@ -118,9 +130,21 @@ export class DocumentsFormComponent implements OnInit {
             this.cities = [];
             this.cities = c.body;
           }
-        });         
-       }
+        });
+      }
     });
+    if (this.documentForm.controls.document_state_id.value) {
+      let p: any = new Object();
+      p.orderby = "city_name";
+      p.direction = "asc";
+      p.state_id = this.documentForm.controls.document_state_id.value;
+      this.crudService.GetParams(p, "/city").subscribe(c => {
+        if (c.status == 200) {
+          this.cities = [];
+          this.cities = c.body;
+        }
+      });
+    }
   }
 
   getDocumentStatus() {
@@ -132,13 +156,13 @@ export class DocumentsFormComponent implements OnInit {
     });
   }
 
-  getDocumentScopes() {    
+  getDocumentScopes() {
     this.crudService.GetParams(undefined, "/documentscope").subscribe(res => {
       if (res.status == 200) {
         this.documentScopes = [];
         this.documentScopes = res.body;
       }
-    });    
+    });
   }
 
   ngOnInit() {
@@ -147,56 +171,59 @@ export class DocumentsFormComponent implements OnInit {
 
   saveDocument() {
     let form = this.documentForm.value;
+    form.document_date = Date.parse(form.document_date.substr(4, 4) + "-" + form.document_date.substr(2, 2) + "-" + ((parseInt(form.document_date.substr(0, 2)) )));
     this.loader.open();
     this.crudService.Save(form, this.data.new, "/document", form.document_id).subscribe(res => {
       if (res.status == 200) {
         this.loader.close();
         this.snackBar.open("Registro gravado com sucesso", "", { duration: 3000 });
-        this.dialogRef.close('OK');
+        //this.dialogRef.close('OK');
+        this.documentForm.controls.document_id.setValue(res.body.document_id);
       } else {
         this.loader.close();
         this.snackBar.open("Erro ao gravar registro:" + res.Message, "", { duration: 5000 });
-        this.dialogRef.close('NOK');
+        this.documentForm.controls.document_id.setValue(res.body.document_id);
+        //this.dialogRef.close('NOK');
       }
     });
   }
-  
+
   editItem(row) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(DocumentItemComponent, {
       width: '900px',
       disableClose: true,
-      data: { title: "Editar item: "+ row.document_item_id, payload: row, new: false }
+      data: { title: "Editar item: " + row.document_item_id, payload: row, new: false }
     });
 
     dialogRef.afterClosed()
-    .subscribe(res => {      
-      this.getItems(this.data.payload.document_id);
-      return;
-    });
+      .subscribe(res => {
+        this.getItems(this.data.payload.document_id);
+        return;
+      });
   }
 
-  newItem() {   
+  newItem() {
     let dialogRef: MatDialogRef<any> = this.dialog.open(DocumentItemComponent, {
       width: '900px',
       disableClose: true,
-      data: { title: "Novo Item do documento", payload: this.data.payload.document_id, new: true }
+      data: { title: "Novo Item do documento", payload: this.documentForm.value, new: true }
     });
 
     dialogRef.afterClosed()
-    .subscribe(res => {      
-      this.getItems(this.data.payload.document_id);
-      return;
-    });
+      .subscribe(res => {
+        this.getItems(this.documentForm.value.document_id);
+        return;
+      });
   }
 
   getItems(documentId) {
-    this.crudService.GetParams({"orderby":"document_item_order", "direction":"asc"}, "/documentitem/items/"+documentId).subscribe(res => {
+    this.crudService.GetParams({ "orderby": "document_item_order", "direction": "asc" }, "/documentitem/items/" + documentId).subscribe(res => {
       if (res.status == 200) {
         this.documentsItem = [];
         this.documentsItem = res.body;
       }
-      
-    });  
+
+    });
   }
 
 }
