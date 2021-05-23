@@ -40,26 +40,24 @@ export class RequirementsComponent implements OnInit {
 
   async setConfigSearch() {
 
-    let res = await this.crud.GetParams({ "orderby": "customer_group_name", "direction": "asc" }, "/customergroup").toPromise();
-    //this.crud.GetParams({ "orderby": "customer_group_name", "direction": "asc" }, "/customergroup").subscribe(res => {});
+    //let res = await this.crud.GetParams({ "orderby": "customer_group_name", "direction": "asc" }, "/customergroup").toPromise();
+    this.crud.GetParams({ "orderby": "customer_group_name", "direction": "asc" }, "/customergroup").subscribe(res => {
+      if (res.status == 200) {
+        this.groups = [];
+        this.groups = res.body;
+      }
+    });   
     
-    if (res.status == 200) {
-      this.groups = [];
-      this.groups = res.body;
-    }
 
-    let aux = [
-      new CampoBusca("filter", "Grupo", 50, "", "LIST", this.groups, "customer_group_name", "customer_group_id"),
-      new CampoBusca("filter", "Matriz", 50, "", "string", null, null, null),
-      new CampoBusca("filter", "Unidade", 50, "", "string", null, null, null),
-      new CampoBusca("filter", "Sist.Gestão", 50, "", "string", null, null, null),
-      new CampoBusca("filter", "Âmbito", 50, "", "string", null, null, null),
-      new CampoBusca("filter", "Número", 50, "", "string", null, null, null),
-      new CampoBusca("filter", "Ementa", 50, "", "string", null, null, null),
-      new CampoBusca("filter", "Documento", 50, "", "string", null, null, null),
-      new CampoBusca("filter", "Ordem Prática", 50, "", "string", null, null, null),
-      new CampoBusca("filter", "Aspecto", 50, "", "string", null, null, null),
-      new CampoBusca("filter", "Lista", 50, "", "DATA", null, null, null)
+    let aux = [      
+      new CampoBusca("customer_group_id", "Grupo", 50, "", "LIST", this.groups, "customer_group_name", "customer_group_id"),
+      new CampoBusca("customer_business_name", "Matriz", 50, "", "string", null, null, null),
+      new CampoBusca("customer_unity_name", "Unidade", 50, "", "string", null, null, null),
+      new CampoBusca("area_name", "Sist.Gestão", 50, "", "string", null, null, null),
+      new CampoBusca("document_scope_description", "Âmbito", 50, "", "string", null, null, null),
+      new CampoBusca("document_item_number", "Número", 50, "", "string", null, null, null),
+      new CampoBusca("document_item_subject", "Ementa", 50, "", "string", null, null, null),
+      new CampoBusca("document_number", "Documento", 50, "", "string", null, null, null),
     ];
 
     this.configSearch = aux;

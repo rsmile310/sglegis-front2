@@ -38,14 +38,13 @@ export class GradeComponent implements OnInit {
   @ViewChild('txtFinder') public txtFinder: ElementRef;
   @ViewChild('myTable') table: any;
   public formReady: boolean = false;
-
+  public showFilter: boolean = false;
 
   constructor(public dialog: MatDialog,
     private mensagem: AppInformationService,
     private eRef: ElementRef) { }
 
   ngOnInit() {
-
     this.finderPanel = false;
     if (this.BtnIncluir == undefined) {
       this.BtnIncluir = true;
@@ -60,16 +59,24 @@ export class GradeComponent implements OnInit {
     this.formReady = true;
   }
 
+  showFilters() {
+    let ret = false;
+    Object.keys(this.buscarForm.controls).forEach(field => {
+      let control = this.buscarForm.get(field);
+      if (control.value) {
+        ret = true;
+      }
+    });
+    return ret;
+  }
+
   // ngAfterViewChecked() { window.dispatchEvent(new Event('resize')) }
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
     if (!this.buscadorForm.nativeElement.contains(event.target)) {
-      if (!this.txtFinder.nativeElement.contains(event.target)) {
-        if (event.target.className.toUpper() != "MAT-OPTION-TEXT") {
-
-          this.finderPanel = false;
-        }
+      if (!this.txtFinder.nativeElement.contains(event.target)) {       
+          //this.finderPanel = false;
       }
     }
   }
@@ -92,9 +99,16 @@ export class GradeComponent implements OnInit {
 
   Pesquisar() {
     const formulario = this.buscarForm.value;
-    this.finderPanel = false;
-    console.log(formulario);
-    this.PesquisarRegistro.emit({ parametro: formulario });
+    this.finderPanel = false;    
+    this.showFilter = this.showFilters();
+    this.setFinderValue();
+    this.PesquisarRegistro.emit({ parametro: formulario });    
+  }
+
+  setFinderValue() {    
+    for (let i = 0; i < this.CamposBusca.length; i++){
+      this.CamposBusca[i].value = this.buscarForm.controls[this.CamposBusca[i].nomeCampo].value;
+    }
   }
 
   Alternar(col) {
@@ -146,11 +160,19 @@ export class GradeComponent implements OnInit {
   }
 
   showFinderToggle() {
+    //this.buscarForm.reset();
+    // for (var name in this.buscarForm.controls) {
+    //   this.buscarForm.controls[name].setValue("");
+    // }
+    this.finderPanel = !this.finderPanel;
+  }
+
+  clear() {
     this.buscarForm.reset();
     for (var name in this.buscarForm.controls) {
       this.buscarForm.controls[name].setValue("");
     }
-    this.finderPanel = !this.finderPanel;
+    
   }
 
   closeFinder() {

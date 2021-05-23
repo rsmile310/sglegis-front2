@@ -123,7 +123,7 @@
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
 
           <div fxFlex="100" class="mt-1">
-            <button mat-raised-button color="primary" type="button" (click)="newItem()">Incluir novo item.</button>
+            <button mat-raised-button color="primary" type="button" (click)="newItem()" [disabled]="(!documentForm.controls['document_id'].value)" >Incluir novo item.</button>
             <span fxFlex></span>
           </div>
         </div>
@@ -169,7 +169,7 @@
       <button mat-raised-button color="accent" type="button" (click)="deleteArea()"
         *ngIf="!this.data.new">Excluir</button>
       <span fxFlex></span>
-      <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
+      <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Fechar</button>
       <span fxFlex></span>
       <button mat-raised-button class="mat-primary" type="button" 
         [disabled]="documentForm.invalid" (click)="saveDocument()">Gravar</button>
