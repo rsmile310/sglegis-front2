@@ -32,7 +32,7 @@ export class CustomerGroupsComponent implements OnInit {
   ]
 
   configSearch = [
-    new CampoBusca("filter", "Grupo", 50, "", "string", null, null, null)
+    new CampoBusca("customer_group_name", "Grupo", 50, "", "string", null, null, null)
   ];
 
   constructor(
@@ -64,9 +64,9 @@ export class CustomerGroupsComponent implements OnInit {
     });
   }
   
-  getCustomerGroups(parameter: any) {
-    this.lastSearch = parameter;
-    this.crud.GetParams(this.lastSearch, "/customergroup").subscribe(res => {
+  getCustomerGroups(parameter: any) {   
+    this.lastSearch = this.configSearch;
+    this.crud.GetParamsSearch(this.lastSearch, "/customergroup").subscribe(res => {
       this.rows = [];
       this.rows = res.body;
     })
