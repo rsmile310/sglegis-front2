@@ -38,6 +38,7 @@
 @import '~@swimlane/ngx-datatable/release/themes/material.css';
 @import '~@swimlane/ngx-datatable/release/assets/icons.css';
 @import "~ng-pick-datetime/assets/style/picker.min.css";
+@import "./common.css";
 
 /*---- Globals -----*/
 html {
@@ -1150,7 +1151,7 @@ div.hopscotch-bubble .hopscotch-nav-button.prev:hover {
 .session-progress {
     position: relative;
     bottom: -5px;
-    z-index: 9999;
+    z-index: 999;
 }
 .session-form-hold {
     width: 100%;

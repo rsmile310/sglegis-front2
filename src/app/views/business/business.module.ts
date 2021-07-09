@@ -54,6 +54,8 @@ import { HomeComponent } from './home/home.component';
 import { DocumentItemComponent } from './documents/document-item/document-item.component';
 import { RequirementsComponent } from './requirements/requirements.component';
 import { RequirementsFormComponent } from './requirements/requirements-form/requirements-form.component';
+import { UsersComponent } from './users/users.component';
+import { UsersFormComponent } from './users/users-form/users-form.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: "right",
@@ -112,13 +114,13 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     HomeComponent,
     DocumentItemComponent,
     RequirementsComponent,
-    RequirementsFormComponent
+    RequirementsFormComponent,
+    UsersComponent, UsersFormComponent
   ],
   exports: [MatAutocompleteModule],
   entryComponents: [CustomerGroupFormComponent,
     CustomersFormsComponent, UnitiesFormComponent, AreasFormComponent, AspectsFormComponent, DocumentsFormComponent,
-    DocumentItemComponent, RequirementsFormComponent
-
+    DocumentItemComponent, RequirementsFormComponent, UsersFormComponent
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }]

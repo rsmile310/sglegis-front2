@@ -1,0 +1,96 @@
+<h3 matDialogTitle>
+  {{ data.title }}
+</h3>
+
+<form [formGroup]="user" autocomplete="off">
+  <mat-dialog-content>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+      <div fxFlex="100">
+
+        <p class="d-flex flex-wrap">
+          <mat-label class="mb-2">Account type</mat-label>
+          <mat-radio-group 
+            class="full-width" 
+            [(formControl)]="user.controls['user_role']"
+          >
+            <mat-radio-button [value]="roles.admin" >Admin</mat-radio-button>
+            <mat-radio-button [value]="roles.client" class=" pl-1">Client</mat-radio-button>
+          </mat-radio-group>
+        </p>
+        
+        <p *ngIf="user.value.user_role === roles.admin">
+          <mat-form-field class="full-width" required>
+            <mat-label>Selecione o cliente</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let client of clients" [value]="client.value">
+                {{ client.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </p>
+
+        <p>
+          <mat-form-field class="full-width">
+            <mat-label>Nome completo</mat-label>
+            <input
+              matInput
+              type="name"
+              name="name"
+              [formControl]="user.controls['user_name']"
+              value="">
+            <mat-error
+              *ngIf="user.controls['user_name'].hasError('required') && user.controls['user_name'].touched" >
+              Name is required
+            </mat-error>
+          </mat-form-field>            
+        </p>
+
+        <p>
+          <mat-form-field class="full-width">
+            <mat-label>E-mail (login)</mat-label>
+            <input
+              matInput
+              type="email"
+              name="email"
+              [formControl]="user.controls['user_email']"
+              value="">
+            <mat-error 
+              *ngIf="user.controls['user_email'].hasError('required') && user.controls['user_email'].touched"> Email é obrigatório. </mat-error>
+
+            <mat-error 
+              *ngIf="user.controls['user_email'].hasError('email') && user.controls['user_email'].touched"> Email inválido </mat-error>
+          </mat-form-field>
+          
+        </p>
+
+        <p class="d-flex align-items-center">
+            <mat-icon aria-hidden="false" aria-label="Icon" class="size-small">info</mat-icon>&nbsp;
+            <small>A senha será enviada para o e-mail informado acima.</small>
+        </p>
+        
+        <p class="d-flex flex-wrap">
+          <mat-label class="mb-2">Perfil de acesso</mat-label>
+          <mat-radio-group 
+            class="full-width" 
+            [(formControl)]="user.controls['user_profile_type']"
+          >
+            <mat-radio-button [value]="profile.gestor" >Gestor</mat-radio-button>
+            <mat-radio-button [value]="profile.operacional" class=" pl-1">Operacional</mat-radio-button>
+          </mat-radio-group>
+        </p>
+      </div>
+    </div>    
+  </mat-dialog-content>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
+    <div fxFlex="100" class="mt-1">
+      <span fxFlex *ngIf="!this.data.new"></span>
+      <button mat-raised-button color="accent" type="button" (click)="deleteUser()" *ngIf="!this.data.new">Excluir</button>      
+      <span fxFlex></span>
+      <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
+      <span fxFlex></span>
+      <button mat-raised-button class="mat-primary" type="button" (click)="saveUser()"
+        [disabled]="user.invalid">Gravar</button>
+      <span fxFlex></span>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,88 @@
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormControlName, FormGroup, RequiredValidator, Validators } from '@angular/forms';
+import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
+import { profile } from 'app/models/auth/profile.types';
+import { roles } from 'app/models/auth/roles';
+import { AppConfirmService } from 'app/services/dialogs/app-confirm/app-confirm.service';
+import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
+import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
+
+@Component({
+  selector: 'app-users-form',
+  templateUrl: './users-form.component.html',
+  styleUrls: ['./users-form.component.css']
+})
+export class UsersFormComponent implements OnInit {
+  public user: FormGroup;
+
+  roles = roles;
+  profile = profile;
+  clients = [];
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<UsersFormComponent>,
+    private loader: AppLoaderService,
+    private crudService: CRUDService,
+    private snackBar: MatSnackBar,
+    private confirm: AppConfirmService,
+  ) { }
+
+  ngOnInit() {
+    this.prepareScreen(this.data.payload);
+  }
+
+  prepareScreen(record) {
+    this.user = new FormGroup({
+      user_id: new FormControl(record.user_id),
+      user_email: new FormControl(record.user_email, [Validators.required, Validators.email]),
+      user_name: new FormControl(record.user_name, [Validators.required]),
+      user_profile_type: new FormControl(this.data.new ? profile.operacional : record.user_profile_type, [Validators.required]),
+      user_role: new FormControl(this.data.new ? roles.client : record.user_role, [Validators.required]),
+    });
+
+    this.clients = [
+      {value: 'client-1', viewValue: 'Client 1'},
+      {value: 'client-2', viewValue: 'Client 2'},
+      {value: 'client-3', viewValue: 'Client 3'},
+      {value: 'client-4', viewValue: 'Client 4'},
+    ]
+  }
+
+  saveUser() {
+    let user = this.user.value;
+    this.loader.open();
+    this.crudService.Save(user, this.data.new, "/users", user.user_id)
+      .subscribe(res => {
+        if (res.status == 200) {
+          this.loader.close();
+          this.snackBar.open("Registro gravado com sucesso", "", { duration: 3000 });
+          this.dialogRef.close();
+        } else {
+          this.loader.close();
+          this.snackBar.open("Erro ao gravar registro:" + res.Message, "", { duration: 5000 });
+          this.dialogRef.close('NOK');
+        }
+      })
+  }
+
+  deleteUser() {
+    let user = this.user.value;
+    this.confirm.confirm("Exclusão - User", "Tem certeza que deseja excluir o User " + user.user_id).subscribe(result => {
+      if (result === true) {
+        this.loader.open("Excluindo - User");
+        this.crudService.DeleteParams(user.user_id, "/users").subscribe(res => {
+          if (res.status == 200) {
+            this.snackBar.open("User excluído com sucesso!", "", { duration: 3000 });
+            this.dialogRef.close("OK");
+            this.loader.close();
+          } else {
+            this.snackBar.open("Erro ao excluir User!", "", { duration: 5000 });
+          }
+          this.loader.close();
+        })
+      }
+    })
+  }
+
+}
