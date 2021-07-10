@@ -53,17 +53,15 @@ export class UsersFormComponent implements OnInit {
     let user = this.user.value;
     this.loader.open("Saving user");
     this.crudService.Save(user, this.data.new, "/users", user.user_id)
-      .subscribe(res => {
-        if (res.status == 200) {
-          this.loader.close();
-          this.snackBar.open("Registro gravado com sucesso", "", { duration: 3000 });
-          this.dialogRef.close();
-        } else {
-          this.loader.close();
-          this.snackBar.open("Erro ao gravar registro:" + res.Message, "", { duration: 5000 });
-          this.dialogRef.close('NOK');
-        }
-      })
+    .subscribe(res => {        
+      this.loader.close();
+      this.snackBar.open("Registro gravado com sucesso", "", { duration: 3000 });
+      this.dialogRef.close();
+    }, err => {
+      this.loader.close();
+      this.snackBar.open("Erro ao gravar registro: " + err, "", { duration: 5000 });
+      this.dialogRef.close('NOK');      
+    })
   }
 
   deleteUser() {
@@ -72,14 +70,12 @@ export class UsersFormComponent implements OnInit {
       if (result === true) {
         this.loader.open("Excluindo - User");
         this.crudService.DeleteParams(user.user_id, "/users").subscribe(res => {
-          if (res.status == 200) {
-            this.snackBar.open("User excluído com sucesso!", "", { duration: 3000 });
-            this.dialogRef.close("OK");
-            this.loader.close();
-          } else {
-            this.snackBar.open("Erro ao excluir User!", "", { duration: 5000 });
-          }
+          this.snackBar.open("User excluído com sucesso!", "", { duration: 3000 });
+          this.dialogRef.close("OK");
           this.loader.close();
+        }, err => {
+          this.loader.close();
+          this.snackBar.open("Erro ao excluir User: " + err, "", { duration: 5000 });
         })
       }
     })
@@ -91,12 +87,11 @@ export class UsersFormComponent implements OnInit {
       if (result === true) {
         this.loader.open("Sending email");
         this.crudService.Save(user, this.data.new, "/users/reset-password", user.user_id).subscribe(res => {
-          if (res.status == 200) {
-            this.snackBar.open("A new email sent successfully!", "", { duration: 5000 });
-          } else {
-            this.snackBar.open("An error in sending email!", "", { duration: 5000 });
-          }
+          this.loader.close()
+          this.snackBar.open("A new email sent successfully!", "", { duration: 5000 });
+        }, err => {
           this.loader.close();
+          this.snackBar.open("An error in sending email: " + err, "", { duration: 5000 });
         })
       }
     })
@@ -111,13 +106,12 @@ export class UsersFormComponent implements OnInit {
       if (result === true) {
         this.loader.open();
         this.crudService.Save(user, this.data.new, "/users", user.user_id).subscribe(res => {
-          if (res.status == 200) {
-            this.user.value.is_disabled = user.is_disabled;
-            this.snackBar.open("An user has been disabled successfully", "", { duration: 5000 });
-          } else {
-            this.snackBar.open("An error in disabling user!", "", { duration: 5000 });
-          }
           this.loader.close();
+          this.user.value.is_disabled = user.is_disabled;
+          this.snackBar.open("An user has been disabled successfully", "", { duration: 5000 });
+        }, err => {
+          this.loader.close();
+          this.snackBar.open("An error in disabling user!" + err, "", { duration: 5000 });
         })
       }
     })    
