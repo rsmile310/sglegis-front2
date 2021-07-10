@@ -39,12 +39,6 @@ export class UsersComponent implements OnInit {
       Visivel: true,
       Largura: 50
     },  
-    // {
-    //   Propriedade: 'user_password',
-    //   Titulo: 'Password',
-    //   Visivel: true,
-    //   Largura: 50
-    // }, 
     {
       Propriedade: 'user_profile_type',
       Titulo: 'Perfil',
@@ -92,7 +86,7 @@ export class UsersComponent implements OnInit {
     })
   }
 
-  getUsers(parameter: any) {
+  getUsers(parameter: any) {    
     this.lastSearch = this.configSearch;
     this.crud.GetParamsSearch(this.lastSearch, "/users")
       .subscribe(res => {

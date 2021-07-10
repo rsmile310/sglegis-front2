@@ -21,9 +21,9 @@
         <p *ngIf="user.value.user_role === roles.admin">
           <mat-form-field class="full-width" required>
             <mat-label>Selecione o cliente</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let client of clients" [value]="client.value">
-                {{ client.viewValue }}
+            <mat-select [formControl]="user.controls['child_clients']" multiple>
+              <mat-option *ngFor="let client of clients" [value]="client.user_id">
+                {{ client.user_name }}
               </mat-option>
             </mat-select>
           </mat-form-field>

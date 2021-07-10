@@ -3,6 +3,7 @@ import { FormControl, FormControlName, FormGroup, RequiredValidator, Validators 
 import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { profile } from 'app/models/auth/profile.types';
 import { roles } from 'app/models/auth/roles';
+import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
 import { AppConfirmService } from 'app/services/dialogs/app-confirm/app-confirm.service';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
@@ -38,15 +39,23 @@ export class UsersFormComponent implements OnInit {
       user_name: new FormControl(record.user_name, [Validators.required]),
       user_profile_type: new FormControl(this.data.new ? profile.operacional : record.user_profile_type, [Validators.required]),
       user_role: new FormControl(this.data.new ? roles.client : record.user_role, [Validators.required]),
-      is_disabled: new FormControl(record.is_disabled)
+      is_disabled: new FormControl(record.is_disabled),
+      child_clients: new FormControl()
     });
+    this.getClients();
+  }
 
-    this.clients = [
-      {value: 'client-1', viewValue: 'Client 1'},
-      {value: 'client-2', viewValue: 'Client 2'},
-      {value: 'client-3', viewValue: 'Client 3'},
-      {value: 'client-4', viewValue: 'Client 4'},
+  getClients() {
+    const params: [CampoBusca] = [
+      new CampoBusca("user_role", "User", 50, "", "string", null, null, null)
     ]
+    params[0].value = "client";
+
+    this.crudService.GetParamsSearch(params, "/users").subscribe(res => {
+      console.log(res.body);      
+      this.clients = [];
+      this.clients = res.body;
+    })
   }
 
   saveUser() {
