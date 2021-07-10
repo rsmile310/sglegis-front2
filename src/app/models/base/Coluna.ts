@@ -4,4 +4,5 @@ export class Coluna {
     Visivel : boolean; 
     Largura : number;
     Tipo : string;
+    Render: void;
 }

@@ -14,7 +14,6 @@ import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
 })
 export class UsersFormComponent implements OnInit {
   public user: FormGroup;
-
   roles = roles;
   profile = profile;
   clients = [];
@@ -32,13 +31,14 @@ export class UsersFormComponent implements OnInit {
     this.prepareScreen(this.data.payload);
   }
 
-  prepareScreen(record) {
+  prepareScreen(record) { 
     this.user = new FormGroup({
       user_id: new FormControl(record.user_id),
       user_email: new FormControl(record.user_email, [Validators.required, Validators.email]),
       user_name: new FormControl(record.user_name, [Validators.required]),
       user_profile_type: new FormControl(this.data.new ? profile.operacional : record.user_profile_type, [Validators.required]),
       user_role: new FormControl(this.data.new ? roles.client : record.user_role, [Validators.required]),
+      is_disabled: new FormControl(record.is_disabled)
     });
 
     this.clients = [
@@ -51,7 +51,7 @@ export class UsersFormComponent implements OnInit {
 
   saveUser() {
     let user = this.user.value;
-    this.loader.open();
+    this.loader.open("Saving user");
     this.crudService.Save(user, this.data.new, "/users", user.user_id)
       .subscribe(res => {
         if (res.status == 200) {
@@ -83,6 +83,44 @@ export class UsersFormComponent implements OnInit {
         })
       }
     })
+  }
+
+  resetPassword() {
+    let user = this.user.value;
+    this.confirm.confirm("Password Reset", "A new password will be sent into " + user.user_email).subscribe(result => {
+      if (result === true) {
+        this.loader.open("Sending email");
+        this.crudService.Save(user, this.data.new, "/users/reset-password", user.user_id).subscribe(res => {
+          if (res.status == 200) {
+            this.snackBar.open("A new email sent successfully!", "", { duration: 5000 });
+          } else {
+            this.snackBar.open("An error in sending email!", "", { duration: 5000 });
+          }
+          this.loader.close();
+        })
+      }
+    })
+  }
+
+  disableUser() {
+    const user = {...this.user.value};
+    console.log(user);
+    
+    user.is_disabled = user.is_disabled == 1 ? 0 : 1;
+    this.confirm.confirm("Diable User", (user.is_disabled == 1 ? ("Will you disable this user : ") : ("Will you active this user : ")) + user.user_name).subscribe(result => {
+      if (result === true) {
+        this.loader.open();
+        this.crudService.Save(user, this.data.new, "/users", user.user_id).subscribe(res => {
+          if (res.status == 200) {
+            this.user.value.is_disabled = user.is_disabled;
+            this.snackBar.open("An user has been disabled successfully", "", { duration: 5000 });
+          } else {
+            this.snackBar.open("An error in disabling user!", "", { duration: 5000 });
+          }
+          this.loader.close();
+        })
+      }
+    })    
   }
 
 }

@@ -34,10 +34,8 @@
             <mat-label>Nome completo</mat-label>
             <input
               matInput
-              type="name"
-              name="name"
-              [formControl]="user.controls['user_name']"
-              value="">
+              name="user_name"
+              [formControl]="user.controls['user_name']">
             <mat-error
               *ngIf="user.controls['user_name'].hasError('required') && user.controls['user_name'].touched" >
               Name is required
@@ -51,9 +49,8 @@
             <input
               matInput
               type="email"
-              name="email"
-              [formControl]="user.controls['user_email']"
-              value="">
+              name="user_email"
+              [formControl]="user.controls['user_email']">
             <mat-error 
               *ngIf="user.controls['user_email'].hasError('required') && user.controls['user_email'].touched"> Email é obrigatório. </mat-error>
 
@@ -63,9 +60,13 @@
           
         </p>
 
-        <p class="d-flex align-items-center">
+        <p *ngIf="data.new" class="d-flex align-items-center">
             <mat-icon aria-hidden="false" aria-label="Icon" class="size-small">info</mat-icon>&nbsp;
             <small>A senha será enviada para o e-mail informado acima.</small>
+        </p>
+
+        <p *ngIf="!data.new" class="mb-2">
+            <a mat-button (click)="resetPassword()">Gerar nova senha e enviar por e-mail (reset)</a>
         </p>
         
         <p class="d-flex flex-wrap">
@@ -84,7 +85,11 @@
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
     <div fxFlex="100" class="mt-1">
       <span fxFlex *ngIf="!this.data.new"></span>
-      <button mat-raised-button color="accent" type="button" (click)="deleteUser()" *ngIf="!this.data.new">Excluir</button>      
+      <button mat-raised-button color="accent" type="button" (click)="deleteUser()" *ngIf="!this.data.new">Excluir</button>    
+      <span fxFlex *ngIf="!this.data.new"></span>
+      <button mat-raised-button [color]="user.value.is_disabled == 1 ? 'primary' : 'warn'" type="button" (click)="disableUser()" *ngIf="!this.data.new">
+        {{ user.value.is_disabled == 1 ? "Active" : "Desabilitar" }}
+      </button>  
       <span fxFlex></span>
       <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
       <span fxFlex></span>

@@ -18,15 +18,45 @@ export class UsersComponent implements OnInit {
   columns = [
     {
       Propriedade: 'user_id',
-      Titulo: 'User Id',
+      Titulo: 'Id',
       Visivel: false,
-      Largura: 50
+      Largura: 20
     },
     {
       Propriedade: 'user_name',
-      Titulo: 'User Id',
+      Titulo: 'Name',
       Visivel: true,
       Largura: 50
+    },    
+    {
+      Propriedade: 'user_email',
+      Titulo: 'Email',
+      Visivel: true,
+    },
+    {
+      Propriedade: 'user_role',
+      Titulo: 'Tipo Acesso',
+      Visivel: true,
+      Largura: 50
+    },  
+    // {
+    //   Propriedade: 'user_password',
+    //   Titulo: 'Password',
+    //   Visivel: true,
+    //   Largura: 50
+    // }, 
+    {
+      Propriedade: 'user_profile_type',
+      Titulo: 'Perfil',
+      Visivel: true,
+      Largura: 50
+    },
+    {
+      Propriedade: 'is_disabled',
+      Titulo: 'Status',
+      Visivel: true,
+      Largura: 50,
+      Render: (value) => value == 1 ? "Disabled" : "Active"
     },
   ];
 
