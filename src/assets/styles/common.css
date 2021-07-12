@@ -1,0 +1,17 @@
+.d-flex {
+    display: flex !important;
+}
+.flex-wrap {
+    flex-wrap: wrap !important;
+}
+.align-items-center {
+    align-items: center !important;
+}
+.mat-icon.size-small {
+    font-size: 20px !important;
+    height: 20px !important;
+    width: 20px !important;
+}
+.mb-2 {
+    margin-bottom: .5rem !important;
+}

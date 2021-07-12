@@ -10,6 +10,7 @@ import { DocumentsComponent } from './documents/documents.component';
 import { HomeComponent } from './home/home.component';
 import { RequirementsComponent } from './requirements/requirements.component';
 import { UnitiesComponent } from './unities/unities.component';
+import { UsersComponent } from './users/users.component';
 
 const routes: Routes = [  
   {
@@ -71,6 +72,14 @@ const routes: Routes = [
       path: 'documentos',
       component: DocumentsComponent,
       data: { title: 'Aspectos', breadcrumb: 'Aspectos' }
+    }]
+  },
+  {
+    path: '',
+    children: [{
+      path: 'users',
+      component: UsersComponent,
+      data: { title: 'Users', breadcrumb: 'Users' }
     }]
   },
   {
