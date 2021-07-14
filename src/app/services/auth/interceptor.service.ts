@@ -14,7 +14,7 @@ export class InterceptorService implements HttpInterceptor {
   constructor(public auth: AuthGuard) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {    
-    var token = ""; //this.auth.getToken();
+    var token = this.auth.getToken(); //this.auth.getToken();
     if (token == null){
       token ="";
     }
