@@ -10,19 +10,24 @@
         <form [formGroup]="signinForm" (ngSubmit)="signin()" autocomplete="off">
           <p class=""> 
             <mat-form-field class="full-width">
-              <input #usuario
+              <input 
                 matInput
-                name="usuario" autocommplete="off"
+                name="email" 
+                autocommplete="off"
                 [formControl]="signinForm.controls['email']"
                 placeholder="Email/Login"
                 value="">
+              <mat-error *ngIf="signinForm.controls['email'].hasError('error')">
+                {{ signinForm.controls['email'].getError('error') }}
+              </mat-error>
               <mat-error *ngIf="signinForm.controls['email'].hasError('required') && signinForm.controls['email'].touched">
                 Campo obrigatório
               </mat-error>
               <mat-error *ngIf="signinForm.controls['email'].hasError('email') && signinForm.controls['email'].touched">
                 Email inValid
               </mat-error>
-            </mat-form-field>            
+            </mat-form-field>   
+
           </p>
 
           <p class="">
@@ -34,9 +39,9 @@
                 [formControl]="signinForm.controls['password']"
                 placeholder="Senha" 
                 value="">
-              <!-- <mat-error *ngIf="!!errors['user_password']"> 
-                {{ errors['user_password'] }} 
-              </mat-error> -->
+              <mat-error *ngIf="signinForm.controls['password'].hasError('error')">
+                {{ signinForm.controls['password'].getError('error') }}
+              </mat-error>
               <mat-error *ngIf="signinForm.controls['password'].hasError('required') && signinForm.controls['password'].touched"> 
                 Senha é obrigatória 
               </mat-error>

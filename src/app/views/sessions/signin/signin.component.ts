@@ -21,15 +21,13 @@ export class SigninComponent implements OnInit {
     user_email: '123',
     user_password: null
   }  
-  errors: {};
 
   constructor(
     private _router: Router,
     private snackBar: MatSnackBar,
     private auth: AUTHService) { }
 
-  ngOnInit() {    
-    this.clearErrors();    
+  ngOnInit() {       
     localStorage.clear();
     this.signinForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -39,7 +37,6 @@ export class SigninComponent implements OnInit {
   }
 
   signin() {
-    this.clearErrors();
     const signinData = this.signinForm.value;
     const { email, password } = signinData;
     this.submitButton.disabled = true;
@@ -50,22 +47,13 @@ export class SigninComponent implements OnInit {
       localStorage.setItem('user', JSON.stringify(user));      
       this.progressBar.mode = "determinate";
       this._router.navigate(['/cadastros'])
-    }, ({ error }) => {
-      this.errors = {};
-      this.errors = {
-        ...error
-      };
-      console.log(this.errors);      
+    }, ({ error: errors }) => {
+      this.progressBar.mode = "determinate"
+      Object.keys(errors).forEach(key => {
+        this.signinForm.controls[key].setErrors({ 'error': errors[key] });
+      })
     })
   }
-
-  clearErrors() {
-    this.errors = {};
-    this.errors = {
-      ...this.initialErrors
-    }
-  }
-
 }
 
 
