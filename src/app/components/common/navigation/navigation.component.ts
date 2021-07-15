@@ -23,8 +23,6 @@ export class NavigationComponent {
     let i: any = new Object();
     let l: any = new Object();
     let j: any = new Object();
-
-    console.log(user.role);
     
 
     switch (user.role) {
@@ -79,8 +77,6 @@ export class NavigationComponent {
       case roles.client:
       default:
         i.Sub = [];
-        // i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Grupos", "Ordem": 1, "State": "cadastros/grupos", "Type": "link" })
-        // i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Matrizes", "Ordem": 1, "State": "cadastros/clientes", "Type": "link" });
         i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Unidades", "Ordem": 1, "State": "cadastros/unidades", "Type": "link" });
         i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Sistemas de Gestão", "Ordem": 1, "State": "cadastros/areas", "Type": "link" });
         i.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "account_circle", "Name": "Aspectos", "Ordem": 1, "State": "cadastros/aspectos", "Type": "link" });        
