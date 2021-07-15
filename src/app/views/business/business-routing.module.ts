@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { roles } from 'app/models/auth/roles';
 import { AuthGuard } from 'app/services/auth/auth.guard';
 import { AreasComponent } from './areas/areas.component';
 import { AspectsComponent } from './aspects/aspects.component';
@@ -31,7 +32,7 @@ const routes: Routes = [
     children: [{
       path: 'grupos',
       component: CustomerGroupsComponent,
-      data: { title: 'Grupos de Clientes', breadcrumb: 'Grupos de Clientes' }
+      data: { title: 'Grupos de Clientes', breadcrumb: 'Grupos de Clientes', roles: [roles.admin] }
     }]
   },
   {
@@ -39,7 +40,7 @@ const routes: Routes = [
     children: [{
       path: 'clientes',
       component: CustomersComponent,
-      data: { title: 'Clientes', breadcrumb: 'Clientes' }
+      data: { title: 'Clientes', breadcrumb: 'Clientes', roles: [roles.admin] }
     }]
   },
   {
