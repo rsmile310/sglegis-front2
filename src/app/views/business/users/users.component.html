@@ -1,12 +1,12 @@
 <app-grade 
   [Colunas]= "columns"
   [Linhas] = "rows" 
+  [BtnIncluir]="currentUser.user_profile_type === profile.gestor"
   [BtnEditar]="true" 
   [BtnDeletar]="false"
   [CamposBusca]="configSearch"
   (IncluirRegistro)="openForm('', true)"
   (EditarRegistro)="openForm($event.registro, false)"
-  (PesquisarRegistro)="getUsers($event.parametro)"
-  
+  (PesquisarRegistro)="getUsers($event.parametro)"  
   [MostrarBarraBusca]="true">  
 </app-grade>

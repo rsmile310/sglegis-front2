@@ -4,9 +4,10 @@
 <form [formGroup]="unityForm" autocomplete="off">
   <mat-dialog-content>
     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+
       <div fxFlex="40" class="pr-1">
         <mat-form-field class="full-width">
-          <mat-select [formControl]="unityForm.controls['customer_group_id']" placeholder="Grupo *">
+          <mat-select [formControl]="unityForm.controls['customer_group_id']" placeholder="Grupo *" [disabled]="currentUser.role !== roles.admin">
             <mat-option *ngFor="let customer_group of customers_groups" [value]="customer_group.customer_group_id">
               {{customer_group.customer_group_name}} </mat-option>
           </mat-select>
@@ -14,21 +15,29 @@
       </div>
 
       <div fxFlex="10" class="pr-1">
-        <mat-chip-list aria-label="Fish selection">          
+        <mat-chip-list aria-label="Fish selection" *ngIf="currentUser.role === roles.admin">          
           <mat-chip color="primary" selected (click)="newGroupForm()">Novo</mat-chip>          
         </mat-chip-list>
-
-
       </div>
 
       <div fxFlex="40" class="pr-1">
+        <mat-form-field class="full-width">
+          <mat-select [formControl]="unityForm.controls['customer_id']" placeholder="Matriz *">
+            <mat-option *ngFor="let customer of customers" [value]="customer.user_id">
+              {{customer.user_name}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- <div fxFlex="40" class="pr-1">
         <mat-form-field class="full-width">
           <mat-select [formControl]="unityForm.controls['customer_id']" placeholder="Matriz *">
             <mat-option *ngFor="let customer of customers" [value]="customer.customer_id">
               {{customer.customer_business_name}} </mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
+      </div> -->
+      
 
       <div fxFlex="10" class="pr-1">
         <mat-chip-list aria-label="Fish selection">          

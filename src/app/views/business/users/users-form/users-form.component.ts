@@ -4,6 +4,7 @@ import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { profile } from 'app/models/auth/profile.types';
 import { roles } from 'app/models/auth/roles';
 import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
+import { AuthGuard } from 'app/services/auth/auth.guard';
 import { AppConfirmService } from 'app/services/dialogs/app-confirm/app-confirm.service';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
@@ -18,6 +19,8 @@ export class UsersFormComponent implements OnInit {
   roles = roles;
   profile = profile;
   clients = [];
+  customers_groups = [];
+  currentUser: any = {};
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -26,9 +29,11 @@ export class UsersFormComponent implements OnInit {
     private crudService: CRUDService,
     private snackBar: MatSnackBar,
     private confirm: AppConfirmService,
+    private auth: AuthGuard,
   ) { }
 
   ngOnInit() {
+    this.currentUser = this.auth.getUser();
     this.prepareScreen(this.data.payload);
   }
 
@@ -40,9 +45,11 @@ export class UsersFormComponent implements OnInit {
       user_profile_type: new FormControl(this.data.new ? profile.operacional : record.user_profile_type, [Validators.required]),
       user_role: new FormControl(this.data.new ? roles.client : record.user_role, [Validators.required]),
       is_disabled: new FormControl(record.is_disabled),
-      client_id: new FormControl(record.client_id)
+      client_id: new FormControl(record.client_id),
+      customer_group_id: new FormControl(this.currentUser.role === roles.admin ? record.customer_group_id : this.currentUser.customer_group_id, [Validators.required])
     });
     this.getUsers();
+    this.getGroups();
   }
 
   getUsers() {
@@ -126,6 +133,16 @@ export class UsersFormComponent implements OnInit {
         })
       }
     })    
+  }
+
+  getGroups() {
+    let p: any = new Object();
+    p.orderby = "customer_group_name";
+    p.direction = "asc";
+    this.crudService.GetParams(p, "/customergroup").subscribe(res => {
+      this.customers_groups = [];
+      this.customers_groups = res.body;
+    });
   }
 
 }

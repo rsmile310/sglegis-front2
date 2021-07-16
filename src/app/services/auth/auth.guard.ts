@@ -8,6 +8,7 @@ import { select, Store } from "@ngrx/store";
 import { Observable } from 'rxjs';
 import { selectState } from 'app/store/selectors';
 import { roles } from 'app/models/auth/roles';
+import { profile } from 'app/models/auth/profile.types';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -24,6 +25,12 @@ export class AuthGuard implements CanActivate {
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const currentUser = this.getUser();      
     const currentRoute: any = await this.getCurrentRoute(route, state);
+    
+    // for client, operational type
+    if (currentUser.role !== roles.admin && (currentRoute.data.profiles && currentRoute.data.profiles.indexOf(currentUser.user_profile_type) === -1)) {
+      this.router.navigate(['/']);
+      return false;
+    }
            
     if (this.getToken()) {
       if (currentRoute.data.roles && currentRoute.data.roles.indexOf(currentUser.role) === -1) {
@@ -33,7 +40,7 @@ export class AuthGuard implements CanActivate {
         this.setCurrentUser();
         return true;
       }
-    } else {      
+    } else {   
       this.router.navigate(['/sessao/entrar']);
       return false;
     }    
