@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
+import { profile } from 'app/models/auth/profile.types';
+import { roles } from 'app/models/auth/roles';
 import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
 import { dialog } from 'app/models/size/size';
+import { AuthGuard } from 'app/services/auth/auth.guard';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
 import { UsersFormComponent } from './users-form/users-form.component';
@@ -46,6 +49,13 @@ export class UsersComponent implements OnInit {
       Largura: 50
     },
     {
+      Propriedade: 'customer_group',
+      Titulo: 'Group',
+      Visivel: true,
+      Largura: 50,
+      Render: (group) => group.customer_group_name
+    },
+    {
       Propriedade: 'is_disabled',
       Titulo: 'Status',
       Visivel: true,
@@ -58,15 +68,26 @@ export class UsersComponent implements OnInit {
     new CampoBusca("user_name", "User", 50, "", "string", null, null, null)
   ]
 
+  currentUser: any = {};
+  roles = roles;
+  profile = profile;
+
+
   constructor(
     private crud: CRUDService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private loader: AppLoaderService
+    private loader: AppLoaderService,
+    private auth: AuthGuard
   ) { }
 
   prepareScreen() {
-    this.getUsers(undefined);
+    this.currentUser = this.auth.getUser();
+    if (this.currentUser.role !== roles.admin) {
+      this.getUsersByGroup(this.currentUser.customer_group_id);
+    } else {
+      this.getUsers(undefined);
+    }
   }
   
   openForm(info: any = {}, newRecord: Boolean) {    
@@ -81,7 +102,11 @@ export class UsersComponent implements OnInit {
 
     dialogRef.afterClosed()
     .subscribe(res => {
-      this.getUsers(this.lastSearch);
+      if (this.currentUser.role !== roles.admin) {
+        this.getUsersByGroup(this.currentUser.customer_group_id);
+      } else {
+        this.getUsers(undefined);
+      }
       return;
     })
   }
@@ -93,6 +118,19 @@ export class UsersComponent implements OnInit {
         this.rows = [];
         this.rows = res.body;
       })
+  }
+
+  getUsersByGroup(groupId) {
+    let p: any = new Object();
+      p.orderby = "user_name";
+      p.direction = "asc";
+      p.fields = "customer_group_id";
+      p.ops = "eq";
+      p.values = groupId;
+      this.crud.GetParams(p, "/users/query").subscribe(res => {
+        this.rows = [];
+        this.rows = res.body;
+      });
   }
 
   ngOnInit() {

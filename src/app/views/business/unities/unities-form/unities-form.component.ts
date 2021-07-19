@@ -1,11 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatDialog } from '@angular/material';
+import { roles } from 'app/models/auth/roles';
+import { AuthGuard } from 'app/services/auth/auth.guard';
 import { AppConfirmService } from 'app/services/dialogs/app-confirm/app-confirm.service';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
 import { CustomerGroupFormComponent } from '../../customer-groups/customer-group-form/customer-group-form.component';
 import { CustomersFormsComponent } from '../../customers/customers-forms/customers-forms.component';
+import { UsersFormComponent } from '../../users/users-form/users-form.component';
 
 @Component({
   selector: 'app-unities-form',
@@ -21,6 +24,8 @@ export class UnitiesFormComponent implements OnInit {
   areas = [];
   aspects = [];
   areasWithAspects = [];
+  currentUser: any;
+  roles = roles;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -30,6 +35,7 @@ export class UnitiesFormComponent implements OnInit {
     private snackBar: MatSnackBar,
     private confirm: AppConfirmService,
     public dialog: MatDialog,
+    private auth: AuthGuard
   ) { }
 
   prepareScreen(record) {
@@ -42,7 +48,7 @@ export class UnitiesFormComponent implements OnInit {
       customer_unity_city_id: new FormControl(record.customer_unity_city_id, [Validators.required]),
       customer_unity_uf_id: new FormControl(record.customer_unity_uf_id, [Validators.required]),
       customer_unity_cep: new FormControl(record.customer_unity_cep, [Validators.required, Validators.minLength(8)]),
-      customer_group_id: new FormControl(record.customer_group_id, [Validators.required]),
+      customer_group_id: new FormControl(this.currentUser.role === roles.admin ? record.customer_group_id : this.currentUser.customer_group_id, [Validators.required]),
       customer_id: new FormControl(record.customer_id, [Validators.required]),
       unity_contact_name: new FormControl(record.unity_contact_name, [Validators.required]),
       unity_contact_email: new FormControl(record.unity_contact_email, [Validators.required, Validators.email]),
@@ -50,6 +56,10 @@ export class UnitiesFormComponent implements OnInit {
       unity_contact_observation: new FormControl()
     });
     this.getGroups();
+
+    if (this.currentUser.role !== roles.admin) {
+      this.getCustomers(this.currentUser.customer_group_id);
+    }
 
     this.unityForm.controls.customer_group_id.valueChanges.subscribe(res => {
       this.getCustomers(res);
@@ -100,7 +110,7 @@ export class UnitiesFormComponent implements OnInit {
   }
 
   newCustomerForm() {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(CustomersFormsComponent, {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(UsersFormComponent, {
       width: '720px',
       disableClose: true,
       data: { title: "Nova Matriz", payload: "", new: true }
@@ -114,6 +124,23 @@ export class UnitiesFormComponent implements OnInit {
         return;
       });
   }
+
+  // newCustomerForm() {
+  //   let dialogRef: MatDialogRef<any> = this.dialog.open(CustomersFormsComponent, {
+  //     width: '720px',
+  //     disableClose: true,
+  //     data: { title: "Nova Matriz", payload: "", new: true }
+  //   });
+
+  //   dialogRef.afterClosed()
+  //     .subscribe(res => {
+  //       if (res == "OK") {
+  //         this.getCustomers(0);
+  //       }
+  //       return;
+  //     });
+  // }
+
   deleteUnity() {
 
   }
@@ -190,24 +217,32 @@ export class UnitiesFormComponent implements OnInit {
   }
 
   getGroups() {
-    let p: any = new Object();
-    p.orderby = "customer_group_name";
-    p.direction = "asc";
-    this.crudService.GetParams(p, "/customergroup").subscribe(res => {
+    if (this.currentUser.role === roles.admin) {
+      let p: any = new Object();
+      p.orderby = "customer_group_name";
+      p.direction = "asc";
+      this.crudService.GetParams(p, "/customergroup").subscribe(res => {
+        this.customers_groups = [];
+        this.customers_groups = res.body;
+      });
+    } else {
       this.customers_groups = [];
-      this.customers_groups = res.body;
-    });
+      this.customers_groups.push({
+        customer_group_id: this.currentUser.customer_group_id,
+        customer_group_name: this.currentUser.customer_group_name
+      })
+    }
   }
 
   getCustomers(group_id) {
     if (group_id != 0) {
       let p: any = new Object();
-      p.orderby = "customer_business_name";
+      p.orderby = "user_name";
       p.direction = "asc";
       p.fields = "customer_group_id";
       p.ops = "eq";
       p.values = group_id;
-      this.crudService.GetParams(p, "/customer/query").subscribe(res => {
+      this.crudService.GetParams(p, "/users/query").subscribe(res => {
         this.customers = [];
         this.customers = res.body;
       });
@@ -216,14 +251,39 @@ export class UnitiesFormComponent implements OnInit {
       p.orderby = "customer_business_name";
       p.direction = "asc";
       p.field = "customer_group_id"
-      this.crudService.GetParams(p, "/customer").subscribe(res => {
+      this.crudService.GetParams(p, "/users").subscribe(res => {
         this.customers = [];
         this.customers = res.body;
       });
     }
   }
 
+  // getCustomers(group_id) {
+  //   if (group_id != 0) {
+  //     let p: any = new Object();
+  //     p.orderby = "customer_business_name";
+  //     p.direction = "asc";
+  //     p.fields = "customer_group_id";
+  //     p.ops = "eq";
+  //     p.values = group_id;
+  //     this.crudService.GetParams(p, "/customer/query").subscribe(res => {
+  //       this.customers = [];
+  //       this.customers = res.body;
+  //     });
+  //   } else {
+  //     let p: any = new Object();
+  //     p.orderby = "customer_business_name";
+  //     p.direction = "asc";
+  //     p.field = "customer_group_id"
+  //     this.crudService.GetParams(p, "/customer").subscribe(res => {
+  //       this.customers = [];
+  //       this.customers = res.body;
+  //     });
+  //   }
+  // }
+
   ngOnInit() {
+    this.currentUser = this.auth.getUser();
     this.prepareScreen(this.data.payload);
   }
 }

@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { profile } from 'app/models/auth/profile.types';
+import { roles } from 'app/models/auth/roles';
 import { AuthGuard } from 'app/services/auth/auth.guard';
 import { AreasComponent } from './areas/areas.component';
 import { AspectsComponent } from './aspects/aspects.component';
@@ -31,7 +33,7 @@ const routes: Routes = [
     children: [{
       path: 'grupos',
       component: CustomerGroupsComponent,
-      data: { title: 'Grupos de Clientes', breadcrumb: 'Grupos de Clientes' }
+      data: { title: 'Grupos de Clientes', breadcrumb: 'Grupos de Clientes', roles: [roles.admin], profiles: [profile.gestor] }
     }]
   },
   {
@@ -39,7 +41,7 @@ const routes: Routes = [
     children: [{
       path: 'clientes',
       component: CustomersComponent,
-      data: { title: 'Clientes', breadcrumb: 'Clientes' }
+      data: { title: 'Clientes', breadcrumb: 'Clientes', roles: [roles.admin], profiles: [profile.gestor] }
     }]
   },
   {
@@ -47,7 +49,7 @@ const routes: Routes = [
     children: [{
       path: 'unidades',
       component: UnitiesComponent,
-      data: { title: 'Unidades', breadcrumb: 'Unidades' }
+      data: { title: 'Unidades', breadcrumb: 'Unidades', profiles: [profile.gestor] }
     }]
   },
   {
@@ -55,7 +57,7 @@ const routes: Routes = [
     children: [{
       path: 'areas',
       component: AreasComponent,
-      data: { title: 'Sistemas de Gestão', breadcrumb: 'Sistemas de Gestão' }
+      data: { title: 'Sistemas de Gestão', breadcrumb: 'Sistemas de Gestão', profiles: [profile.gestor] }
     }]
   },
   {
@@ -63,7 +65,7 @@ const routes: Routes = [
     children: [{
       path: 'aspectos',
       component: AspectsComponent,
-      data: { title: 'Aspectos', breadcrumb: 'Aspectos' }
+      data: { title: 'Aspectos', breadcrumb: 'Aspectos', profiles: [profile.gestor] }
     }]
   },
   {
@@ -71,7 +73,7 @@ const routes: Routes = [
     children: [{
       path: 'documentos',
       component: DocumentsComponent,
-      data: { title: 'Aspectos', breadcrumb: 'Aspectos' }
+      data: { title: 'Aspectos', breadcrumb: 'Aspectos', profiles: [profile.gestor] }
     }]
   },
   {
@@ -79,7 +81,7 @@ const routes: Routes = [
     children: [{
       path: 'users',
       component: UsersComponent,
-      data: { title: 'Users', breadcrumb: 'Users' }
+      data: { title: 'Users', breadcrumb: 'Users', profiles: [profile.gestor] }
     }]
   },
   {

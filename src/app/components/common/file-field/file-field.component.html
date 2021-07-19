@@ -1,0 +1,10 @@
+<div>
+  <input
+    #fileInput
+    hidden
+    type="file"
+    (change)="handleFileInput($event.target.files)"
+    [accept]="accept"
+  >
+  <button mat-raised-button color="primary" type="button" (click)="fileInput.click()">Importar novo documento.</button>
+</div>

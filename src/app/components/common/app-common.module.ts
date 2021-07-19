@@ -35,6 +35,7 @@ import { ThemeService } from '../../services/theme/theme.service';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { PopupImagemComponent } from './popup-imagem/popup-imagem.component';
 import { GradeVisualizarComponent } from './grade-visualizar/grade-visualizar.component';
+// import { FileFieldComponent } from './file-field/file-field.component';
 
 
 @NgModule({

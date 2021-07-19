@@ -56,6 +56,8 @@ import { RequirementsComponent } from './requirements/requirements.component';
 import { RequirementsFormComponent } from './requirements/requirements-form/requirements-form.component';
 import { UsersComponent } from './users/users.component';
 import { UsersFormComponent } from './users/users-form/users-form.component';
+import { FileFieldComponent } from "./../../components/common/file-field/file-field.component";
+import { DocumentsAttachementFormComponent } from './documents/documents-attachement-form/documents-attachement-form.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: "right",
@@ -101,7 +103,8 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     OwlNativeDateTimeModule,
     MatAutocompleteModule,
     NgxMaskModule.forRoot(),
-    BusinessRoutingModule
+    BusinessRoutingModule,
+    // MaterialFileInputModule
   ],
   declarations: [
     GradeComponent,
@@ -115,11 +118,11 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     DocumentItemComponent,
     RequirementsComponent,
     RequirementsFormComponent,
-    UsersComponent, UsersFormComponent
+    UsersComponent, UsersFormComponent, FileFieldComponent, DocumentsAttachementFormComponent
   ],
   exports: [MatAutocompleteModule],
   entryComponents: [CustomerGroupFormComponent,
-    CustomersFormsComponent, UnitiesFormComponent, AreasFormComponent, AspectsFormComponent, DocumentsFormComponent,
+    CustomersFormsComponent, UnitiesFormComponent, AreasFormComponent, AspectsFormComponent, DocumentsFormComponent, DocumentsAttachementFormComponent,
     DocumentItemComponent, RequirementsFormComponent, UsersFormComponent
   ],
   providers: [

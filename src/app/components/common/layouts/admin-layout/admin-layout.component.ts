@@ -13,6 +13,7 @@ import { TranslateService } from 'ng2-translate/ng2-translate';
 import { ThemeService } from '../../../../services/theme/theme.service';
 import * as Ps from 'perfect-scrollbar';
 import * as domHelper from '../../../../helpers/dom.helper';
+import { AuthGuard } from 'app/services/auth/auth.guard';
 
 @Component({
   selector: 'app-admin-layout',
@@ -24,13 +25,15 @@ export class AdminLayoutComponent implements OnInit {
   isModuleLoading: Boolean = false;
   moduleLoaderSub: Subscription;
   usuario: any;
+  currentUser: any;
   @ViewChild(MatSidenav) private sideNave: MatSidenav;
 
 
   constructor(
     private router: Router,
     public translate: TranslateService,
-    public themeService: ThemeService
+    public themeService: ThemeService,
+    private auth: AuthGuard
   ) {
     // Close sidenav after route change in mobile
     router.events.filter(event => event instanceof NavigationEnd)
@@ -49,7 +52,8 @@ export class AdminLayoutComponent implements OnInit {
   }
 
 
-  ngOnInit() {
+  ngOnInit() {    
+    this.currentUser = this.auth.getUser();
     // Initialize Perfect scrollbar for sidenav
     let navigationHold = document.getElementById('scroll-area');
     Ps.initialize(navigationHold, {

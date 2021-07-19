@@ -24,6 +24,10 @@ import { NgxUpperCaseDirectiveModule } from 'ngx-upper-case-directive';
 import { registerLocaleData } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material';
 
+import { StoreModule } from "@ngrx/store";
+// import reducers from "./store/reducers";
+import authReducer from "./store/reducers/auth.reducer";
+
 import ptBr from '@angular/common/locales/pt';
 
 
@@ -65,8 +69,10 @@ export function createTranslateLoader(http: Http) {
     AppLoaderModule,
     AppCommonModule,
     NgxCurrencyModule,
-    NgxUpperCaseDirectiveModule
-    
+    NgxUpperCaseDirectiveModule,
+    StoreModule.forRoot({
+      auth: authReducer
+    })    
   ],
   declarations: [AppComponent],
   providers: [{ provide: LOCALE_ID, useValue: 'pt-PT' },

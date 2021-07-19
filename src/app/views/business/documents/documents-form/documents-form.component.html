@@ -83,30 +83,31 @@
       <mat-card-content class="mat-card-body">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
 
-          <div fxFlex="100" class="mt-1">
-            <button mat-raised-button color="primary" type="button">Importar novo documento.</button>
+          <div fxFlex="100" class="mt-1">            
+            <button mat-raised-button color="primary" type="button" (click)="newAttachment()" [disabled]="!documentForm.value.document_id">Importar novo documento.</button>
             <span fxFlex></span>
           </div>
+          
         </div>
         <br />
 
-        <ngx-datatable class="material" [rows]="rows2" [columnMode]="'standard'" [headerHeight]="35" [footerHeight]="0"
+        <ngx-datatable class="material" [rows]="documentAttachments" [columnMode]="'standard'" [headerHeight]="35" [footerHeight]="0"
           [rowHeight]="'35'" [scrollbarH]="true" [messages]="{emptyMessage: ''}">
           <ngx-datatable-column name="Excluir" [flexGrow]="0" [width]="80">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              <button mat-icon-button mat-sm-button color="warn" (click)="removeAddress(row)">
+              <button mat-icon-button mat-sm-button color="warn" (click)="removeAttachment(row)">
                 <mat-icon>delete</mat-icon>
               </button>
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="Descrição" [width]="300">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row["name"]}}
+              {{row["attachment_description"]}}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="Data de upload" [width]="150">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row["dt"]}}
+              {{row["date"]}}
             </ng-template>
           </ngx-datatable-column>
 
@@ -166,7 +167,7 @@
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
     <div fxFlex="100" class="mt-1">
       <span fxFlex *ngIf="!this.data.new"></span>
-      <button mat-raised-button color="accent" type="button" (click)="deleteArea()"
+      <button mat-raised-button color="accent" type="button" (click)="deleteDocument()"
         *ngIf="!this.data.new">Excluir</button>
       <span fxFlex></span>
       <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Fechar</button>

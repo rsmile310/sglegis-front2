@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar, MatDialogRef } from '@angular/material';
+import { profile } from 'app/models/auth/profile.types';
 import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
+import { AuthGuard } from 'app/services/auth/auth.guard';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
 import { AreasFormComponent } from '../areas/areas-form/areas-form.component';
@@ -40,14 +42,20 @@ export class AspectsComponent implements OnInit {
     new CampoBusca("filter", "Grupo", 50, "", "string", null, null, null)
   ];
 
+  profile = profile;
+  currentUser: any = {};
+
+
   constructor(
     private crud: CRUDService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private loader: AppLoaderService,    
+    private auth: AuthGuard
   ) { }
 
   prepareScreen() {
+    this.currentUser = this.auth.getUser();
     this.getAspects(undefined);
     
   }

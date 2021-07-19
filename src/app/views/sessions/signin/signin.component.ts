@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { Md5 } from "md5-typescript";
-
+import { AUTHService } from 'app/services/negocio/auth/auth.service';
 
 @Component({
   selector: 'app-signin',
@@ -17,14 +17,20 @@ export class SigninComponent implements OnInit {
 
   signinForm: FormGroup;
 
+  initialErrors: {
+    user_email: '123',
+    user_password: null
+  }  
+
   constructor(
     private _router: Router,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar,
+    private auth: AUTHService) { }
 
-  ngOnInit() {
+  ngOnInit() {       
     localStorage.clear();
     this.signinForm = new FormGroup({
-      username: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', Validators.required),
       rememberMe: new FormControl(false)
     });
@@ -32,11 +38,22 @@ export class SigninComponent implements OnInit {
 
   signin() {
     const signinData = this.signinForm.value;
+    const { email, password } = signinData;
     this.submitButton.disabled = true;
     this.progressBar.mode = 'indeterminate';
-
+    this.auth.login(email, password).subscribe(res => {
+      const { token, user } = res;
+      localStorage.setItem('jwtToken', token);
+      localStorage.setItem('user', JSON.stringify(user));      
+      this.progressBar.mode = "determinate";
+      this._router.navigate(['/cadastros'])
+    }, ({ error: errors }) => {
+      this.progressBar.mode = "determinate"
+      Object.keys(errors).forEach(key => {
+        this.signinForm.controls[key].setErrors({ 'error': errors[key] });
+      })
+    })
   }
-
 }
 
 

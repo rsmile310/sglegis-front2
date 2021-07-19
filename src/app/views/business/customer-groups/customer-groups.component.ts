@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { profile } from 'app/models/auth/profile.types';
 import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
+import { AuthGuard } from 'app/services/auth/auth.guard';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
 import { ThemeService } from 'app/services/theme/theme.service';
@@ -35,14 +37,19 @@ export class CustomerGroupsComponent implements OnInit {
     new CampoBusca("customer_group_name", "Grupo", 50, "", "string", null, null, null)
   ];
 
+  currentUser: any = {};
+  profile = profile;
+
   constructor(
     private crud: CRUDService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private loader: AppLoaderService,    
+    private auth: AuthGuard,
   ) { }
 
   prepareScreen() {
+    this.currentUser = this.auth.getUser();
     this.getCustomerGroups(undefined);
     
   }

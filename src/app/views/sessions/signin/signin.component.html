@@ -8,21 +8,29 @@
           <!-- <p class="text-muted m-0">Acessar minha conta</p> -->
         </div>
         <form [formGroup]="signinForm" (ngSubmit)="signin()" autocomplete="off">
-          <div class=""> 
+          <p class=""> 
             <mat-form-field class="full-width">
-              <input #usuario
+              <input 
                 matInput
-                name="usuario" autocommplete="off"
-                [formControl]="signinForm.controls['username']"
+                name="email" 
+                autocommplete="off"
+                [formControl]="signinForm.controls['email']"
                 placeholder="Email/Login"
-                value="" upperCase>
-            </mat-form-field>
-            <small 
-              *ngIf="signinForm.controls['username'].hasError('required') && signinForm.controls['username'].touched" 
-              class="form-error-msg"> Campo obrigatório </small>
-          </div>
+                value="">
+              <mat-error *ngIf="signinForm.controls['email'].hasError('error')">
+                {{ signinForm.controls['email'].getError('error') }}
+              </mat-error>
+              <mat-error *ngIf="signinForm.controls['email'].hasError('required') && signinForm.controls['email'].touched">
+                Campo obrigatório
+              </mat-error>
+              <mat-error *ngIf="signinForm.controls['email'].hasError('email') && signinForm.controls['email'].touched">
+                Email inValid
+              </mat-error>
+            </mat-form-field>   
 
-          <div class="">
+          </p>
+
+          <p class="">
             <mat-form-field class="full-width">
               <input 
                 type="password"
@@ -30,12 +38,15 @@
                 matInput
                 [formControl]="signinForm.controls['password']"
                 placeholder="Senha" 
-                value="" upperCase>
+                value="">
+              <mat-error *ngIf="signinForm.controls['password'].hasError('error')">
+                {{ signinForm.controls['password'].getError('error') }}
+              </mat-error>
+              <mat-error *ngIf="signinForm.controls['password'].hasError('required') && signinForm.controls['password'].touched"> 
+                Senha é obrigatória 
+              </mat-error>
             </mat-form-field>
-            <small 
-              *ngIf="signinForm.controls['password'].hasError('required') && signinForm.controls['password'].touched" 
-              class="form-error-msg"> Senha é obrigatória </small>
-          </div>
+          </p>
           
           <!-- <div class="pb-1">
             <mat-checkbox

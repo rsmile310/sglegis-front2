@@ -2,12 +2,16 @@ import { DatePipe, formatDate } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatDialog } from '@angular/material';
+import { dialog } from 'app/models/size/size';
 import { AppConfirmService } from 'app/services/dialogs/app-confirm/app-confirm.service';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
 import { ThemeService } from 'app/services/theme/theme.service';
 import { CustomersFormsComponent } from '../../customers/customers-forms/customers-forms.component';
 import { DocumentItemComponent } from '../document-item/document-item.component';
+import { DocumentsAttachementFormComponent } from '../documents-attachement-form/documents-attachement-form.component';
+// import { FileInputComponent } from 'ngx-material-file-input';
+import * as moment from "moment";
 
 @Component({
   selector: 'app-docuemnts-form',
@@ -27,9 +31,10 @@ export class DocumentsFormComponent implements OnInit {
 
 
   columns2 = [{ prop: 'name', name: 'Nome do documento' }, { prop: 'dt', name: 'Data de upload' }];
-  rows2 = [
-    { name: 'Lei 75.pdf', dt: '15/01/2021' },
-    { name: 'Lei 90.pdf', dt: '16/02/2021' }
+
+  documentAttachments = [
+    // { name: 'Lei 75.pdf', dt: '15/01/2021' },
+    // { name: 'Lei 90.pdf', dt: '16/02/2021' }
   ];
 
   constructor(
@@ -52,15 +57,16 @@ export class DocumentsFormComponent implements OnInit {
       document_status_id: new FormControl(record.document_status_id, [Validators.required]),
       document_summary: new FormControl(record.document_summary, [Validators.required]),
       document_state_id: new FormControl(record.document_state_id),
-      document_city_id: new FormControl(record.document_city_id)
+      document_city_id: new FormControl(record.document_city_id),
+      document_file: new FormControl()
     });
     
-    this.documentForm.controls.document_date.setValue( formatDate( new Date(record.document_date), "dd/MM/yyyy", "pt_br") );
+    this.documentForm.controls.document_date.setValue( formatDate( record.document_date ? new Date(record.document_date) : new Date(), "dd/MM/yyyy", "pt_br") );
     this.documentData = new Date(record.document_date);
     this.getDocumentScopes();
     this.getDocumentStatus();
     this.getItems(record.document_id);
-
+    this.getAttachments(record.document_id);
 
 
     this.documentForm.controls.document_scope_id.valueChanges.subscribe(r => {
@@ -224,6 +230,70 @@ export class DocumentsFormComponent implements OnInit {
       }
 
     });
+  }
+
+  newAttachment() {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(DocumentsAttachementFormComponent, {
+      width: dialog.small,
+      disableClose: true,
+      data: { title: "New Attachment to document", payload: this.documentForm.value, new: true }
+    });
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.getAttachments(this.documentForm.value.document_id);
+      return;
+    })
+  }
+
+  getAttachments(documentId) {
+    this.crudService.GetParams({ "orderby": "createdAt", "direction": "asc" }, "/document-attachment/attachments/" + documentId).subscribe(res => {
+      if (res.status == 200) {
+        this.documentAttachments = [];
+        this.documentAttachments = res.body.map(att => {
+          const date = moment(att.createdAt);          
+          return {
+            ...att,
+            date: date.format('DD/MM/yyyy')
+          }
+        });                
+      }
+    });
+  }
+
+  removeAttachment(attachment) {
+    let attachmentData = attachment.attachment_id;
+    
+    this.confirm.confirm("Delete Attachment", "Are you sure to delete an Attachment? " + attachmentData).subscribe(result => {
+      if (result === true) {
+        this.loader.open();
+        this.crudService.DeleteParams(attachmentData, "/document-attachment").subscribe(res => {
+          this.snackBar.open("An attachment has been deleted successfully!", "", { duration: 3000 });
+          this.getAttachments(this.documentForm.value.document_id);
+          this.loader.close();
+        }, err => {
+          this.loader.close();
+          this.snackBar.open("Error in deleting attachment: " + err, "", { duration: 5000 });
+        })
+      }
+    })
+  }
+
+  deleteDocument() {
+    let document = this.documentForm.value;
+    
+    this.confirm.confirm("Delete Document", "Are you sure to delete a Document? " + document.document_id).subscribe(result => {
+      if (result === true) {
+        this.loader.open();
+        this.crudService.DeleteParams(document.document_id, "/document").subscribe(res => {
+          this.snackBar.open("A Document has been deleted successfully!", "", { duration: 3000 });
+          this.loader.close();
+          this.dialogRef.close("OK");
+        }, err => {
+          this.loader.close();
+          this.snackBar.open("Error in deleting document: " + err, "", { duration: 5000 });
+        })
+      }
+    })
   }
 
 }
