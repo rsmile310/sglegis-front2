@@ -1,0 +1,39 @@
+<h3 matDialogTitle>
+  {{ data.title }}
+</h3>
+
+<form [formGroup]="attachmentForm" autocomplete="off">
+
+  <mat-dialog-content>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+      <div fxFlex="100">
+        <mat-form-field class="full-width">
+          <input 
+            matInput
+            placeholder="Description"
+            [formControl]="attachmentForm.controls['attachment_description']"
+          >
+        </mat-form-field>
+      </div>
+      <div fxFlex="100">
+        <input 
+          type="file"
+          accept=".pdf"
+          (change)="fileChange($event)"
+        >
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
+    <div fxFlex="100" class="mt-1">
+      <span fxFlex></span>
+      <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Fechar</button>
+      <span fxFlex></span>
+      <button mat-raised-button class="mat-primary" type="button" 
+        [disabled]="attachmentForm.invalid" (click)="saveAttachment()">Gravar</button>
+      <span fxFlex></span>
+    </div>
+  </div>
+
+</form>

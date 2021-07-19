@@ -26,13 +26,13 @@ export class AuthGuard implements CanActivate {
     const currentUser = this.getUser();      
     const currentRoute: any = await this.getCurrentRoute(route, state);
     
-    // for client, operational type
-    if (currentUser.role !== roles.admin && (currentRoute.data.profiles && currentRoute.data.profiles.indexOf(currentUser.user_profile_type) === -1)) {
-      this.router.navigate(['/']);
-      return false;
-    }
-           
+    
     if (this.getToken()) {
+      // for client, operational type
+      if (currentUser.role !== roles.admin && (currentRoute.data.profiles && currentRoute.data.profiles.indexOf(currentUser.user_profile_type) === -1)) {
+        this.router.navigate(['/']);
+        return false;
+      }
       if (currentRoute.data.roles && currentRoute.data.roles.indexOf(currentUser.role) === -1) {
         this.router.navigate(['/']);
         return false;
