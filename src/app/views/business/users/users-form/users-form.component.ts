@@ -46,8 +46,9 @@ export class UsersFormComponent implements OnInit {
       user_role: new FormControl(this.data.new ? roles.client : record.user_role, [Validators.required]),
       is_disabled: new FormControl(record.is_disabled),
       client_id: new FormControl(record.client_id),
-      customer_group_id: new FormControl(this.currentUser.role === roles.admin ? record.customer_group_id : this.currentUser.customer_group_id, [Validators.required])
+      customer_group_id: new FormControl(this.currentUser.role === roles.admin ? record.customer_group_id : this.currentUser.customer_group_id)
     });
+    
     this.getUsers();
     this.getGroups();
   }
