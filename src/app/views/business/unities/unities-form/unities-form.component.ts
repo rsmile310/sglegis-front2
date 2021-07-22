@@ -53,7 +53,7 @@ export class UnitiesFormComponent implements OnInit {
       unity_contact_name: new FormControl(record.unity_contact_name, [Validators.required]),
       unity_contact_email: new FormControl(record.unity_contact_email, [Validators.required, Validators.email]),
       unity_contact_phone: new FormControl(record.unity_contact_phone, [Validators.required]),
-      unity_contact_observation: new FormControl()
+      unity_contact_observation: new FormControl(record.unity_contact_observation)
     });
     this.getGroups();
 
@@ -64,8 +64,8 @@ export class UnitiesFormComponent implements OnInit {
     this.unityForm.controls.customer_group_id.valueChanges.subscribe(res => {
       this.getCustomers(res);
     });
-
-    if (!this.data.new) {
+    
+    if (!this.data.new) {      
       this.getCustomers(this.unityForm.controls.customer_group_id.value);
       this.getCep();
     }
@@ -185,7 +185,7 @@ export class UnitiesFormComponent implements OnInit {
 
   }
 
-  getCep() {
+  getCep() {    
     let cep = this.unityForm.controls.customer_unity_cep.value;
     //this.loader.open();
     this.crudService.GetParams(undefined, "/cep/" + cep).subscribe(res => {
@@ -207,6 +207,7 @@ export class UnitiesFormComponent implements OnInit {
               if (c.status == 200) {
                 this.cities = [];
                 this.cities = c.body;
+                
                 this.unityForm.controls.customer_unity_city_id.setValue(res.body[0].city_id);
               }
             });

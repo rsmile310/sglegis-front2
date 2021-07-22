@@ -1,0 +1,93 @@
+<h3 matDialogTitle>
+  {{ data.title }}
+</h3>
+
+<form [formGroup]="responsibleForm" autocomplete="off">
+  <mat-dialog-content>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+      <mat-card class="mat-card-background" fxFlex="100">         
+        <mat-card-content class="mat-card-body p-3">
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+            <div fxFlex="100">
+              <mat-form-field class="full-width">
+                <input
+                  matInput
+                  placeholder="Nome completo"
+                  [formControl]="responsibleForm.controls['unity_aspect_responsible_name']"
+                >
+              </mat-form-field>
+            </div>
+            <div fxFlex="100">
+              <mat-form-field class="full-width">
+                <input
+                  matInput
+                  placeholder="E-mail"
+                  [formControl]="responsibleForm.controls['unity_aspect_responsible_email']"
+                >
+              </mat-form-field>
+            </div>
+            
+            <div fxFlex="100">
+              <h5 class="full-width">Associated areas</h5>
+              <div fxLayout="row" fxLayout.lt-sm="column">
+                <mat-checkbox fxFlex="25" class="pr-1" *ngFor="let aspect of aspects" color="primary" (change)="toggleAspect(aspect, $event)" [checked]="isCheckedAspect(aspect)">{{ aspect.area_aspect_name }}</mat-checkbox>
+              </div>
+            </div>
+            <div fxFlex="100" class="mt-2">
+              <button mat-raised-button class="mat-primary" type="button" (click)="addResponsible()" [disabled]="responsibleForm.invalid || aspectInvalid" >
+                Add to List
+              </button>
+            </div>
+          </div>        
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="mat-card-background" fxFlex="100">     
+        <mat-card-content class="mat-card-body p-3">
+          <ngx-datatable class="material full-width" [rows]="responsibles" [columnMode]="'standard'" [headerHeight]="35" [footerHeight]="0"
+            [rowHeight]="'35'" [scrollbarH]="true" [messages]="{ emptyMessage: '' }" >
+
+            <ngx-datatable-column name="NOME" [flexGrow]="0" >
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row['unity_aspect_responsible_name'] }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="EMAIL" [flexGrow]="0" >
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row['unity_aspect_responsible_email'] }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="AREA" [flexGrow]="0" >
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <mat-icon [matTooltip]="row.tooltip" matTooltipPosition="after" class="cursor-pointer tooltip-msg" >info</mat-icon>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="DELETE" [flexGrow]="0">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <button mat-icon-button mat-sm-button color="warn" (click)="removeResponsible(row)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </ng-template>
+            </ngx-datatable-column>
+
+          </ngx-datatable>      
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </mat-dialog-content>
+
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
+    <div fxFlex="100" class="mt-1">
+      <span fxFlex></span>
+      <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
+      <span fxFlex></span>
+      <button mat-raised-button class="mat-primary" type="button" (click)="save()"
+      [disabled]="responsibles.length === 0"
+        >Gravar</button>
+      <span fxFlex></span>
+    </div>
+  </div>
+</form>

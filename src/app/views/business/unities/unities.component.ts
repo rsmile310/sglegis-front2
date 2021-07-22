@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { profile } from 'app/models/auth/profile.types';
 import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
+import { dialog } from 'app/models/size/size';
 import { AuthGuard } from 'app/services/auth/auth.guard';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
 import { UnitiesFormComponent } from './unities-form/unities-form.component';
+import { UnitiesResponsibleFormComponent } from './unities-responsible-form/unities-responsible-form.component';
 
 @Component({
   selector: 'app-unities',
@@ -111,6 +113,14 @@ export class UnitiesComponent implements OnInit {
       this.rows = [];
       this.rows = res.body;
     })
+  }
+
+  openResponsibleForm(info: any = {}) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(UnitiesResponsibleFormComponent, {
+      width: dialog.medium,
+      disableClose: true,
+      data: { title: "Responsible per Unit", payload: info }
+    });
   }
 
   ngOnInit() {
