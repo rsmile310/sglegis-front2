@@ -92,7 +92,6 @@ export class UnitiesResponsibleFormComponent implements OnInit {
     this.responsibleForm.reset();    
     this.selectedAspects = [];
     this.aspectInvalid = true;
-    console.log(this.responsibles);
   }
 
   removeResponsible(info: any) {
