@@ -16,6 +16,7 @@ export class UnitiesResponsibleFormComponent implements OnInit {
   aspectInvalid = true;
   aspects = [];
   responsibles = [];
+  deletedResponsibles = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -95,23 +96,14 @@ export class UnitiesResponsibleFormComponent implements OnInit {
   }
 
   removeResponsible(info: any) {
-    this.confirm.confirm("Delete - Responsible", "Are you sure to delete a Responsible: " + info.unity_aspect_responsible_name).subscribe(res => {
-      if (res === true) {
+    // this.confirm.confirm("Delete - Responsible", "Are you sure to delete a Responsible: " + info.unity_aspect_responsible_name).subscribe(res => {
+      // if (res === true) {
         this.responsibles = this.responsibles.filter(res => res.unity_aspect_responsible_id !== info.unity_aspect_responsible_id);
         if (!info.isNew) {
-          this.loader.open();
-          this.crudService.DeleteParams(info.unity_aspect_responsible_id, '/customerunity/responsibles').subscribe(res => {
-            if (res.status == 200) {
-              this.snackBar.open("Responsible has been deleted successfully!", "", { duration: 3000 });
-              this.loader.close();
-            }
-          }, err => {
-            this.loader.close();
-            this.snackBar.open("Error in deleting Responsible: " + err, "", { duration: 5000 });
-          })
+          this.deletedResponsibles.push(info.unity_aspect_responsible_id);
         }
-      }
-    })
+    //   }
+    // })
   }
 
   isCheckedAspect(info: any) {
@@ -121,14 +113,21 @@ export class UnitiesResponsibleFormComponent implements OnInit {
   save() {
     this.loader.open();
     try {
-      this.saveResponsible(this.data.payload.customer_unity_id).then(res => {
+      this.saveResponsible(this.data.payload.customer_unity_id).then(async () => {
+        await this.deleteResponsibles();
         this.loader.close();
         this.snackBar.open("Recorded Responsibles data successfully", "", { duration: 3000 });
-        this.dialogRef.close();    
+        this.dialogRef.close();   
       })
     } catch (error) {
       this.loader.close();
       this.snackBar.open("Error in recording Responsible: "+ error, "", { duration: 5000 })      
+    }
+  }
+
+  async deleteResponsibles() {
+    for (let i = 0; i < this.deletedResponsibles.length; i ++) {
+      await this.crudService.DeleteParams(this.deletedResponsibles[i], '/customerunity/responsibles').toPromise();
     }
   }
 

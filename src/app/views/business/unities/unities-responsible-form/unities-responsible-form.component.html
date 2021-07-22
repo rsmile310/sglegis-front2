@@ -85,7 +85,7 @@
       <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
       <span fxFlex></span>
       <button mat-raised-button class="mat-primary" type="button" (click)="save()"
-      [disabled]="responsibles.length === 0"
+      [disabled]="responsibles.length === 0 && deletedResponsibles.length === 0"
         >Gravar</button>
       <span fxFlex></span>
     </div>
