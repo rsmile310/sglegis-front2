@@ -150,15 +150,26 @@
       <!-- </div> -->
 
       <!-- <div > -->
-        <ngx-datatable-column name="Responsible" [flexGrow]="0" [width]="50" *ngIf="(BtnResponsible)">
+        <ngx-datatable-column name="Plano de ação" [flexGrow]="0" [width]="50" *ngIf="(BtnAction)">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            <button *ngIf="(BtnResponsible)" mat-icon-button mat-sm-button color="primary" class="mr-1"
-              (click)="onResponsible(row)">
-              <mat-icon>manage_accounts</mat-icon>
+            <button *ngIf="(BtnAction)" mat-raised-button mat-sm-button color="primary" class="mr-1"
+              (click)="onAction(row)">
+              Plano de ação
             </button>
           </ng-template>
         </ngx-datatable-column>
         <!-- </div> -->
+
+      <!-- <div > -->
+      <ngx-datatable-column name="Responsible" [flexGrow]="0" [width]="50" *ngIf="(BtnResponsible)">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <button *ngIf="(BtnResponsible)" mat-icon-button mat-sm-button color="primary" class="mr-1"
+            (click)="onResponsible(row)">
+            <mat-icon>manage_accounts</mat-icon>
+          </button>
+        </ng-template>
+      </ngx-datatable-column>
+      <!-- </div> -->
 
       <!-- <div > -->
       <ngx-datatable-column name="Editar" [flexGrow]="0" [width]="50" *ngIf="(BtnEditar===true && !viewOnly)">

@@ -1,6 +1,7 @@
 <app-grade 
   [Colunas]= "columns"
   [Linhas] = "rows" 
+  [BtnAction]="true"
   [BtnEditar]="false" 
   [BtnDeletar]="false"
   [BtnIncluir]="false"
@@ -14,5 +15,6 @@
   (EditarRegistro)="openForm($event.registro, false)"
   (PesquisarRegistro)="getDocuments($event.parametro)" 
   (actionButtonEvent)="openForm('', true)" 
+  (ActionRegistro)="handleActionPlan($event.registro)"
   [MostrarBarraBusca]="true">  
 </app-grade>
