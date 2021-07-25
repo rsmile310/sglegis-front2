@@ -18,12 +18,16 @@ export class RequirementsComponent implements OnInit {
   configSearch: any = [];
 
   columns = [
-    { Propriedade: 'area_name', Titulo: 'Sis.Gestão', Visivel: false, Largura: 350 },
-    { Propriedade: 'area_aspect_name', Titulo: 'Aspecto', Visivel: false, Largura: 350 },
-    { Propriedade: 'area_name', Titulo: 'Area', Visivel: true, Largura: 150 },
-    { Propriedade: 'customer_business_name', Titulo: 'Cliente', Visivel: true, Largura: 300 },
-    { Propriedade: 'customer_unity_name', Titulo: 'Unidade', Visivel: true, Largura: 300 },
-    { Propriedade: 'document_item_subject', Titulo: 'Assunto', Visivel: true, Largura: 300 },
+    { Propriedade: 'area_name', Titulo: 'Sis.Gestão', Visivel: true, Largura:100 },
+    { Propriedade: 'area_aspect_name', Titulo: 'Aspecto', Visivel: true, Largura:100 },
+    { Propriedade: 'area_name', Titulo: 'Area', Visivel: true, Largura:100 },
+    { Propriedade: 'document_item_subject', Titulo: 'Assunto', Visivel: true, Largura:100 },
+    { Propriedade: 'document_item_subject', Titulo: 'Âmbito', Visivel: true, Largura:100 },
+    { Propriedade: 'document_item_subject', Titulo: 'Documento', Visivel: true, Largura:100 },
+    { Propriedade: 'document_item_subject', Titulo: 'Item', Visivel: true, Largura:100 },
+    { Propriedade: 'document_item_subject', Titulo: 'Data/Status', Visivel: true, Largura:100 },
+    // { Propriedade: 'customer_business_name', Titulo: 'Cliente', Visivel: true, Largura: 300 },
+    // { Propriedade: 'customer_unity_name', Titulo: 'Unidade', Visivel: true, Largura: 300 },
   ]
 
   constructor(
@@ -89,6 +93,10 @@ export class RequirementsComponent implements OnInit {
       this.rows = [];
       this.rows = res.body;
     })
+  }
+
+  handleActionPlan(registro: any) {
+
   }
 
   ngOnInit() {

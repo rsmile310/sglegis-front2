@@ -14,6 +14,8 @@ import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
 })
 export class GradeComponent implements OnInit {
   @Input() Colunas: Array<Coluna>;
+  @Input() BtnResponsible: Boolean;
+  @Input() BtnAction: Boolean;
   @Input() BtnEditar: Boolean;
   @Input() BtnDeletar: Boolean;
   @Input() Linhas: Array<any> = [];
@@ -31,6 +33,8 @@ export class GradeComponent implements OnInit {
   @Output() IncluirRegistro: EventEmitter<any> = new EventEmitter();
   @Output() EditarRegistro: EventEmitter<any> = new EventEmitter();
   @Output() ExcluirRegistro: EventEmitter<any> = new EventEmitter();
+  @Output() ResponsibleRegistro: EventEmitter<any> = new EventEmitter();
+  @Output() ActionRegistro: EventEmitter<any> = new EventEmitter();
   AuxColunas = [];
   buscarForm: FormGroup;
   public finderPanel: boolean = false;
@@ -44,7 +48,7 @@ export class GradeComponent implements OnInit {
     private mensagem: AppInformationService,
     private eRef: ElementRef) { }
 
-  ngOnInit() {
+  ngOnInit() {    
     this.finderPanel = false;
     if (this.BtnIncluir == undefined) {
       this.BtnIncluir = true;
@@ -95,6 +99,14 @@ export class GradeComponent implements OnInit {
 
   Excluir(registro: any) {
     this.ExcluirRegistro.emit({ registro: registro, novo: false });
+  }
+
+  onResponsible(registro) {
+    this.ResponsibleRegistro.emit({ registro: registro });
+  }
+
+  onAction(registro) {
+    this.ActionRegistro.emit({ registro: registro });
   }
 
   Pesquisar() {

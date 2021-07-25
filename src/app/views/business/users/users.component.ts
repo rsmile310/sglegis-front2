@@ -83,10 +83,10 @@ export class UsersComponent implements OnInit {
 
   prepareScreen() {
     this.currentUser = this.auth.getUser();
-    if (this.currentUser.role !== roles.admin) {
-      this.getUsersByGroup(this.currentUser.customer_group_id);
-    } else {
+    if (this.currentUser.role === roles.admin) {
       this.getUsers(undefined);
+    } else {
+      this.getUsersByGroup(this.currentUser.customer_group_id);
     }
   }
   
@@ -100,37 +100,35 @@ export class UsersComponent implements OnInit {
       data: { title: text, payload: info, new: newRecord }
     });
 
-    dialogRef.afterClosed()
-    .subscribe(res => {
-      if (this.currentUser.role !== roles.admin) {
-        this.getUsersByGroup(this.currentUser.customer_group_id);
-      } else {
+    dialogRef.afterClosed().subscribe(res => {
+      if (this.currentUser.role === roles.admin) {
         this.getUsers(undefined);
-      }
+      } else {
+        this.getUsersByGroup(this.currentUser.customer_group_id);
+      }      
       return;
     })
   }
 
   getUsers(parameter: any) {    
-    this.lastSearch = this.configSearch;
-    this.crud.GetParamsSearch(this.lastSearch, "/users")
-      .subscribe(res => {
-        this.rows = [];
-        this.rows = res.body;
-      })
+    this.lastSearch = parameter;
+    this.crud.GetParams(this.lastSearch, "/users").subscribe(res => {
+      this.rows = [];
+      this.rows = res.body;             
+    })
   }
 
   getUsersByGroup(groupId) {
     let p: any = new Object();
-      p.orderby = "user_name";
-      p.direction = "asc";
-      p.fields = "customer_group_id";
-      p.ops = "eq";
-      p.values = groupId;
-      this.crud.GetParams(p, "/users/query").subscribe(res => {
-        this.rows = [];
-        this.rows = res.body;
-      });
+    p.orderby = "user_name";
+    p.direction = "asc";
+    p.fields = "customer_group_id";
+    p.ops = "eq";
+    p.values = groupId;
+    this.crud.GetParams(p, "/users/query").subscribe(res => {
+      this.rows = [];
+      this.rows = res.body;
+    });
   }
 
   ngOnInit() {

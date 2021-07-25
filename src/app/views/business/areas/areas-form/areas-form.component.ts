@@ -38,9 +38,9 @@ export class AreasFormComponent implements OnInit {
   }
 
   saveArea() {
-    let customer = this.areaForm.value;
+    let area = this.areaForm.value;
     this.loader.open();
-    this.crudService.Save(customer, this.data.new, "/area", customer.customer_id).subscribe(res => {
+    this.crudService.Save(area, this.data.new, "/area", area.area_id).subscribe(res => {
       if (res.status == 200) {
         this.loader.close();
         this.snackBar.open("Registro gravado com sucesso", "", { duration: 3000 });
