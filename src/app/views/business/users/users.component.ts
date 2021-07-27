@@ -49,11 +49,10 @@ export class UsersComponent implements OnInit {
       Largura: 50
     },
     {
-      Propriedade: 'customer_group',
+      Propriedade: 'customer_group_name',
       Titulo: 'Group',
       Visivel: true,
-      Largura: 50,
-      Render: (group) => group.customer_group_name
+      Largura: 50
     },
     {
       Propriedade: 'is_disabled',
@@ -83,6 +82,7 @@ export class UsersComponent implements OnInit {
 
   prepareScreen() {
     this.currentUser = this.auth.getUser();
+    
     if (this.currentUser.role === roles.admin) {
       this.getUsers(undefined);
     } else {

@@ -167,13 +167,13 @@
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
     <div fxFlex="100" class="mt-1">
       <span fxFlex *ngIf="!this.data.new"></span>
-      <button mat-raised-button color="accent" type="button" (click)="deleteDocument()"
+      <button mat-raised-button color="accent" type="button" (click)="deleteDocument()" [disabled]="currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor"
         *ngIf="!this.data.new">Excluir</button>
       <span fxFlex></span>
       <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Fechar</button>
       <span fxFlex></span>
       <button mat-raised-button class="mat-primary" type="button" 
-        [disabled]="documentForm.invalid" (click)="saveDocument()">Gravar</button>
+        [disabled]="documentForm.invalid || (currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor)" (click)="saveDocument()">Gravar</button>
       <span fxFlex></span>
     </div>
   </div>

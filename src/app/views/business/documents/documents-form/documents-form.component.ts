@@ -12,6 +12,9 @@ import { DocumentItemComponent } from '../document-item/document-item.component'
 import { DocumentsAttachementFormComponent } from '../documents-attachement-form/documents-attachement-form.component';
 // import { FileInputComponent } from 'ngx-material-file-input';
 import * as moment from "moment";
+import { roles } from 'app/models/auth/roles';
+import { AuthGuard } from 'app/services/auth/auth.guard';
+import { profile } from 'app/models/auth/profile.types';
 
 @Component({
   selector: 'app-docuemnts-form',
@@ -36,6 +39,9 @@ export class DocumentsFormComponent implements OnInit {
     // { name: 'Lei 75.pdf', dt: '15/01/2021' },
     // { name: 'Lei 90.pdf', dt: '16/02/2021' }
   ];
+  currentUser:any;
+  roles = roles;
+  profile = profile;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -45,6 +51,7 @@ export class DocumentsFormComponent implements OnInit {
     private snackBar: MatSnackBar,
     private confirm: AppConfirmService,
     public dialog: MatDialog,
+    private auth: AuthGuard,
   ) { }
 
   prepareScreen(record) {
@@ -172,6 +179,7 @@ export class DocumentsFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.currentUser = this.auth.getUser();
     this.prepareScreen(this.data.payload);
   }
 

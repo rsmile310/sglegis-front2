@@ -39,12 +39,12 @@
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
     <div fxFlex="100" class="mt-1">
       <span fxFlex *ngIf="!this.data.new"></span>
-      <button mat-raised-button color="accent" type="button" (click)="deleteCustomer()" *ngIf="!this.data.new">Excluir</button>      
+      <button mat-raised-button color="accent" type="button" (click)="deleteCustomer()" *ngIf="!this.data.new" [disabled]="currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor">Excluir</button>      
       <span fxFlex></span>
       <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
       <span fxFlex></span>
       <button mat-raised-button class="mat-primary" type="button" (click)="saveCustomer()"
-        [disabled]="customerForm.invalid">Gravar</button>
+        [disabled]="customerForm.invalid || (currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor)">Gravar</button>
       <span fxFlex></span>
     </div>
   </div>
