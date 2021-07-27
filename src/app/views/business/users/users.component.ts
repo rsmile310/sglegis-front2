@@ -82,7 +82,6 @@ export class UsersComponent implements OnInit {
 
   prepareScreen() {
     this.currentUser = this.auth.getUser();
-    console.log(this.currentUser);
     
     if (this.currentUser.role === roles.admin) {
       this.getUsers(undefined);
