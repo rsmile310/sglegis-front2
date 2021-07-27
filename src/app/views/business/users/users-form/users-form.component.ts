@@ -18,7 +18,7 @@ export class UsersFormComponent implements OnInit {
   public user: FormGroup;
   roles = roles;
   profile = profile;
-  clients = [];
+  customers = [];
   customers_groups = [];
   currentUser: any = {};
 
@@ -45,26 +45,20 @@ export class UsersFormComponent implements OnInit {
       user_profile_type: new FormControl(this.data.new ? profile.operacional : record.user_profile_type, [Validators.required]),
       user_role: new FormControl(this.data.new ? roles.client : record.user_role, [Validators.required]),
       is_disabled: new FormControl(record.is_disabled),
-      client_id: new FormControl(record.client_id),
-      customer_group_id: new FormControl(this.currentUser.role === roles.admin ? record.customer_group_id : this.currentUser.customer_group_id)
-    });
+      customer_id: new FormControl(record.customer_id),
+    });   
     
-    this.getUsers();
-    this.getGroups();
+    this.getCustomers();
   }
 
-  getUsers() {
+  getCustomers() {
     const params: [CampoBusca] = [
-      new CampoBusca("user", "User", 50, "", "string", null, null, null)
+      new CampoBusca("customers", "Customers", 50, "", "string", null, null, null)
     ]
 
-    this.crudService.GetParamsSearch(params, "/users").subscribe(res => {     
-      this.clients = [];
-      if (!this.data.new) {
-        this.clients = res.body.filter(c => c.user_id !== this.user.value.user_id);
-      } else {
-        this.clients = res.body;
-      }
+    this.crudService.GetParamsSearch(params, "/customer").subscribe(res => {     
+      this.customers = [];
+      this.customers = res.body;
     })
   }
 
@@ -134,16 +128,6 @@ export class UsersFormComponent implements OnInit {
         })
       }
     })    
-  }
-
-  getGroups() {
-    let p: any = new Object();
-    p.orderby = "customer_group_name";
-    p.direction = "asc";
-    this.crudService.GetParams(p, "/customergroup").subscribe(res => {
-      this.customers_groups = [];
-      this.customers_groups = res.body;
-    });
   }
 
 }

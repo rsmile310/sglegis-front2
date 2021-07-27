@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
+import { profile } from 'app/models/auth/profile.types';
 import { roles } from 'app/models/auth/roles';
 import { AuthGuard } from 'app/services/auth/auth.guard';
 import { AppConfirmService } from 'app/services/dialogs/app-confirm/app-confirm.service';
@@ -18,6 +19,7 @@ export class CustomersFormsComponent implements OnInit {
   customers_groups = [];
   currentUser: any;
   roles = roles
+  profile = profile;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,

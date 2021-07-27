@@ -1,6 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatDialog } from '@angular/material';
+import { profile } from 'app/models/auth/profile.types';
+import { roles } from 'app/models/auth/roles';
+import { AuthGuard } from 'app/services/auth/auth.guard';
 import { AppConfirmService } from 'app/services/dialogs/app-confirm/app-confirm.service';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
@@ -15,6 +18,10 @@ export class AspectsFormComponent implements OnInit {
   customers_groups = [];
   areas = [];
 
+  currentUser:any;
+  profile = profile;
+  roles = roles;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AspectsFormComponent>,
@@ -23,9 +30,11 @@ export class AspectsFormComponent implements OnInit {
     private snackBar: MatSnackBar,
     private confirm: AppConfirmService,
     public dialog: MatDialog,
+    private auth: AuthGuard,
   ) { }
 
   ngOnInit() {
+    this.currentUser = this.auth.getUser();
     this.prepareScreen(this.data.payload);
   }
 

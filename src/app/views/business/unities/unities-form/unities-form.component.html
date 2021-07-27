@@ -23,20 +23,11 @@
       <div fxFlex="40" class="pr-1">
         <mat-form-field class="full-width">
           <mat-select [formControl]="unityForm.controls['customer_id']" placeholder="Matriz *">
-            <mat-option *ngFor="let customer of customers" [value]="customer.user_id">
-              {{customer.user_name}} </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!-- <div fxFlex="40" class="pr-1">
-        <mat-form-field class="full-width">
-          <mat-select [formControl]="unityForm.controls['customer_id']" placeholder="Matriz *">
             <mat-option *ngFor="let customer of customers" [value]="customer.customer_id">
               {{customer.customer_business_name}} </mat-option>
           </mat-select>
         </mat-form-field>
-      </div> -->
+      </div>
       
 
       <div fxFlex="10" class="pr-1">
@@ -187,12 +178,12 @@
     <div fxFlex="100" class="mt-1">
       <span fxFlex *ngIf="!this.data.new"></span>
       <button mat-raised-button color="accent" type="button" (click)="deleteUnity()"
-        *ngIf="!this.data.new">Excluir</button>
+        *ngIf="!this.data.new" [disabled]="currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor">Excluir</button>
       <span fxFlex></span>
       <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
       <span fxFlex></span>
       <button mat-raised-button class="mat-primary" type="button" (click)="saveUnity()"
-      [disabled]="unityForm.invalid"
+      [disabled]="unityForm.invalid || (currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor)"
         >Gravar</button>
       <span fxFlex></span>
     </div>
