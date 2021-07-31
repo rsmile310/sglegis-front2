@@ -39,7 +39,7 @@ export class NavigationComponent {
         i.Ativo = "S";
         i.Disable = 0;
         i.Icon = "supervisor_account";
-        i.Name = "Cadasros";
+        i.Name = "Cadastros";
         i.Ordem = 1;
         i.State = "";
         i.Type = "dropDown";
@@ -87,7 +87,7 @@ export class NavigationComponent {
           i.Ativo = "S";
           i.Disable = 0;
           i.Icon = "supervisor_account";
-          i.Name = "Cadasros";
+          i.Name = "Cadastros";
           i.Ordem = 1;
           i.State = "";
           i.Type = "dropDown";
