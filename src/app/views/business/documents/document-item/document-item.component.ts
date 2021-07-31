@@ -35,7 +35,7 @@ export class DocumentItemComponent implements OnInit {
       document_item_order: new FormControl(record.document_item_order, [Validators.required]),
       document_item_status_id: new FormControl(record.document_item_status_id, [Validators.required]),
       document_item_description: new FormControl(record.document_item_description, [Validators.required]),
-      document_item_observation: new FormControl(record.document_item_observation, [Validators.required]),
+      document_item_observation: new FormControl(record.document_item_observation),
       document_id: new FormControl(record.document_id, [Validators.required])
     });
 
