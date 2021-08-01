@@ -27,12 +27,48 @@
               </mat-form-field>
             </div>
             
-            <div fxFlex="100">
-              <h5 class="full-width">Associated areas</h5>
-              <div fxLayout="row" fxLayout.lt-sm="column">
-                <mat-checkbox fxFlex="25" class="pr-1" *ngFor="let aspect of aspects" color="primary" (change)="toggleAspect(aspect, $event)" [checked]="isCheckedAspect(aspect)">{{ aspect.area_aspect_name }}</mat-checkbox>
-              </div>
-            </div>
+
+            <!-- system managment and aspects panel  -->
+            <mat-card class="mat-card-background">
+              <mat-card-header class="mat-card-titulo2">
+                <span class="mat-card-titulo">Sistemas de gestão associados</span><span class="mat-card-titulo" fxFlex></span>
+              </mat-card-header>
+        
+              <mat-card-content class="mat-card-body">
+                <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+                  <div fxFlex="100" class="mt-1">
+                    <mat-accordion class="example-headers-align" multi>
+                      <mat-expansion-panel *ngFor="let areaWithAspect of areasWithAspects">
+                        <mat-expansion-panel-header>
+        
+                          <mat-panel-description>
+                            <mat-icon>check_circle_outline</mat-icon>
+                            {{areaWithAspect.area_name}}
+                          </mat-panel-description>
+        
+                        </mat-expansion-panel-header>
+                        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+                          <div fxFlex="25" class="pr-1">
+                            <mat-checkbox color="primary" (change)="toggleAll(areaWithAspect, $event)">
+                              TODOS
+                            </mat-checkbox>
+                          </div>
+        
+                          <div fxFlex="25" class="pr-1" *ngFor="let aspect of areaWithAspect.aspects">
+                            <mat-checkbox color="primary" [checked]="isCheckedAspect(aspect)" (change)="toggleAspect(aspect, $event)">
+                              {{aspect.area_aspect_name}}
+                            </mat-checkbox>
+                          </div>
+                        </div>
+                      </mat-expansion-panel>
+                    </mat-accordion>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>    
+            <!-- system managment and aspects panel  -->
+
+
             <div fxFlex="100" class="mt-2">
               <button mat-raised-button class="mat-primary" type="button" (click)="addResponsible()" [disabled]="responsibleForm.invalid || aspectInvalid" >
                 Add to List

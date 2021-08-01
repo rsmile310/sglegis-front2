@@ -18,6 +18,7 @@ export class UnitiesResponsibleFormComponent implements OnInit {
   selectedAspects = [];
   aspectInvalid = true;
   aspects = [];
+  areasWithAspects = [];
   responsibles = [];
   deletedResponsibles = [];
 
@@ -50,15 +51,15 @@ export class UnitiesResponsibleFormComponent implements OnInit {
       unity_aspect_responsible_email: new FormControl('', [Validators.required, Validators.email]),
     });
 
-    this.getAspects(record.customer_unity_id);
+    this.getAreasWithAspects(record.customer_unity_id);
     this.getResponsiblesAspects(record.customer_unity_id);
   }
 
-  getAspects(unity_id) {
+  getAreasWithAspects(unity_id) {
     this.crudService.GetParams(undefined, `/customerunity/${unity_id||"0"}/aspectsonly`).subscribe(res => {
-      if (res.status == 200) {        
-        this.aspects = [];
-        this.aspects = res.body;       
+      if (res.status == 200) {
+        this.areasWithAspects = [];
+        this.areasWithAspects = res.body;
       }
     });
   }
@@ -77,14 +78,15 @@ export class UnitiesResponsibleFormComponent implements OnInit {
     })
   }
 
-  toggleAspect(info: any = {}, ev: any) {    
-    if (ev.checked) {
-      this.selectedAspects = [ ...this.selectedAspects, info ];
-    } else {
-      this.selectedAspects = this.selectedAspects.filter(aspect => aspect.area_aspect_id !== info.area_aspect_id);
+
+  toggleAll(arearWithAspect, evento) {
+    for (let i = 0; i < arearWithAspect.aspects.length; i++) {
+      arearWithAspect.aspects[i].checked = (evento.checked) ? "S" : "N";
     }
-    if (this.selectedAspects.length === 0) this.aspectInvalid = true;
-    else this.aspectInvalid = false;
+  }
+
+  toggle(aspect, evento) {
+    aspect.checked = (evento.checked) ? "S" : "N";
   }
 
   addResponsible() {
@@ -117,7 +119,16 @@ export class UnitiesResponsibleFormComponent implements OnInit {
   isCheckedAspect(info: any) {
     return this.selectedAspects.find(aspect => aspect.area_aspect_id === info.area_aspect_id);
   }
-
+  toggleAspect(info: any = {}, ev: any) {    
+    if (ev.checked) {
+      this.selectedAspects = [ ...this.selectedAspects, info ];
+    } else {
+      this.selectedAspects = this.selectedAspects.filter(aspect => aspect.area_aspect_id !== info.area_aspect_id);
+    }
+    if (this.selectedAspects.length === 0) this.aspectInvalid = true;
+    else this.aspectInvalid = false;
+  }
+  
   save() {
     this.loader.open();
     try {
