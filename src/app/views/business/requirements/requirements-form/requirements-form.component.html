@@ -4,94 +4,43 @@
 <form autocomplete="off">
   <mat-dialog-content>
     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
-      <div fxFlex="100">
-        <mat-expansion-panel [expanded]="expandedForm" (opened)="expandForm(true)" hideToggle>
-          <mat-expansion-panel-header *ngIf="!expandedForm">
-            Show Form
-          </mat-expansion-panel-header>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
-            <div fxFlex="50" class="pr-1">
-              <mat-form-field class="full-width">
-                <mat-select placeholder="Ordem prática" [formControl]="audit.controls['audit_practical_order']">
-                  <mat-option *ngFor="let pratic of pratics" [value]="pratic.id">
-                    {{pratic.desc}} </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-      
-            <div fxFlex="50" class="pr-1">
-              <mat-form-field class="full-width">
-                <mat-select placeholder="Conformidade" [formControl]="audit.controls['audit_conformity']">
-                  <mat-option *ngFor="let conform of conforms" [value]="conform.id">
-                    {{conform.desc}} </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-      
-            <div fxFlex="100" class="pr-1">
-              <mat-form-field class="full-width">
-                <textarea matInput upperCase placeholder="Evidência de cumprimento" name="evidencia" maxlength="2000"
-                  rows="3" [formControl]="audit.controls['audit_evidnece_compliance']"></textarea>
-              </mat-form-field>
-            </div>
-      
-            <div fxFlex="100" class="pr-1">
-              <mat-form-field class="full-width">
-                <textarea matInput upperCase placeholder="Ação de controle" name="acao-controle" maxlength="2000"
-                  rows="3" [formControl]="audit.controls['audit_control_action']"></textarea>
-              </mat-form-field>
-            </div>
-      
-            <div fxFlex="100" class="pr-1">
-              <mat-checkbox color="primary">
-                Enviar notificação para responsável
-              </mat-checkbox>
-            </div>
-          </div>        
-        </mat-expansion-panel>
+      <div fxFlex="50" class="pr-1">
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Ordem prática" [formControl]="audit.controls['audit_practical_order']">
+            <mat-option *ngFor="let pratic of pratics" [value]="pratic.id">
+              {{pratic.desc}} </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
-      <div fxFlex="100">
-        <mat-expansion-panel [expanded]="!expandedForm" (opened)="expandForm(false)" hideToggle>
-          <mat-expansion-panel-header *ngIf="expandedForm">
-            Show history
-          </mat-expansion-panel-header>
-          <ngx-datatable class="material full-width" [rows]="audits" [columnMode]="'standard'" [headerHeight]="35" [footerHeight]="0" [rowHeight]="'35'" [scrollbarH]="true" [messages]="{ emptyMessage: '' }" >
-            <ngx-datatable-column name="Ordem prática" >
-              <ng-template let-row="row" ngx-datatable-cell-template >
-                {{ getPratic(row['audit_practical_order']).desc  }}
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Conformidade">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ getConform(row['audit_conformity']).desc }}
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Evidência de cumprimento">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row['audit_evidnece_compliance'] }}
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Ação de controle" >
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row['audit_control_action'] }}
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Aspect">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row['area_aspect_name'] }}
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Document Item">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row['document_item_number'] }}
-              </ng-template>
-            </ngx-datatable-column>
-          </ngx-datatable>
-        </mat-expansion-panel>
-      </div>        
+      <div fxFlex="50" class="pr-1">
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Conformidade" [formControl]="audit.controls['audit_conformity']">
+            <mat-option *ngFor="let conform of conforms" [value]="conform.id">
+              {{conform.desc}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-      
+      <div fxFlex="100" class="pr-1">
+        <mat-form-field class="full-width">
+          <textarea matInput upperCase placeholder="Evidência de cumprimento" name="evidencia" maxlength="2000"
+            rows="3" [formControl]="audit.controls['audit_evidnece_compliance']"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="100" class="pr-1">
+        <mat-form-field class="full-width">
+          <textarea matInput upperCase placeholder="Ação de controle" name="acao-controle" maxlength="2000"
+            rows="3" [formControl]="audit.controls['audit_control_action']"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="100" class="pr-1">
+        <mat-checkbox color="primary">
+          Enviar notificação para responsável
+        </mat-checkbox>
+      </div>
 
       <div fxFlex="100" class="pr-1" style="margin-top: 10px;">
         <fieldset disabled="false" >

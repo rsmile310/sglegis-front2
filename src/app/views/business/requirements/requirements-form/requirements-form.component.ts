@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatDialog } from '@angular/material';
-import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
 import { AppConfirmService } from 'app/services/dialogs/app-confirm/app-confirm.service';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
@@ -15,8 +14,6 @@ import { CustomersFormsComponent } from '../../customers/customers-forms/custome
 export class RequirementsFormComponent implements OnInit {
   document_items: any[];
   public audit: FormGroup;
-  audits: Array<any> = [];
-  expandedForm: Boolean = true;
 
   public conforms = [
     { "id": 1, "desc": "A VERIFICAR" },
@@ -97,23 +94,9 @@ export class RequirementsFormComponent implements OnInit {
     params.area_aspect_ids = record.map(d => d.area_aspect_id);
 
     this.crudService.GetParams(params, "/audits").subscribe(res => {
-      this.audits = [];
-      this.audits = res.body;      
       console.log(res.body);
       
     })
-  }
-
-  expandForm(status: boolean) {
-    this.expandedForm = status;
-  }
-
-  getPratic(id) {
-    return this.pratics.find(p => p.id === id);
-  }
-
-  getConform(id) {
-    return this.conforms.find(c => c.id === id);
   }
 
 }
