@@ -37,7 +37,7 @@
       </div>
 
       <div fxFlex="100" class="pr-1">
-        <mat-checkbox color="primary">
+        <mat-checkbox color="primary" (change)="checkNotify()" [checked]="notify">
           Enviar notificação para responsável
         </mat-checkbox>
       </div>

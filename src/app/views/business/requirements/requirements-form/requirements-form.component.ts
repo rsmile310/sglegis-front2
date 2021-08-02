@@ -13,6 +13,7 @@ import { CustomersFormsComponent } from '../../customers/customers-forms/custome
 })
 export class RequirementsFormComponent implements OnInit {
   document_items: any[];
+  notify: Boolean = false;
   public audit: FormGroup;
 
   public conforms = [
@@ -51,7 +52,7 @@ export class RequirementsFormComponent implements OnInit {
       audit_control_action: new FormControl('', [Validators.required])
     })
     this.initItems(record);    
-    this.getAudits(record);
+    
   }
 
   initItems(record: any) {
@@ -66,9 +67,10 @@ export class RequirementsFormComponent implements OnInit {
   }
 
   saveAudit() {
+    const datas = this.data.payload;
     let audit = this.audit.value;
     this.loader.open();
-    this.document_items.forEach(d => {
+    datas.forEach(d => {
       let newAudit = {
         ...audit, 
         area_aspect_id: d.area_aspect_id,
@@ -83,9 +85,28 @@ export class RequirementsFormComponent implements OnInit {
         this.loader.close();
         this.snackBar.open("Error in saving Audit: " + err, "", { duration: 5000 });
         this.dialogRef.close("NOK");
-      })            
-      
-    })
+      });
+    }); 
+          
+    if (this.notify) 
+      this.notifyResponsibles(datas.map(d => d.area_aspect_id), [
+        {
+          label: 'Ordem prática',
+          desc: this.pratics.find(p => p.id === audit.audit_practical_order).desc
+        },
+        {
+          label: 'Conformidade',
+          desc: this.conforms.find(c => c.id === audit.audit_conformity).desc
+        },
+        {
+          label: 'Evidência de cumprimento',
+          desc: audit.audit_evidnece_compliance
+        },
+        {
+          label: 'Ação de controle',
+          desc: audit.audit_control_action
+        }
+      ]);
   }
 
   getAudits(record: any) {
@@ -93,10 +114,20 @@ export class RequirementsFormComponent implements OnInit {
     params.document_item_ids = record.map(d => d.document_item_id);
     params.area_aspect_ids = record.map(d => d.area_aspect_id);
 
-    this.crudService.GetParams(params, "/audits").subscribe(res => {
-      console.log(res.body);
-      
+    this.crudService.GetParams(params, "/audits").subscribe(res => {     
     })
+  }
+
+  notifyResponsibles(aspects: any, auditInfo: any) {
+    this.crudService.Save({ aspects, auditInformation: auditInfo }, true, "/audits/responsibles/notify", null).subscribe(res => {
+      this.snackBar.open("Notification has been sent to Responsibles successfully", "", { duration: 3000 });
+    }, err => {
+      this.snackBar.open("Error in sending notification to Responsibles: " + err, "", { duration: 5000 });
+    })
+  }
+
+  checkNotify() {
+    this.notify = !this.notify;
   }
 
 }
