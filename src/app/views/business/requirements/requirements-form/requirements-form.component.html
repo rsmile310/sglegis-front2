@@ -42,7 +42,7 @@
         </mat-checkbox>
       </div>
 
-      <div fxFlex="100" class="pr-1" style="margin-top: 10px;">
+      <div *ngIf="!featuredHistory" fxFlex="100" class="pr-1" style="margin-top: 10px;">
         <fieldset disabled="false" >
           <legend>Total de itens: {{ document_items.length }}</legend>
           <p *ngFor="let document of document_items">{{ document.document_item_description }}</p>
@@ -53,6 +53,31 @@
             LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).          
           </p> -->
         </fieldset>
+      </div>
+
+      <div *ngIf="featuredHistory" fxFlex="100" class="pr-1">
+        <ngx-datatable class="material" [rows]="historicals" columnMode="standard" [headerHeight]="35" [footerHeight]="0" [rowHeight]="35" [scrollbarV]="true" [messages]="{ emptyMessage: '' }">
+          <ngx-datatable-column name="Ordem prática" [flexGrow]="0" [width]="">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ getPraticName(row["audit_practical_order"]) }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Conformidade" [flexGrow]="0" [width]="">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ getConformityName(row["audit_conformity"]) }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Evidência de cumprimento" [flexGrow]="0" [width]="">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row["audit_evidnece_compliance"] }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Ação de controle" [flexGrow]="0" [width]="">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row["audit_control_action"] }}
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
       </div>
       
 

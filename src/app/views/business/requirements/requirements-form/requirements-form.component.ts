@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatDialog } from '@angular/material';
+import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
 import { AppConfirmService } from 'app/services/dialogs/app-confirm/app-confirm.service';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
@@ -15,6 +16,8 @@ export class RequirementsFormComponent implements OnInit {
   document_items: any[];
   notify: Boolean = false;
   public audit: FormGroup;
+  public historicals: any[] = [];
+  public featuredHistory = null;
 
   public conforms = [
     { "id": 1, "desc": "A VERIFICAR" },
@@ -51,8 +54,24 @@ export class RequirementsFormComponent implements OnInit {
       audit_evidnece_compliance: new FormControl('', [Validators.required]),
       audit_control_action: new FormControl('', [Validators.required])
     })
+    this.getHistorical(record).then((res: any) => {
+      if (res) {
+        this.featuredHistory = {
+          ...res.body[0]
+        }
+        res.body.splice(0, 1);
+        this.historicals = res.body;
+
+        this.audit = new FormGroup({
+          audit_id: new FormControl(null),
+          audit_practical_order: new FormControl(this.featuredHistory.audit_practical_order || '', [Validators.required]),
+          audit_conformity: new FormControl(this.featuredHistory.audit_conformity || '', [Validators.required]),
+          audit_evidnece_compliance: new FormControl(this.featuredHistory.audit_evidnece_compliance || '', [Validators.required]),
+          audit_control_action: new FormControl(this.featuredHistory.audit_control_action || '', [Validators.required])
+        })
+      }      
+    })    
     this.initItems(record);    
-    
   }
 
   initItems(record: any) {
@@ -128,6 +147,27 @@ export class RequirementsFormComponent implements OnInit {
 
   checkNotify() {
     this.notify = !this.notify;
+  }
+
+  getHistorical(record: any) {
+    return new Promise((resolve) => {
+      if (record.length === 1) {
+        resolve(this.crudService.GetParams({
+          document_item_id: record[0].document_item_id,
+          area_aspect_id: record[0].area_aspect_id
+        }, "/audits/historicals").toPromise());
+      } else {
+        resolve(null);
+      }
+    })
+  }
+
+  getPraticName(id) {
+    return this.pratics.find(p => p.id === id).desc;
+  }
+
+  getConformityName(id) {
+    return this.conforms.find(c => c.id === id).desc;
   }
 
 }

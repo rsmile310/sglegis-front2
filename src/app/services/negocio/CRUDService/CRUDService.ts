@@ -60,7 +60,7 @@ export class CRUDService extends BaseService {
       .catch(this.handleError);
   }
 
-  public GetParamsSearch(parameters:[CampoBusca], api: string): Observable<any> {    
+  public GetParamsSearch(parameters:CampoBusca[], api: string): Observable<any> {    
     let p = new HttpParams();
     for (let i = 0; i < parameters.length; i++){     
       if (parameters[i].value) {        
