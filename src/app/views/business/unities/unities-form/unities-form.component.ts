@@ -74,6 +74,7 @@ export class UnitiesFormComponent implements OnInit {
       unity_contact_observation: new FormControl(record.unity_contact_observation)
     });
     this.getGroups();
+    this.getStates();
 
     if (this.currentUser.role !== roles.admin) {
       this.getCustomers(this.currentUser.customer_group_id);
@@ -86,6 +87,7 @@ export class UnitiesFormComponent implements OnInit {
     if (!this.data.new) {      
       this.getCustomers(this.unityForm.controls.customer_group_id.value);
       this.getCep();
+      this.getCities();
     }
 
     this.getAreasWithAspects(record.customer_unity_id);
@@ -196,23 +198,18 @@ export class UnitiesFormComponent implements OnInit {
       if (res.status == 200 && res.body.length > 0) {
         //[{"cep_id":533858,"city_id":9640,"state_id":26,"type":"Rua","street_name":"Rua Bahia (Vl S Pedro)","district_name":"Montanh├úo","cep":9784200,"createdAt":"2021-05-04T01:20:21.000Z","updatedAt":"2021-05-04T01:20:21.000Z"}]
         this.unityForm.controls.customer_unity_address.setValue(res.body[0].street_name);
-        this.crudService.GetParams(undefined, "/state").subscribe(s => {
-          if (s.status == 200) {
-            this.states = [];
-            this.states = s.body;
-            this.unityForm.controls.customer_unity_uf_id.setValue(res.body[0].state_id);
-            let p: any = new Object();
-            p.state_id = res.body[0].state_id;
-            p.orderby = "city_name";
-            p.direction = "asc";
-            this.crudService.GetParams(p, "/city").subscribe(c => {
-              if (c.status == 200) {
-                this.cities = [];
-                this.cities = c.body;
-                
-                this.unityForm.controls.customer_unity_city_id.setValue(res.body[0].city_id);
-              }
-            });
+        
+        this.unityForm.controls.customer_unity_uf_id.setValue(res.body[0].state_id);
+        let p: any = new Object();
+        p.state_id = res.body[0].state_id;
+        p.orderby = "city_name";
+        p.direction = "asc";
+        this.crudService.GetParams(p, "/city").subscribe(c => {
+          if (c.status == 200) {
+            this.cities = [];
+            this.cities = c.body;
+            
+            this.unityForm.controls.customer_unity_city_id.setValue(res.body[0].city_id);
           }
         });
       }
@@ -261,6 +258,29 @@ export class UnitiesFormComponent implements OnInit {
         this.customers = res.body;
       });
     }
+  }
+
+  getStates() {
+    this.crudService.GetParams(undefined, "/state").subscribe(s => {
+      if (s.status == 200) {
+        this.states = [];
+        this.states = s.body;   
+      }
+    });
+  }
+
+  getCities() {
+    const state_id = this.unityForm.controls.customer_unity_uf_id.value;    
+    let p: any = new Object();
+    p.state_id = state_id;
+    p.orderby = "city_name";
+    p.direction = "asc";
+    this.crudService.GetParams(p, "/city").subscribe(c => {
+      if (c.status == 200) {
+        this.cities = [];
+        this.cities = c.body;
+      }
+    });
   }
 
   ngOnInit() {
