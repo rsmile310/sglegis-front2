@@ -97,9 +97,46 @@ export class RequirementsFormComponent implements OnInit {
       };
 
       this.crudService.Save(newAudit, this.data.new, "/audits", newAudit.audit_id).subscribe(res => {
-        this.loader.close();
-        this.snackBar.open("Audit saved successfully", "", { duration: 3000 });
-        this.dialogRef.close("OK");
+        if (this.notify) {
+          this.snackBar.open("Audit saved successfully", "", { duration: 3000 });
+          this.notifyResponsibles(datas.map(d => d.area_aspect_id), [
+            {
+              label: 'Ordem prática',
+              desc: this.pratics.find(p => p.id === audit.audit_practical_order).desc
+            },
+            {
+              label: 'Conformidade',
+              desc: this.conforms.find(c => c.id === audit.audit_conformity).desc
+            },
+            {
+              label: 'Evidência de cumprimento',
+              desc: audit.audit_evidnece_compliance
+            },
+            {
+              label: 'Ação de controle',
+              desc: audit.audit_control_action
+            }
+          ]).then(res => {
+            const data = res.body;
+            if (data.success === true) {
+              this.snackBar.open("Notification has been sent to Responsibles successfully", "", { duration: 3000 });
+              this.loader.close();
+              this.dialogRef.close("OK");
+            } else {
+              this.loader.close();
+              this.snackBar.open("Error in sending notification to Responsibles: " + data.error, "", { duration: 7000 });
+              this.dialogRef.close("OK");
+            }
+            
+          }).catch(err => {
+            this.loader.close();
+            this.snackBar.open("Error in sending notification to Responsibles: " + err, "", { duration: 5000 });
+            this.dialogRef.close("NOK");
+          })
+        } else {
+          this.loader.close();
+          this.dialogRef.close("OK");
+        }
       }, err => {
         this.loader.close();
         this.snackBar.open("Error in saving Audit: " + err, "", { duration: 5000 });
@@ -107,25 +144,7 @@ export class RequirementsFormComponent implements OnInit {
       });
     }); 
           
-    if (this.notify) 
-      this.notifyResponsibles(datas.map(d => d.area_aspect_id), [
-        {
-          label: 'Ordem prática',
-          desc: this.pratics.find(p => p.id === audit.audit_practical_order).desc
-        },
-        {
-          label: 'Conformidade',
-          desc: this.conforms.find(c => c.id === audit.audit_conformity).desc
-        },
-        {
-          label: 'Evidência de cumprimento',
-          desc: audit.audit_evidnece_compliance
-        },
-        {
-          label: 'Ação de controle',
-          desc: audit.audit_control_action
-        }
-      ]);
+    
   }
 
   getAudits(record: any) {
@@ -137,12 +156,17 @@ export class RequirementsFormComponent implements OnInit {
     })
   }
 
+  // notifyResponsibles(aspects: any, auditInfo: any) {
+  //   this.crudService.Save({ aspects, auditInformation: auditInfo }, true, "/audits/responsibles/notify", null).subscribe(res => {
+  //     this.snackBar.open("Notification has been sent to Responsibles successfully", "", { duration: 3000 });
+  //   }, err => {
+  //     this.loader.close();
+  //     this.snackBar.open("Error in sending notification to Responsibles: " + err, "", { duration: 5000 });
+  //   })
+  // }
+
   notifyResponsibles(aspects: any, auditInfo: any) {
-    this.crudService.Save({ aspects, auditInformation: auditInfo }, true, "/audits/responsibles/notify", null).subscribe(res => {
-      this.snackBar.open("Notification has been sent to Responsibles successfully", "", { duration: 3000 });
-    }, err => {
-      this.snackBar.open("Error in sending notification to Responsibles: " + err, "", { duration: 5000 });
-    })
+    return this.crudService.Save({ aspects, auditInformation: auditInfo }, true, "/audits/responsibles/notify", null).toPromise()
   }
 
   checkNotify() {

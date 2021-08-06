@@ -41,15 +41,31 @@ export class UnitiesFormComponent implements OnInit {
   ) { }
 
   prepareScreen(record) {
+    // this.unityForm = new FormGroup({
+    //   customer_unity_id: new FormControl(record.customer_unity_id),
+    //   customer_unity_x: new FormControl(record.customer_unity_id),
+    //   customer_unity_cnpj: new FormControl(record.customer_unity_cnpj, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]),
+    //   customer_unity_name: new FormControl(record.customer_unity_name, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]),
+    //   customer_unity_address: new FormControl(record.customer_unity_address, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]),
+    //   customer_unity_city_id: new FormControl(record.customer_unity_city_id, [Validators.required]),
+    //   customer_unity_uf_id: new FormControl(record.customer_unity_uf_id, [Validators.required]),
+    //   customer_unity_cep: new FormControl(record.customer_unity_cep, [Validators.required, Validators.minLength(8)]),
+    //   customer_group_id: new FormControl(this.currentUser.role === roles.admin ? record.customer_group_id : this.currentUser.customer_group_id, [Validators.required]),
+    //   customer_id: new FormControl(record.customer_id, [Validators.required]),
+    //   unity_contact_name: new FormControl(record.unity_contact_name, [Validators.required]),
+    //   unity_contact_email: new FormControl(record.unity_contact_email, [Validators.required, Validators.email]),
+    //   unity_contact_phone: new FormControl(record.unity_contact_phone, [Validators.required]),
+    //   unity_contact_observation: new FormControl(record.unity_contact_observation)
+    // });
     this.unityForm = new FormGroup({
       customer_unity_id: new FormControl(record.customer_unity_id),
       customer_unity_x: new FormControl(record.customer_unity_id),
-      customer_unity_cnpj: new FormControl(record.customer_unity_cnpj, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]),
+      customer_unity_cnpj: new FormControl(record.customer_unity_cnpj, []),
       customer_unity_name: new FormControl(record.customer_unity_name, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]),
-      customer_unity_address: new FormControl(record.customer_unity_address, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]),
-      customer_unity_city_id: new FormControl(record.customer_unity_city_id, [Validators.required]),
-      customer_unity_uf_id: new FormControl(record.customer_unity_uf_id, [Validators.required]),
-      customer_unity_cep: new FormControl(record.customer_unity_cep, [Validators.required, Validators.minLength(8)]),
+      customer_unity_address: new FormControl(record.customer_unity_address, []),
+      customer_unity_city_id: new FormControl(record.customer_unity_city_id, []),
+      customer_unity_uf_id: new FormControl(record.customer_unity_uf_id, []),
+      customer_unity_cep: new FormControl(record.customer_unity_cep, []),
       customer_group_id: new FormControl(this.currentUser.role === roles.admin ? record.customer_group_id : this.currentUser.customer_group_id, [Validators.required]),
       customer_id: new FormControl(record.customer_id, [Validators.required]),
       unity_contact_name: new FormControl(record.unity_contact_name, [Validators.required]),
