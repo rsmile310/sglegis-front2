@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar, MatDialogRef } from '@angular/material';
+import { roles } from 'app/models/auth/roles';
 import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
+import { AuthGuard } from 'app/services/auth/auth.guard';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
+import * as moment from 'moment';
 import { DocumentsFormComponent } from '../documents/documents-form/documents-form.component';
 import { RequirementsFormComponent } from './requirements-form/requirements-form.component';
 
@@ -18,23 +21,29 @@ export class RequirementsComponent implements OnInit {
   configSearch: any = [];
 
   columns = [
-    { Propriedade: 'area_name', Titulo: 'Sis.Gestão', Visivel: true, Largura:100 },
-    { Propriedade: 'area_aspect_name', Titulo: 'Aspecto', Visivel: true, Largura:100 },
-    { Propriedade: 'area_name', Titulo: 'Area', Visivel: true, Largura:100 },
+    { Propriedade: 'area_name', Titulo: 'Sis.Gestão', Visivel: true, Largura:200 },
+    { Propriedade: 'area_aspect_name', Titulo: 'Aspecto', Visivel: true, Largura:150 },
+    // { Propriedade: 'customer_unity_name', Titulo: 'Unity', Visivel: true, Largura:200 },
+    // { Propriedade: 'area_name', Titulo: 'Area', Visivel: true, Largura:100 },
     { Propriedade: 'document_item_subject', Titulo: 'Assunto', Visivel: true, Largura:100 },
-    { Propriedade: 'document_item_subject', Titulo: 'Âmbito', Visivel: true, Largura:100 },
-    { Propriedade: 'document_item_subject', Titulo: 'Documento', Visivel: true, Largura:100 },
-    { Propriedade: 'document_item_subject', Titulo: 'Item', Visivel: true, Largura:100 },
-    { Propriedade: 'document_item_subject', Titulo: 'Data/Status', Visivel: true, Largura:100 },
-    // { Propriedade: 'customer_business_name', Titulo: 'Cliente', Visivel: true, Largura: 300 },
-    // { Propriedade: 'customer_unity_name', Titulo: 'Unidade', Visivel: true, Largura: 300 },
+    { Propriedade: 'document_scope_description', Titulo: 'Âmbito', Visivel: true, Largura:100 },
+    { Propriedade: 'document_number', Titulo: 'Documento', Visivel: true, Largura:100 },
+    { Propriedade: 'document_item_number', Titulo: 'Item', Visivel: true, Largura:100 },
+    { Propriedade: 'document_date_status', Titulo: 'Data/Status', Visivel: true, Largura:200},
+    // { Propriedade: 'customer_business_name', Titulo: 'Cliente', Visivel: true, Largura: 150 },
+    // { Propriedade: 'customer_unity_name', Titulo: 'Unidade', Visivel: true, Largura: 150 },
   ]
+
+  currentUser: any;
+  roles = roles;
+  selectedRows = [];
 
   constructor(
     private crud: CRUDService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private loader: AppLoaderService,
+    private auth: AuthGuard,
   ) { }
 
   prepareScreen() {
@@ -48,7 +57,7 @@ export class RequirementsComponent implements OnInit {
     this.crud.GetParams({ "orderby": "customer_group_name", "direction": "asc" }, "/customergroup").subscribe(res => {
       if (res.status == 200) {
         this.groups = [];
-        this.groups = res.body;
+        this.groups = res.body
       }
     });   
     
@@ -67,21 +76,21 @@ export class RequirementsComponent implements OnInit {
     this.configSearch = aux;
   }
 
-  openForm(info: any = {}, newRercord: Boolean) {
+  openForm(info: any = {}, newRercord: Boolean) {   
     let text;
     text = (newRercord) ? "Novo Documento" : "Editar Documento: " + info.document_id;
 
     let dialogRef: MatDialogRef<any> = this.dialog.open(RequirementsFormComponent, {
       width: '900px',
       disableClose: true,
-      data: { title: text, payload: info, new: newRercord }
+      data: { title: text, payload: this.selectedRows, new: newRercord }
     });
 
-    dialogRef.afterClosed()
-      .subscribe(res => {
-        this.getDocuments(this.lastSearch);
-        return;
-      });
+    dialogRef.afterClosed().subscribe(res => {
+      this.getDocuments(this.lastSearch);
+      this.selectedRows = [];      
+      return;
+    });
   }
 
   getGroups() {
@@ -89,9 +98,18 @@ export class RequirementsComponent implements OnInit {
   }
 
   getDocuments(parameter: any) {
-    this.crud.GetParams(undefined, "/requirements").subscribe(res => {
+    this.crud.GetParams(undefined, `/requirements/${this.currentUser.role !== roles.admin ? this.currentUser.customer_id : 'all'}`).subscribe(res => {
       this.rows = [];
-      this.rows = res.body;
+      const newArr = res.body;
+      newArr.forEach(newRow => {
+        if (!this.rows.find(r => r.area_aspect_id === newRow.area_aspect_id && r.document_item_id === newRow.document_item_id)) {
+          let date = moment(newRow.document_date);
+          this.rows.push({
+            ...newRow,
+            document_date_status: `${date.format('yyyy-MM-DD')} / ${newRow.status_description}`
+          });
+        }
+      });
     })
   }
 
@@ -99,7 +117,19 @@ export class RequirementsComponent implements OnInit {
 
   }
 
+  handleCheck(rowIndex: any, status: boolean) {    
+    if (status) {
+      this.selectedRows = [...this.selectedRows, {
+        ...this.rows[rowIndex],
+        rowIndex
+      }];
+    } else {
+      this.selectedRows = this.selectedRows.filter(r => r.rowIndex !== rowIndex);
+    }    
+  }
+
   ngOnInit() {
+    this.currentUser = this.auth.getUser();
     this.prepareScreen();
   }
 

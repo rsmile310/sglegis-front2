@@ -23,10 +23,12 @@ export class GradeComponent implements OnInit {
   @Input() BtnIncluir: Boolean;
   @Input() viewOnly: Boolean = false;
   @Input() check: Boolean = false;
+  @Input() CheckedRows: Array<any> = [];
   @Input() MostrarBarraBusca: boolean = true;
   @Input() Expansible: boolean = false;
   @Input() PropertyToExpanse: String;
   @Input() actionButton: boolean = false;
+  @Input() ActionButtonStatus: boolean = false;
   @Input() actionButtonCaption: String;
   @Output() actionButtonEvent: EventEmitter<any> = new EventEmitter();
   @Output() PesquisarRegistro: EventEmitter<any> = new EventEmitter();
@@ -35,6 +37,7 @@ export class GradeComponent implements OnInit {
   @Output() ExcluirRegistro: EventEmitter<any> = new EventEmitter();
   @Output() ResponsibleRegistro: EventEmitter<any> = new EventEmitter();
   @Output() ActionRegistro: EventEmitter<any> = new EventEmitter();
+  @Output() CheckRegistro: EventEmitter<any> = new EventEmitter();
   AuxColunas = [];
   buscarForm: FormGroup;
   public finderPanel: boolean = false;
@@ -107,6 +110,14 @@ export class GradeComponent implements OnInit {
 
   onAction(registro) {
     this.ActionRegistro.emit({ registro: registro });
+  }
+
+  onCheck(registro: any, event) {    
+    this.CheckRegistro.emit({ registro: registro, status: event.checked })
+  }
+
+  isCheckedRow(rowIndex: any) {
+    return this.CheckedRows.find(r => r.rowIndex === rowIndex);
   }
 
   Pesquisar() {

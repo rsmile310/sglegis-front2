@@ -94,6 +94,7 @@ export class DocumentItemComponent implements OnInit {
   }
 
   async saveAreasAspects(document_item_id) {
+    
     for (let i = 0; i < this.areasWithAspects.length; i++) {
       for (let j = 0; j < this.areasWithAspects[i].aspects.length; j++) {
         if (this.areasWithAspects[i].aspects[j].checked != this.areasWithAspects[i].aspects[j].previous) {

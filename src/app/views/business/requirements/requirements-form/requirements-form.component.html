@@ -6,7 +6,7 @@
     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
       <div fxFlex="50" class="pr-1">
         <mat-form-field class="full-width">
-          <mat-select placeholder="Ordem prática">
+          <mat-select placeholder="Ordem prática" [formControl]="audit.controls['audit_practical_order']">
             <mat-option *ngFor="let pratic of pratics" [value]="pratic.id">
               {{pratic.desc}} </mat-option>
           </mat-select>
@@ -15,7 +15,7 @@
 
       <div fxFlex="50" class="pr-1">
         <mat-form-field class="full-width">
-          <mat-select placeholder="Conformidade">
+          <mat-select placeholder="Conformidade" [formControl]="audit.controls['audit_conformity']">
             <mat-option *ngFor="let conform of conforms" [value]="conform.id">
               {{conform.desc}} </mat-option>
           </mat-select>
@@ -25,74 +25,61 @@
       <div fxFlex="100" class="pr-1">
         <mat-form-field class="full-width">
           <textarea matInput upperCase placeholder="Evidência de cumprimento" name="evidencia" maxlength="2000"
-            rows="3"></textarea>
+            rows="3" [formControl]="audit.controls['audit_evidnece_compliance']"></textarea>
         </mat-form-field>
       </div>
 
       <div fxFlex="100" class="pr-1">
         <mat-form-field class="full-width">
           <textarea matInput upperCase placeholder="Ação de controle" name="acao-controle" maxlength="2000"
-            rows="3"></textarea>
+            rows="3" [formControl]="audit.controls['audit_control_action']"></textarea>
         </mat-form-field>
       </div>
 
       <div fxFlex="100" class="pr-1">
-        <mat-checkbox color="primary">
+        <mat-checkbox color="primary" (change)="checkNotify()" [checked]="notify">
           Enviar notificação para responsável
         </mat-checkbox>
       </div>
 
-      <div fxFlex="100" class="pr-1" style="margin-top: 10px;">
+      <div *ngIf="!featuredHistory" fxFlex="100" class="pr-1" style="margin-top: 10px;">
         <fieldset disabled="false" >
-          <legend>Total de itens: XX</legend>
-          <p>A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
-          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
-          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
-          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO). </p>
-
-          <p>A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
-          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
-          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
-          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).
-        </p>
-        <p>
-          A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
-          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
-          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
-          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).          
-        </p>
-        <p>
-          A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
-          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
-          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
-          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).          
-        </p>
-        <p>
-          A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
-          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
-          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
-          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).          
-        </p>
-        <p>
-          A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
-          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
-          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
-          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).          
-        </p>
-        <p>
-          A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
-          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
-          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
-          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).          
-        </p>
-        <p>
-          A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
-          FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
-          DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
-          LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).          
-        </p>
+          <legend>Total de itens: {{ document_items.length }}</legend>
+          <p *ngFor="let document of document_items">{{ document.document_item_description }}</p>
+          <!-- <p>
+            A INSTALAÇÃO, A CONSTRUÇÃO OU A AMPLIAÇÃO, BEM COMO A OPERAÇÃO OU O FUNCIONAMENTO DAS FONTES DE POLUIÇÃO QUE
+            FOREM ENUMERADAS NO REGULAMENTO DESTA LEI, FICAM SUJEITOS À PRÉVIA AUTORIZAÇÃO DO ÓRGÃO ESTADUAL DE CONTROLE
+            DA POLUIÇÃO DO MEIO-AMBIENTE, MEDIANTE EXPEDIÇÃO, QUANDO FOR O CASO, DE LICENÇA AMBIENTAL PRÉVIA (LAP), E DE
+            LICENÇA AMBIENTAL DE INSTALAÇÃO (LAI) E/OU DE LICENÇA AMBIENTAL DE OPERAÇÃO (LAO).          
+          </p> -->
         </fieldset>
       </div>
+
+      <div *ngIf="featuredHistory" fxFlex="100" class="pr-1">
+        <ngx-datatable class="material" [rows]="historicals" columnMode="standard" [headerHeight]="35" [footerHeight]="0" [rowHeight]="35" [scrollbarV]="true" [messages]="{ emptyMessage: '' }">
+          <ngx-datatable-column name="Ordem prática" [flexGrow]="0" [width]="">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ getPraticName(row["audit_practical_order"]) }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Conformidade" [flexGrow]="0" [width]="">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ getConformityName(row["audit_conformity"]) }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Evidência de cumprimento" [flexGrow]="0" [width]="">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row["audit_evidnece_compliance"] }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Ação de controle" [flexGrow]="0" [width]="">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row["audit_control_action"] }}
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+      
 
     </div>
 
@@ -103,7 +90,7 @@
       <span fxFlex></span>
       <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
       <span fxFlex></span>
-      <button mat-raised-button class="mat-primary" type="button" (click)="dialogRef.close('NOK')">Gravar</button>
+      <button mat-raised-button class="mat-primary" type="button" (click)="saveAudit()" [disabled]="audit.invalid">Gravar</button>
       <span fxFlex></span>
     </div>
   </div>

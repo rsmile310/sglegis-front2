@@ -67,8 +67,8 @@
             </div>
 
             <div fxFlex="20" class="pr-1">
-              <mat-form-field class="full-width" style="pointer-events: none;">
-                <mat-select [formControl]="unityForm.controls['customer_unity_uf_id']" placeholder="UF *">
+              <mat-form-field class="full-width">
+                <mat-select [formControl]="unityForm.controls['customer_unity_uf_id']" placeholder="UF *" (change)="getCities()">
                   <mat-option *ngFor="let state of states" [value]="state.state_id">
                     {{state.state_name}} </mat-option>
                 </mat-select>
@@ -77,7 +77,7 @@
 
 
             <div fxFlex="60" class="pr-1">
-              <mat-form-field class="full-width" style="pointer-events: none;">
+              <mat-form-field class="full-width">
                 <mat-select [formControl]="unityForm.controls['customer_unity_city_id']" placeholder="Cidade *" >
                   <mat-option *ngFor="let city of cities" [value]="city.city_id">
                     {{city.city_name}} </mat-option>
@@ -97,7 +97,7 @@
 
     <mat-card class="mat-card-background">
       <mat-card-header class="mat-card-titulo2">
-        <span class="mat-card-titulo">Contato do Responsável</span><span class="mat-card-titulo" fxFlex></span>
+        <span class="mat-card-titulo">Focal point</span><span class="mat-card-titulo" fxFlex></span>
       </mat-card-header>
       
         <mat-card-content class="mat-card-body">

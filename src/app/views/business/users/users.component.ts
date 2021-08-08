@@ -49,10 +49,10 @@ export class UsersComponent implements OnInit {
       Largura: 50
     },
     {
-      Propriedade: 'customer_group_name',
-      Titulo: 'Group',
+      Propriedade: 'customer_business_name',
+      Titulo: 'Customer business name',
       Visivel: true,
-      Largura: 50
+      Largura: 150
     },
     {
       Propriedade: 'is_disabled',
