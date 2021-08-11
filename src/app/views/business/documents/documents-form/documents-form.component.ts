@@ -16,6 +16,8 @@ import { roles } from 'app/models/auth/roles';
 import { AuthGuard } from 'app/services/auth/auth.guard';
 import { profile } from 'app/models/auth/profile.types';
 
+import { environment } from "environments/environment";
+
 @Component({
   selector: 'app-docuemnts-form',
   templateUrl: './documents-form.component.html',
@@ -302,6 +304,10 @@ export class DocumentsFormComponent implements OnInit {
         })
       }
     })
+  }
+
+  downloadAttachment(data) {
+    window.open(`${environment.fileURL}/${data.attachment_src}`);
   }
 
 }
