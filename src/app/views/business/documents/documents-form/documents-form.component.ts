@@ -191,6 +191,9 @@ export class DocumentsFormComponent implements OnInit {
     this.loader.open();
     this.crudService.Save(form, this.data.new, "/document", form.document_id).subscribe(res => {
       if (res.status == 200) {
+        this.documentForm.controls['document_id'].setValue(res.body.document_id);
+        this.data.new = false;
+        
         this.loader.close();
         this.snackBar.open("Registro gravado com sucesso", "", { duration: 3000 });
         //this.dialogRef.close('OK');
