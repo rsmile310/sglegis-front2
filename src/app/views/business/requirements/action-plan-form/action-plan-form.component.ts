@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
@@ -37,6 +38,8 @@ export class ActionPlanFormComponent implements OnInit {
       email: new FormControl('', [Validators.required, Validators.email]),
       deadline: new FormControl('', [Validators.required]),
     });
+
+    this.activity.controls['deadline'].setValue(dateFormat(new Date(), "MM/DD/yyyy"));
     this.getActionPlans(record);
   }
 
@@ -60,9 +63,7 @@ export class ActionPlanFormComponent implements OnInit {
       actionplan_items: [
         ...this.activities
       ]
-    };
-
-    console.log(newActionPlan);    
+    };  
 
     this.loader.open();
     this.curdService.Save(newActionPlan, true, "/action-plan", null).subscribe(res => {
@@ -109,6 +110,10 @@ export class ActionPlanFormComponent implements OnInit {
 
   getRealActivities() {
     return this.activities.filter(a => a.status !== 3);
+  }
+
+  dateFormat(str_date, str_format) {
+    return dateFormat(str_date, str_format);
   }
 
 }

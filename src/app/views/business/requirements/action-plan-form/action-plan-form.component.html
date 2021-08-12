@@ -9,7 +9,7 @@
       <div fxFlex="100" class="pr-1">
         <mat-form-field class="full-width">
           <textarea
-            matInput placeholder="Atividade" [formControl]="activity.controls['activity']"
+            matInput placeholder="Atividade *" [formControl]="activity.controls['activity']"
           ></textarea>
         </mat-form-field>
       </div>
@@ -17,7 +17,7 @@
       <div fxFlex="50" class="pr-1">
         <mat-form-field class="full-width">
           <input 
-            matInput placeholder="Responsável pela execução" [formControl]="activity.controls['responsible']"
+            matInput placeholder="Responsável pela execução *" [formControl]="activity.controls['responsible']"
           />
         </mat-form-field>
       </div>
@@ -25,16 +25,16 @@
       <div fxFlex="50" class="pr-1">
         <mat-form-field class="full-width">
           <input 
-            matInput placeholder="E-mail do responsável" [formControl]="activity.controls['email']"
+            matInput placeholder="E-mail do responsável *" [formControl]="activity.controls['email']"
           />
         </mat-form-field>
       </div>
 
       <div fxFlex="50" class="pr-1">
         <mat-form-field class="full-width">
-          <input matInput placeholder="Data limite" [formControl]="activity.controls['deadline']" [matDatepicker]="deadlinePicker"/>
-          <mat-datepicker-toggle matSuffix [for]="deadlinePicker"></mat-datepicker-toggle>
-          <mat-datepicker #deadlinePicker></mat-datepicker>
+          <input matInput name="deadline"  placeholder="Data limite *" maxlength="10" upperCase
+           mask="00/00/0000"
+          [formControl]="activity.controls['deadline']">
         </mat-form-field>
       </div>
 
@@ -57,7 +57,7 @@
 
           <ngx-datatable-column name="DATA LIMIT" [flexGrow]="0" [width]="90">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row['deadline'] }}
+              {{ dateFormat(row['deadline'], "MM/DD/YY") }}
             </ng-template>
           </ngx-datatable-column>
 
