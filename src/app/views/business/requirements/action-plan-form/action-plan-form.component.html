@@ -1,0 +1,88 @@
+<h3 matDialogTitle>
+  Definir plano de ação
+</h3>
+
+<form autocomplete="off">
+  <mat-dialog-content>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+
+      <div fxFlex="100" class="pr-1">
+        <mat-form-field class="full-width">
+          <textarea
+            matInput placeholder="Atividade" [formControl]="activity.controls['activity']"
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="50" class="pr-1">
+        <mat-form-field class="full-width">
+          <input 
+            matInput placeholder="Responsável pela execução" [formControl]="activity.controls['responsible']"
+          />
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="50" class="pr-1">
+        <mat-form-field class="full-width">
+          <input 
+            matInput placeholder="E-mail do responsável" [formControl]="activity.controls['email']"
+          />
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="50" class="pr-1">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Data limite" [formControl]="activity.controls['deadline']" [matDatepicker]="deadlinePicker"/>
+          <mat-datepicker-toggle matSuffix [for]="deadlinePicker"></mat-datepicker-toggle>
+          <mat-datepicker #deadlinePicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="100" class=" mt-1">
+        <button class=" mb-2" mat-raised-button color="default" (click)="addActivity()" type="button" [disabled]="activity.invalid">Adicionar à lista de tarefas</button>
+
+        <ngx-datatable class="material" [rows]="getRealActivities()" columnMode="standard" [headerHeight]="35" [footerHeight]="0" [rowHeight]="35" [scrollbarH]="true" [messages]="{ emptyMessage: '' }">
+          
+          <ngx-datatable-column name="ATIVIDADE" [flexGrow]="0" [width]="300">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row['activity'] }}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="RESPONSAVEL" [flexGrow]="0" [width]="100">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row['responsible'] }}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="DATA LIMIT" [flexGrow]="0" [width]="90">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row['deadline'] }}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="REMOVE" [flexGrow]="0" [width]="80">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <button mat-icon-button mat-sm-button color="warn" (click)="removeActivity(row)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </ng-template>
+          </ngx-datatable-column>
+
+        </ngx-datatable>
+      </div>
+
+
+    </div>
+  </mat-dialog-content>
+
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
+    <div fxFlex="100" class="mt-1">
+      <span fxFlex></span>
+      <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
+      <span fxFlex></span>
+      <button mat-raised-button class="mat-primary" type="button" (click)="saveActionPlan()" [disabled]="activities.length === 0" >Gravar</button>
+      <span fxFlex></span>
+    </div>
+  </div>
+</form>

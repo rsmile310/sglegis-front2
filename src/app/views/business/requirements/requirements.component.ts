@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar, MatDialogRef } from '@angular/material';
 import { roles } from 'app/models/auth/roles';
 import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
+import { dialog } from 'app/models/size/size';
 import { AuthGuard } from 'app/services/auth/auth.guard';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
 import * as moment from 'moment';
 import { DocumentsFormComponent } from '../documents/documents-form/documents-form.component';
+import { ActionPlanFormComponent } from './action-plan-form/action-plan-form.component';
 import { RequirementsFormComponent } from './requirements-form/requirements-form.component';
 
 @Component({
@@ -113,8 +115,20 @@ export class RequirementsComponent implements OnInit {
     })
   }
 
-  handleActionPlan(registro: any) {
+  handleActionPlan(registro: any) {    
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ActionPlanFormComponent, {
+      width: dialog.medium,
+      disableClose: true,
+      data: { title: "", payload: { 
+        unit_id: registro.customer_unity_id,
+        item_area_aspect_id: registro.area_aspect_id,
+        user_id: this.currentUser.id
+      }, new: true }
+    });
 
+    dialogRef.afterClosed().subscribe(res => {
+      
+    })
   }
 
   handleCheck(rowIndex: any, status: boolean) {    
