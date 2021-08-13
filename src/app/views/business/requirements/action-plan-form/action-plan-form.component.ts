@@ -16,6 +16,7 @@ export class ActionPlanFormComponent implements OnInit {
   public activity: FormGroup;
   public activities: any = [];
   actionPlan: any;
+  activityChanges: any = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -54,43 +55,55 @@ export class ActionPlanFormComponent implements OnInit {
     })
   }
 
-  saveActionPlan() {    
-    const newActionPlan = {
-      actionplan_id: this.actionPlan.actionplan_id,
-      unit_id: this.actionPlan.unit_id,
-      item_area_aspect_id: this.actionPlan.item_area_aspect_id,
-      user_id: this.actionPlan.user_id,
-      actionplan_items: [
-        ...this.activities
-      ]
-    };  
-
-    this.loader.open();
-    this.curdService.Save(newActionPlan, true, "/action-plan", null).subscribe(res => {
-      this.loader.close();
-      this.dialogRef.close("OK");
-      this.snackBar.open("Successfully saved action plan", "", { duration: 3000 });
-    }, err => {
-      this.loader.close();
-      this.dialogRef.close("NOK");
-      this.snackBar.open("Error in saving action plan: " + err, "", { duration: 5000 });
-    })
+  saveActionPlan() {
+    this.curdService.GetParams(undefined, `/customer/${this.actionPlan.customer_id}`).subscribe(res => {
+      
+      const customer_name = res.body[0].customer_business_name;
+      const newActionPlan = {
+        actionplan_id: this.actionPlan.actionplan_id,
+        unit_id: this.actionPlan.unit_id,
+        item_area_aspect_id: this.actionPlan.item_area_aspect_id,
+        user_id: this.actionPlan.user_id,
+        actionplan_items: [
+          ...this.activities
+        ],
+        activityChanges: {
+          unity_name: this.actionPlan.customer_unity_name,
+          aspect_name: this.actionPlan.area_aspect_name,
+          customer_name,
+          actionplan_items: [...this.activityChanges.map(a => ({ ...a, deadline: dateFormat(a.deadline, "MM/DD/yyyy") }))]
+        }
+      };  
+  
+      this.loader.open();
+      this.curdService.Save(newActionPlan, true, "/action-plan", null).subscribe(res => {
+        this.loader.close();
+        this.dialogRef.close("OK");
+        this.snackBar.open("Successfully saved action plan", "", { duration: 3000 });
+      }, err => {
+        this.loader.close();
+        this.dialogRef.close("NOK");
+        this.snackBar.open("Error in saving action plan: " + err, "", { duration: 5000 });
+      })
+    })    
   }
 
   addActivity() {
     const activity = this.activity.value;
+    const newActivity = {
+      ...activity,
+      deadline: dateFormat(activity.deadline, "MM/DD/YY"),
+      status: 0,
+      actionplan_id: this.actionPlan.actionplan_id,
+      fake_id: this.activities.length
+    }
     this.activities = [
       ...this.activities,
-      {
-        ...activity,
-        deadline: dateFormat(activity.deadline, "MM/DD/YY"),
-        status: 0,
-        actionplan_id: this.actionPlan.actionplan_id,
-        fake_id: this.activities.length
-      }
+      newActivity
     ];
+    this.activityChanges.push(newActivity);
     this.activity.reset();
-    
+        
   }
 
   removeActivity(data: any) {
@@ -101,10 +114,15 @@ export class ActionPlanFormComponent implements OnInit {
           status: a.actionplan_item_id === data.actionplan_item_id ? 3 : a.status
         }))
       ]
+      this.activityChanges.push({
+        ...data,
+        status: 3
+      })
     } else {
       this.activities = [
         ...this.activities.filter(a => a.fake_id !== data.fake_id)
       ]
+      this.activityChanges = this.activityChanges.filter(a => a.fake_id !== data.fake_id);
     }
   }
 

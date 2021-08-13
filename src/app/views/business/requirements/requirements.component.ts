@@ -115,14 +115,15 @@ export class RequirementsComponent implements OnInit {
     })
   }
 
-  handleActionPlan(registro: any) {    
+  handleActionPlan(registro: any) {        
     let dialogRef: MatDialogRef<any> = this.dialog.open(ActionPlanFormComponent, {
       width: dialog.medium,
       disableClose: true,
       data: { title: "", payload: { 
+        ...registro,
         unit_id: registro.customer_unity_id,
         item_area_aspect_id: registro.area_aspect_id,
-        user_id: this.currentUser.id
+        user_id: this.currentUser.id,
       }, new: true }
     });
 
