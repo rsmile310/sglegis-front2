@@ -62,7 +62,7 @@ export class DocumentsFormComponent implements OnInit {
       document_scope_id: new FormControl(record.document_scope_id, [Validators.required]),
       document_type: new FormControl(record.document_type, [Validators.required]),
       document_number: new FormControl(record.document_number, [Validators.required]),
-      document_date: new FormControl("", [Validators.required]),
+      document_date: new FormControl(record.document_date, [Validators.required]),
       document_status_id: new FormControl(record.document_status_id, [Validators.required]),
       document_summary: new FormControl(record.document_summary, [Validators.required]),
       document_state_id: new FormControl(record.document_state_id),
@@ -70,8 +70,10 @@ export class DocumentsFormComponent implements OnInit {
       document_file: new FormControl()
     });
     
-    this.documentForm.controls.document_date.setValue( formatDate( record.document_date ? new Date(record.document_date) : new Date(), "dd/MM/yyyy", "pt_br") );
-    this.documentData = new Date(record.document_date);
+    this.documentForm.controls.document_date.setValue(
+      formatDate(record && record.document_date ? new Date(record.document_date) : new Date(), 'dd/MM/yyyy', 'pt-br')
+    );
+    this.documentData = this.documentForm.controls.document_date.value;
     this.getDocumentScopes();
     this.getDocumentStatus();
     this.getItems(record.document_id);
@@ -87,20 +89,17 @@ export class DocumentsFormComponent implements OnInit {
 
   prepareStatesCities(r) {
     switch (r) {
-      case 1:
-        this.hideCity();
-        this.hideState();
-        break;
-      case 2:
+      case 3: //estadual
         this.hideCity();
         this.showStates();
         break;
-      case 3:
+      case 4: //municipal
         this.showStates();
         this.showCities();
         break;
       default:
-        console.log("");
+        this.hideCity();
+        this.hideState();
     }
   }
 
@@ -187,7 +186,7 @@ export class DocumentsFormComponent implements OnInit {
 
   saveDocument() {
     let form = this.documentForm.value;
-    form.document_date = Date.parse(form.document_date.substr(4, 4) + "-" + form.document_date.substr(2, 2) + "-" + ((parseInt(form.document_date.substr(0, 2)) )));
+    form.document_date = form.document_date.substr(0, 10).split('/').reverse().join('-');
     this.loader.open();
     this.crudService.Save(form, this.data.new, "/document", form.document_id).subscribe(res => {
       if (res.status == 200) {
@@ -236,6 +235,7 @@ export class DocumentsFormComponent implements OnInit {
   }
 
   getItems(documentId) {
+    if (documentId)
     this.crudService.GetParams({ "orderby": "document_item_order", "direction": "asc" }, "/documentitem/items/" + documentId).subscribe(res => {
       if (res.status == 200) {
         this.documentsItem = [];
@@ -259,6 +259,7 @@ export class DocumentsFormComponent implements OnInit {
   }
 
   getAttachments(documentId) {
+    if (documentId)
     this.crudService.GetParams({ "orderby": "createdAt", "direction": "asc" }, "/document-attachment/attachments/" + documentId).subscribe(res => {
       if (res.status == 200) {
         this.documentAttachments = [];
