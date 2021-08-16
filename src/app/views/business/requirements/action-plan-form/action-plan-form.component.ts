@@ -90,6 +90,8 @@ export class ActionPlanFormComponent implements OnInit {
 
   addActivity() {
     const activity = this.activity.value;
+    console.log(activity);
+    
     const newActivity = {
       ...activity,
       deadline: dateFormat(activity.deadline, "MM/DD/YY"),
