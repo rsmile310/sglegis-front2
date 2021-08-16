@@ -18,7 +18,7 @@ export class SigninComponent implements OnInit {
   signinForm: FormGroup;
 
   initialErrors: {
-    user_email: '123',
+    user_email: '',
     user_password: null
   }  
 
