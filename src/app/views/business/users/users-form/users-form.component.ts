@@ -48,6 +48,19 @@ export class UsersFormComponent implements OnInit {
       customer_id: new FormControl(record.customer_id),
     });   
     
+    if (this.user.value.user_role !== roles.admin) {
+      this.user.controls.customer_id.setValidators([Validators.required]);
+    }
+
+    this.user.controls.user_role.valueChanges.subscribe(res => {      
+      if (res !== roles.admin) {
+        this.user.controls.customer_id.setValidators([Validators.required]);
+      } else {
+        this.user.controls.customer_id.clearValidators();       
+      }
+      this.user.controls.customer_id.updateValueAndValidity();      
+    })
+    
     this.getCustomers();
   }
 
