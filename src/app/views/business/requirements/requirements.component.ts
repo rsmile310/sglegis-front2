@@ -31,7 +31,7 @@ export class RequirementsComponent implements OnInit {
     { Propriedade: 'document_scope_description', Titulo: 'Âmbito', Visivel: true, Largura:100 },
     { Propriedade: 'document_number', Titulo: 'Documento', Visivel: true, Largura:100 },
     { Propriedade: 'document_item_number', Titulo: 'Item', Visivel: true, Largura:100 },
-    { Propriedade: 'document_date_status', Titulo: 'Data/Status', Visivel: true, Largura:200},
+    { Propriedade: 'document_date_status', Titulo: 'Data/Status', Visivel: true, Largura:200},    
     // { Propriedade: 'customer_business_name', Titulo: 'Cliente', Visivel: true, Largura: 150 },
     // { Propriedade: 'customer_unity_name', Titulo: 'Unidade', Visivel: true, Largura: 150 },
   ]
@@ -49,24 +49,19 @@ export class RequirementsComponent implements OnInit {
   ) { }
 
   prepareScreen() {
-    this.getDocuments(undefined);
     this.setConfigSearch();
+    this.getDocuments(undefined);
   }
 
-  async setConfigSearch() {
+  async setConfigSearch() {    
 
-    //let res = await this.crud.GetParams({ "orderby": "customer_group_name", "direction": "asc" }, "/customergroup").toPromise();
-    this.crud.GetParams({ "orderby": "customer_group_name", "direction": "asc" }, "/customergroup").subscribe(res => {
-      if (res.status == 200) {
-        this.groups = [];
-        this.groups = res.body
-      }
-    });   
-    
+    // let res = await this.crud.GetParams({ "orderby": "customer_group_name", "direction": "asc" }, "/customergroup").toPromise();
+    // this.groups = [];
+    // this.groups = res.body;  
 
     let aux = [      
       new CampoBusca("customer_group_id", "Grupo", 50, "", "LIST", this.groups, "customer_group_name", "customer_group_id"),
-      new CampoBusca("customer_business_name", "Matriz", 50, "", "string", null, null, null),
+      new CampoBusca("customer_id", "Matriz", 50, "", "string", null, null, null),
       new CampoBusca("customer_unity_name", "Unidade", 50, "", "string", null, null, null),
       new CampoBusca("area_name", "Sist.Gestão", 50, "", "string", null, null, null),
       new CampoBusca("document_scope_description", "Âmbito", 50, "", "string", null, null, null),
@@ -74,6 +69,11 @@ export class RequirementsComponent implements OnInit {
       new CampoBusca("document_item_subject", "Ementa", 50, "", "string", null, null, null),
       new CampoBusca("document_number", "Documento", 50, "", "string", null, null, null),
     ];
+
+    aux[1].value = '2';
+    if (this.currentUser.role !== roles.admin) {
+      aux[1].value = this.currentUser.customer_id;
+    }
 
     this.configSearch = aux;
   }
@@ -88,19 +88,22 @@ export class RequirementsComponent implements OnInit {
       data: { title: text, payload: this.selectedRows, new: newRercord }
     });
 
-    dialogRef.afterClosed().subscribe(res => {
+    dialogRef.afterClosed().subscribe(res => {    
+      console.log(this.lastSearch);
+        
       this.getDocuments(this.lastSearch);
       this.selectedRows = [];      
       return;
     });
   }
 
-  getGroups() {
-
-  }
-
   getDocuments(parameter: any) {
-    this.crud.GetParams(undefined, `/requirements/${this.currentUser.role !== roles.admin ? this.currentUser.customer_id : 'all'}`).subscribe(res => {
+    if (this.currentUser.role !== roles.admin) {
+      parameter = {
+        customer_id: this.currentUser.customer_id
+      }
+    }
+    this.crud.GetParams(parameter, `/requirements`).subscribe(res => {
       this.rows = [];
       const newArr = res.body;
       newArr.forEach(newRow => {
@@ -115,7 +118,7 @@ export class RequirementsComponent implements OnInit {
     })
   }
 
-  handleActionPlan(registro: any) {        
+  handleActionPlan(registro: any) {     
     let dialogRef: MatDialogRef<any> = this.dialog.open(ActionPlanFormComponent, {
       width: dialog.medium,
       disableClose: true,
