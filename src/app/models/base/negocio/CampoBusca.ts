@@ -1,3 +1,5 @@
+import { EventEmitter } from "@angular/core";
+
 export class CampoBusca {
     public nomeCampo: string; //nome da coluna do json q sera retornado
     public labelCampo: string; //sera utilizado no placeholder do campo
@@ -8,7 +10,8 @@ export class CampoBusca {
     public fieldText: string;
     public fieldValue: string;
     public value: string;
-
+    public disabled: boolean;
+    
     constructor(
         private _nomeCampo: string,
         private _labelCampo: string,
@@ -17,7 +20,8 @@ export class CampoBusca {
         private _tipoCampo: string,
         private _lista: any[],
         private _fieldText: string,
-        private _fieldValue: string) {
+        private _fieldValue: string,
+        private _disabled: boolean = false) {
         this.nomeCampo = _nomeCampo;
         this.labelCampo = _labelCampo;
         this.maskCampo = _maskCampo;
@@ -26,7 +30,7 @@ export class CampoBusca {
         this.lista = _lista;
         this.fieldText = _fieldText;
         this.fieldValue = _fieldValue;
-        
+        this.disabled = _disabled;    
     }
 
 }

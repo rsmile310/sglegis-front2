@@ -13,9 +13,9 @@
                   <mat-form-field class="full-width" *ngIf="(campo.tipoCampo =='string')">
                     <input matInput name="campo.nomeCampo" [placeholder]="campo.labelCampo"
                       [maxLength]="campo.maxLengthCampo" [mask]="campo.maskCampo" upperCase type="text"
-                      [formControl]="buscarForm.controls[campo.nomeCampo]">
+                      [formControl]="buscarForm.controls[campo.nomeCampo]" [readonly]="campo.disabled">
                     <button mat-button *ngIf="buscarForm.controls[campo.nomeCampo]" matSuffix mat-icon-button
-                      aria-label="Limpar" (click)="buscarForm.controls[campo.nomeCampo].setValue('')">
+                      aria-label="Limpar" (click)="buscarForm.controls[campo.nomeCampo].setValue('')" [disabled]="campo.disabled">
                       <mat-icon>close</mat-icon>
                     </button>
                   </mat-form-field>
@@ -23,16 +23,16 @@
                   <mat-form-field class="full-width" *ngIf="campo.tipoCampo=='DATA' ">
                     <input matInput [name]="campo.nomeCampo" [placeholder]="campo.labelCampo"
                       [maxLength]="campo.maxLengthCampo" [mask]="campo.maskCampo" upperCase type="date"
-                      [formControl]="buscarForm.controls[campo.nomeCampo]">
+                      [formControl]="buscarForm.controls[campo.nomeCampo]" [readonly]="campo.disabled">
                     <button mat-button *ngIf="buscarForm.controls[campo.nomeCampo]" matSuffix mat-icon-button
-                      aria-label="Limpar" (click)="buscarForm.controls[campo.nomeCampo].setValue('')">
+                      aria-label="Limpar" (click)="buscarForm.controls[campo.nomeCampo].setValue('')" [disabled]="campo.disabled">
                       <mat-icon>close</mat-icon>
                     </button>
                   </mat-form-field>
 
                   <mat-form-field class="full-width" *ngIf="campo.tipoCampo=='LIST' ">
-                    <mat-select [formControl]="buscarForm.controls[campo.nomeCampo]" [placeholder]="campo.labelCampo">
-                      <mat-option *ngFor="let item of campo.lista" [value]="item[campo.fieldValue]">
+                    <mat-select [formControl]="buscarForm.controls[campo.nomeCampo]" [placeholder]="campo.labelCampo" [disabled]="campo.disabled">
+                      <mat-option *ngFor="let item of campo.lista" [value]="item[campo.fieldValue]" [disabled]="campo.disabled">
                         {{item[campo.fieldText]}} </mat-option>
                     </mat-select>
                   </mat-form-field>
