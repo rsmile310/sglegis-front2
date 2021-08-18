@@ -30,6 +30,7 @@ export class GradeComponent implements OnInit {
   @Input() actionButton: boolean = false;
   @Input() ActionButtonStatus: boolean = false;
   @Input() actionButtonCaption: String;
+  @Input() syncOnInit: boolean = false;
   @Output() actionButtonEvent: EventEmitter<any> = new EventEmitter();
   @Output() PesquisarRegistro: EventEmitter<any> = new EventEmitter();
   @Output() IncluirRegistro: EventEmitter<any> = new EventEmitter();
@@ -38,6 +39,8 @@ export class GradeComponent implements OnInit {
   @Output() ResponsibleRegistro: EventEmitter<any> = new EventEmitter();
   @Output() ActionRegistro: EventEmitter<any> = new EventEmitter();
   @Output() CheckRegistro: EventEmitter<any> = new EventEmitter();
+  @Output() filterValueChange: EventEmitter<any> = new EventEmitter();
+
   AuxColunas = [];
   buscarForm: FormGroup;
   public finderPanel: boolean = false;
@@ -47,6 +50,7 @@ export class GradeComponent implements OnInit {
   public formReady: boolean = false;
   public showFilter: boolean = false;
 
+
   constructor(public dialog: MatDialog,
     private mensagem: AppInformationService,
     private eRef: ElementRef) { }
@@ -55,15 +59,34 @@ export class GradeComponent implements OnInit {
     this.finderPanel = false;
     if (this.BtnIncluir == undefined) {
       this.BtnIncluir = true;
-    }
+    }    
+    this.prepareScreen();
+  }
 
-    this.buscarForm = new FormGroup({});
+  prepareScreen() {
+    this.buscarForm = new FormGroup({});    
 
     for (let i = 0; i < this.CamposBusca.length; i++) {
-      this.buscarForm.addControl(this.CamposBusca[i].nomeCampo, new FormControl(""));
+      console.log(this.CamposBusca[i].fieldValue);
+      
+      this.buscarForm.addControl(this.CamposBusca[i].nomeCampo, new FormControl(this.CamposBusca[i].tipoCampo === "LIST" && this.CamposBusca[i].fieldValue === this.CamposBusca[i].nomeCampo ? "" : this.CamposBusca[i].fieldValue));
+      this.buscarForm.controls[this.CamposBusca[i].nomeCampo].valueChanges.subscribe(res => {
+        this.filterValueChange.emit({
+          type: this.CamposBusca[i].nomeCampo,
+          value: res
+        })
+      })
     }
     this.AuxColunas = Object.assign([], this.Colunas);
     this.formReady = true;
+  }
+
+  ngDoCheck() {
+    if (this.syncOnInit) {
+      console.log('sync will work here');
+      this.prepareScreen();
+      this.syncOnInit = false;      
+    }
   }
 
   showFilters() {
@@ -122,6 +145,8 @@ export class GradeComponent implements OnInit {
 
   Pesquisar() {
     const formulario = this.buscarForm.value;
+    console.log(formulario);
+    
     this.finderPanel = false;    
     this.showFilter = this.showFilters();
     this.setFinderValue();

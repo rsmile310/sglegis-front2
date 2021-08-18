@@ -19,5 +19,8 @@
   (actionButtonEvent)="openForm('', true)" 
   (ActionRegistro)="handleActionPlan($event.registro)"
   (CheckRegistro)="handleCheck($event.registro, $event.status)"
-  [MostrarBarraBusca]="true">  
+  [MostrarBarraBusca]="true" 
+  [syncOnInit]="syncInit"
+  (filterValueChange)="onFilterValueChange($event.type, $event.value)"
+>  
 </app-grade>

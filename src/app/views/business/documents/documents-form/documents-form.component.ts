@@ -115,7 +115,6 @@ export class DocumentsFormComponent implements OnInit {
     this.showCity = false;
     this.cities = [];
     this.documentForm.controls.document_city_id.clearValidators();
-
   }
 
   showStates() {
